@@ -1,0 +1,82 @@
+// Place your key bindings in this file to override the defaultsauto[]
+[
+  {
+    "key": "ctrl+alt+j", // Customize the shortcut as you prefer
+    "command": "workbench.action.toggleSetting",
+    "args": {
+      "setting": "editor.inlineSuggest.enabled"
+    }
+  },
+  {
+    "key": "ctrl+alt+f",
+    "command": "editor.action.formatDocument",
+    "when": "editorTextFocus && !editorReadonly"
+  },
+  {
+    "key": "ctrl+shift+f",
+    "command": "-editor.action.formatDocument",
+    "when": "editorTextFocus && !editorReadonly"
+  },
+  {
+    "key": "ctrl+shift+9",
+    "command": "-workbench.action.showAllSymbols"
+  },
+  {
+    "key": "ctrl+shift+9",
+    "command": "workbench.action.showAllSymbols"
+  },
+  {
+    "key": "ctrl+t",
+    "command": "-workbench.action.showAllSymbols"
+  },
+  {
+    "key": "ctrl+k ctrl+u",
+    "command": "editor.action.removeCommentLine",
+    "when": "editorTextFocus && !editorReadonly"
+  },
+  {
+    "key": "ctrl+k ctrl+u",
+    "command": "-editor.action.removeCommentLine",
+    "when": "editorTextFocus && !editorReadonly"
+  },
+  {
+    "key": "ctrl+shift+n",
+    "command": "code-runner.run"
+  },
+  {
+    "key": "ctrl+alt+n",
+    "command": "-code-runner.run"
+  },
+  {
+    "key": "shift+alt+e",
+    "command": "editor.action.changeAll",
+    "when": "editorTextFocus && !editorReadonly"
+  },
+  {
+    "key": "ctrl+f2",
+    "command": "-editor.action.changeAll",
+    "when": "editorTextFocus && !editorReadonly"
+  },
+  {
+    "key": "ctrl+numpad_subtract",
+    "command": "editor.action.fontZoomOut"
+  },
+  {
+    "key": "ctrl+numpad_add",
+    "command": "editor.action.fontZoomIn"
+  },
+  {
+    "key": "ctrl+oem_8",
+    "command": "workbench.action.terminal.toggleTerminal",
+    "when": "terminal.active"
+  },
+  {
+    "key": "ctrl+oem_3",
+    "command": "-workbench.action.terminal.toggleTerminal",
+    "when": "terminal.active"
+  },
+  {
+    "key": "ctrl+oem_3",
+    "command": "workbench.action.terminal.toggleTerminal"
+  }
+]
