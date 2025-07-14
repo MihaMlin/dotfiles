@@ -23,8 +23,8 @@ sudo apt update && sudo apt install -y git stow
 ### 2. Clone Repository
 
 ```bash
-git clone https://github.com/MihaMlin/dotfiles.git $HOME/dotfiles
-cd $HOME/dotfiles
+git clone https://github.com/MihaMlin/.dotfiles.git $HOME/.dotfiles
+cd $HOME/.dotfiles
 ```
 
 ## 🔧 Installation
