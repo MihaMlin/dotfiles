@@ -11,7 +11,7 @@ fi
 # Clone repo if not present
 if [ ! -d ~/.dotfiles ]; then
     echo "Cloning dotfiles..."
-    git clone https://github.com/yourusername/dotfiles.git ~/.dotfiles
+    git clone https://github.com/MihaMlin/dotfiles.git ~/.dotfiles
 fi
 
 # Run the link script
