@@ -20,7 +20,7 @@ Managed with [GNU Stow](https://www.gnu.org/software/stow/) for easy symlinking.
 git clone https://github.com/MihaMlin/dotfiles.git $HOME/.dotfiles
 cd $HOME/.dotfiles
 
-# Run avtomated setup script
+# Run automated setup script
 ./bootstrap.sh
 ```
 
