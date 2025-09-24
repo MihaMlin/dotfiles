@@ -1,6 +1,6 @@
 # Dotfiles
 
-My personal configuration files for Docker, Git, SSH, VSCode and ZSH.  
+My personal configuration files for Docker, Git, VSCode and ZSH.  
 Managed with [GNU Stow](https://www.gnu.org/software/stow/) for easy symlinking.
 
 ## 🚀 Features
@@ -38,9 +38,10 @@ cd $HOME/dotfiles
 ./bootstrap.sh
 ```
 
-### Checkpoints
+### 3. Other programs to install
+- Oh-My-Zsh
+- NVM (Node Version Manager)
+- PyEnv
 
-1. Symlink configurations with bootstrap.sh (Zsh, Bash, Git, etc.)
-2. Install Oh My Zsh
-3. Install and configure NVM (Node Version Manager)
-4. Install and configure PyEnv
+## 🔗 Usefull Links
+[Guide to dotfiles](https://mskadu.medium.com/the-developers-guide-to-dot-files-versioning-your-development-environment-a4b642216680)
