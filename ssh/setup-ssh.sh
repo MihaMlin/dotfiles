@@ -21,7 +21,3 @@ chmod 600 ~/.ssh/id_ed25519
 chmod 644 ~/.ssh/id_ed25519.pub
 
 echo "SSH setup complete!"
-EOF
-
-# Make the script executable
-chmod +x ~/dotfiles/ssh/setup-ssh.sh
