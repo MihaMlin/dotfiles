@@ -29,8 +29,8 @@ Copy your public key `cat ~/.ssh/id_ed25519.pub` and paste it to: **GitHub → S
 
 ### 1. Clone the Repository
 ```bash
-git clone git@github.com:MihaMlin/dotfiles.git $HOME/.dotfiles
-cd $HOME/.dotfiles
+git clone git@github.com:MihaMlin/dotfiles.git $HOME/dotfiles
+cd $HOME/dotfiles
 ```
 
 ### 2. Run the bootstrap script
