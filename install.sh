@@ -23,7 +23,7 @@ main() {
         "installers/install-nvm.sh"       # Install other tools
         "installers/install-pyenv.sh"
         "installers/install-zinit.sh"
-        "installers/set-default-zsh.sh"   # Set ZSH as default shell last
+        "installers/setup-default-zsh.sh"   # Set ZSH as default shell last
     )
     counter=1
     for installer in "${installers[@]}"; do
@@ -44,10 +44,11 @@ main() {
 
     # Symlink dotfiles
     step "Setting up dotfiles..."
-    if [[ -f "installers/symlink-dotfiles.sh" ]]; then
-        bash installers/symlink-dotfiles.sh
+    symlink_script="installers/setup-symlinks.sh"
+    if [[ -f "$symlink_script" ]]; then
+        bash "$symlink_script"
     else
-        warning "installers/symlink-dotfiles.sh not found"
+        warning "$symlink_script not found"
     fi
 
     success "Installation complete!"
