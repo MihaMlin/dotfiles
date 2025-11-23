@@ -15,7 +15,7 @@ echo "Installing latest pyenv via git..."
 # Check if pyenv is already installed
 if [ -d "$HOME/.pyenv" ]; then
     warning "pyenv already installed at $HOME/.pyenv. Updating..."
-    cd "$HOME/.pyenv" && git pull
+    cd "$HOME/.pyenv" && git pull && cd -
 else
     # Install pyenv via GitHub
     info "Cloning pyenv repository..."
