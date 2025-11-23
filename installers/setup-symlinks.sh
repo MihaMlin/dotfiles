@@ -19,9 +19,10 @@ info "Symlinking git configuration..."
 rm -f "$HOME/.gitconfig"
 stow -d "$DOTFILES_DIR" -t "$HOME" git
 
-# Symlink zsh configuration (ignore all but .zshrc)
+# Symlink zsh configuration
 info "Symlinking zsh configuration..."
-rm -f "$HOME/.zshrc"
-stow -d "$DOTFILES_DIR" -t "$HOME" --ignore='^(?!\.zshrc$).*' zsh
+rm -f "$HOME/.zshrc" "$HOME/.p10k.zsh"
+stow -d "$DOTFILES_DIR" -t "$HOME" --ignore='^(?!\.zshrc$).*' zsh # only .zshrc
+stow -d "$DOTFILES_DIR/zsh" -t "$HOME" plugins # plugins folder
 
 success "Dotfiles symlinked successfully"

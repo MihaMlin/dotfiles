@@ -23,6 +23,7 @@ main() {
         "installers/install-nvm.sh"       # Install other tools
         "installers/install-pyenv.sh"
         "installers/install-zinit.sh"
+        "installers/install-fzf.sh"
         "installers/setup-default-zsh.sh"   # Set ZSH as default shell last
     )
     counter=1
@@ -52,6 +53,8 @@ main() {
     fi
 
     success "Installation complete!"
+
+    exec $SHELL -l
 }
 
 main "$@"
