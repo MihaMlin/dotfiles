@@ -40,5 +40,5 @@ if [ -f "$nvm_versions_file" ]; then
 
     success "Node.js versions installed."
 else
-    warning "nvm/versions.txt not found. Skipping Node.js version installation."
+    warning "$nvm_versions_file not found. Skipping Node.js version installation."
 fi
