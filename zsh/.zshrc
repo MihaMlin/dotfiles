@@ -11,6 +11,7 @@ fi
 # -----------------------------
 export ZSH="$HOME/.dotfiles"      # shortcut to dotfiles
 export PROJECTS="$HOME/Code"      # project folder
+export PATH="$HOME/.dotfiles/bin:$PATH"
 
 
 # Load environment variables from localrc (kept out of repo)
@@ -22,14 +23,12 @@ export PROJECTS="$HOME/Code"      # project folder
 # -----------------------------
 
 # 1. Load path management first
-paths_folder="$ZSH/zsh/paths"
-if [[ -d "$paths_folder" ]]; then
-    for file in "$paths_folder"/*.zsh; do
-        if [[ -f "$file" ]]; then
-            source "$file"
-        fi
-    done
-fi
+path_files=($(find "$ZSH" -name "path.zsh" -type f))
+for file in "${path_files[@]}"; do
+    if [[ -f "$file" ]]; then
+        source "$file"
+    fi
+done
 
 # 2. Load main config files (explicit list order)
 config_files=(
@@ -40,7 +39,6 @@ config_files=(
     "$ZSH/zsh/integrations.zsh"
     "$ZSH/zsh/completion.zsh"
 )
-
 for file in "${config_files[@]}"; do
     if [[ -f "$file" ]]; then
         source "$file"
@@ -50,6 +48,6 @@ done
 # -----------------------------
 # Cleanup
 # -----------------------------
-unset config_files integration_files completion_files paths_folder
+unset path_files config_files
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

@@ -17,9 +17,10 @@ sudo apt upgrade -y
 
 # Read packages, skip comments and empty lines
 packages=()
+packages_path="scripts/tools/apt-packages.txt"
 while IFS= read -r pkg; do
     [[ -n "$pkg" ]] && [[ ! "$pkg" =~ ^# ]]&& packages+=("$pkg")
-done < apt-packages.txt
+done < "$packages_path"
 
 # Install packages
 if [[ ${#packages[@]} -gt 0 ]]; then
