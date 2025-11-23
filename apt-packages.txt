@@ -1,7 +1,6 @@
 # Essentials
 build-essential
 curl
-fzf
 git
 python3
 python3-pip

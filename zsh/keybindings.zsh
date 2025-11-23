@@ -1,5 +1,5 @@
 # -----------------------------
-# Aliases
+# Keybindings
 # -----------------------------
-alias ll='ls -lah'
-alias ls='ls --color'
+
+bindkey -e  # Use emacs keybindings
