@@ -16,15 +16,16 @@ echo "Starting dotfiles installation..."
 
 main() {
     # Installer scripts - install and configure tools
-    step "Running installer scripts..."
+    step "Running installer & setup scripts..."
 
     installers=(
-        "installers/install-apt.sh"       # Install APT packages first
-        "installers/install-nvm.sh"       # Install other tools
-        "installers/install-pyenv.sh"
-        "installers/install-zinit.sh"
-        "installers/install-fzf.sh"
-        "installers/setup-default-zsh.sh"   # Set ZSH as default shell last
+        "scripts/tools/install-apt.sh"        # Install APT packages first
+        "scripts/tools/install-nvm.sh"        # Install other tools
+        "scripts/tools/install-pyenv.sh"
+        "scripts/tools/install-zinit.sh"
+        "scripts/tools/install-fzf.sh"
+        "scripts/system/setup-default-zsh.sh" # Set ZSH as default shell
+        "scripts/system/setup-symlinks.sh"    # Setup symlinks last
     )
     counter=1
     for installer in "${installers[@]}"; do
@@ -37,22 +38,7 @@ main() {
         fi
     done
 
-    info "Looking for additional installers..."
-    for installer in installers/install-*.sh; do
-        [[ -f "$installer" ]] && [[ ! " ${installers[@]} " =~ " $installer " ]] &&
-            warning "Additional installer found (not executed): $installer"
-    done
-
-    # Symlink dotfiles
-    step "Setting up dotfiles..."
-    symlink_script="installers/setup-symlinks.sh"
-    if [[ -f "$symlink_script" ]]; then
-        bash "$symlink_script"
-    else
-        warning "$symlink_script not found"
-    fi
-
-    success "Installation complete!"
+    success "Installation & Setup complete!"
 
     exec $SHELL -l
 }

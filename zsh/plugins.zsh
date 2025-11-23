@@ -12,6 +12,6 @@ zinit light zsh-users/zsh-completions
 zinit light zsh-users/zsh-autosuggestions
 zinit light Aloxaf/fzf-tab
 
-# OMZ snippets
-zinit snippet OMZP::git
-zinit snippet OMZP::sudo
+# OMZ snippets (https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins)
+zinit snippet OMZP::git   # git aliases and functions
+zinit snippet OMZP::sudo  # double [esc] for sudo prefix on previous command

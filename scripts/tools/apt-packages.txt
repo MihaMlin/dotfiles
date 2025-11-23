@@ -4,7 +4,6 @@ curl
 git
 python3
 python3-pip
-stow
 tmux
 unzip
 vim

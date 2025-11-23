@@ -1,0 +1,4 @@
+# Node.js versions to install
+
+v18.20.8
+--lts

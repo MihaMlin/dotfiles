@@ -13,13 +13,12 @@ success() { echo "✅ $1"; }
 echo "Installing latest fzf via git..."
 
 if [ -d "$HOME/.fzf" ]; then
-  echo "ℹ️ fzf repo already exists. Updating..."
-  cd ~/.fzf && git pull
+    warning "fzf repo already exists. Updating..."
+    cd "$HOME/.fzf" && git pull && ~/.fzf/install --all
 else
-  echo "ℹ️ Cloning fzf repository..."
-  git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+    info "Cloning fzf repository..."
+    git clone --depth 1 https://github.com/junegunn/fzf.git "$HOME/.fzf"
+    ~/.fzf/install --all
 fi
 
-~/.fzf/install --all
-
-echo "✅ Latest fzf installed."
+success "Latest fzf installed."
