@@ -17,6 +17,10 @@ export PATH="$HOME/.dotfiles/bin:$PATH"
 # Load environment variables from localrc (kept out of repo)
 [[ -a ~/.localrc ]] && source ~/.localrc
 
+# -----------------------------
+# Binaries Path Setup
+# -----------------------------
+export PATH="$HOME/.dotfiles/bin:$PATH"
 
 # -----------------------------
 # Explicit config file loading

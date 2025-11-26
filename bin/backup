@@ -1,0 +1,33 @@
+#!/bin/bash
+#
+# Creates a backup copy of a provided file by appending ".bak" to the filename.
+#
+# - Backup a file:
+#
+# `backup {{filename}}`
+#
+# ---
+# Author: Miha Mlinarič
+# License: MIT
+
+set -euo pipefail
+
+# Check if a filename was provided
+if [ "$#" -eq 0 ]; then
+    echo "Usage: $(basename "$0") <filename_to_backup>"
+    exit 1
+fi
+
+FILE_TO_BACKUP="$1"
+BACKUP_FILE="${FILE_TO_BACKUP}.bak"
+
+# Check if the file exists
+if [ ! -f "$FILE_TO_BACKUP" ]; then
+    echo "Error: File '$FILE_TO_BACKUP' not found."
+    exit 1
+fi
+
+# Perform the copy operation
+cp "$FILE_TO_BACKUP" "$BACKUP_FILE"
+
+echo "Backup created successfully: $BACKUP_FILE"
