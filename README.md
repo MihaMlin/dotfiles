@@ -4,7 +4,7 @@ My personal configuration files for Docker, Git, VSCode and ZSH.
 
 ## 🚀 Features
 
-- **Zsh**: configurations with Oh My Zsh  
+- **Zsh**: configurations with plugin manager ZInit    
 - **Git**: aliases and global ignores  
 - **VS Code**: settings sync  
 - **One-command setup** for all configurations
