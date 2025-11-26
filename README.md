@@ -13,6 +13,8 @@ My personal configuration files for Docker, Git, VSCode and ZSH.
 
 ### 0. Setup SSH for GitHub
 ```bash
+sudo apt update && sudo apt upgrade -y
+
 # Make directory
 mkdir -p ~/.ssh
 chmod 700 ~/.ssh
