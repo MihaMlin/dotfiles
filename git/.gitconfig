@@ -1,17 +1,147 @@
 [user]
-	name = Miha Mlinaric
-	email = mlinmiha@gmail.com
+    name = Miha Mlinaric
+    email = mlinmiha@gmail.com
+
 [core]
-	editor = code --wait
-	autocrlf = input
-[filter "lfs"]
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
-	required = true
-[diff]
-	tool = vscode
-[difftool "vscode"]
-	cmd = "code --wait --diff $LOCAL $REMOTE"
+    editor = code --wait
+    autocrlf = input
+    # Protect repository from accidental corruption
+    fsmonitor = true
+    # Improve performance on case-insensitive filesystems
+    ignoreCase = false
+    # Better handling of whitespace
+    whitespace = fix,-indent-with-non-tab,trailing-space,cr-at-eol
+
 [init]
-	defaultBranch = main
+    defaultBranch = main
+
+[branch]
+    # Setup tracking relationship when pushing new branches
+    autoSetupMerge = always
+    # Better branch description
+    sort = -committerdate
+
+[pull]
+    # Use fast-forward when possible, create merge commit when necessary
+    ff = only
+    rebase = false
+
+[merge]
+    # Include conflict diff in conflict markers
+    conflictStyle = diff3
+    # Create merge commit instead of fast-forward
+    ff = false
+
+[rebase]
+    # Automatically stash local changes before rebase
+    autoStash = true
+    # Show abbreviated commit hashes during interactive rebase
+    abbreviateCommands = true
+
+[commit]
+    # Enable verbose commit messages by default
+    verbose = true
+    # Clean up whitespace before commit
+    cleanup = scissors
+
+[status]
+    # Show branch and tracking information in status
+    branch = true
+    showStash = true
+    # Short status format
+    short = false
+
+[log]
+    # Pretty format for git log
+    decorate = auto
+    abbrevCommit = true
+    date = relative
+    showSignature = true
+
+[alias]
+    # Essential aliases
+    co = checkout
+    ci = commit
+    st = status -sb
+    br = branch
+    df = diff
+    lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+    lol = log --graph --decorate --pretty=oneline --abbrev-commit
+    lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
+    unstage = reset HEAD --
+    last = log -1 HEAD
+    who = shortlog -s --email --numbered
+
+    # Professional workflow aliases
+    undo = reset --soft HEAD~1
+    amend = commit --amend --no-edit
+    wip = commit -am "WIP"
+    wipe = !git add -A && git commit -m "WIP" && git reset HEAD~1
+
+    # Branch management
+    recent = for-each-ref --sort=-committerdate --count=10 --format=\"%(refname:short)\" refs/heads/
+    cleanup-branches = "!git branch --merged main | grep -v 'main' | xargs -n 1 git branch -d"
+
+    # Stash shortcuts
+    sl = stash list
+    sp = stash pop
+    ss = stash save
+
+    # Diff tools
+    dc = diff --cached
+    dh = diff HEAD
+
+[color]
+    ui = auto
+    branch = auto
+    diff = auto
+    interactive = auto
+    status = auto
+
+[push]
+    # Default to current branch when pushing
+    default = current
+    # Auto-set upstream when pushing
+    autoSetupRemote = true
+
+[fetch]
+    # Prune remote-tracking branches no longer on remote
+    prune = true
+
+[rerere]
+    # Automatically remember conflict resolutions
+    enabled = true
+
+[sequence]
+    editor = code --wait
+
+[filter "lfs"]
+    clean = git-lfs clean -- %f
+    smudge = git-lfs smudge -- %f
+    process = git-lfs filter-process
+    required = true
+
+[diff]
+    tool = vscode
+    # Show renames and copies
+    renames = copies
+
+[difftool "vscode"]
+    cmd = code --wait --diff $LOCAL $REMOTE
+
+[merge]
+    tool = vscode
+
+[mergetool "vscode"]
+    cmd = code --wait --merge $REMOTE $LOCAL $BASE $MERGED
+
+[mergetool]
+    # Don't prompt before opening merge tool
+    prompt = false
+    keepBackup = false
+
+[includeIf "gitdir:~/work/"]
+    path = ~/.gitconfig-work
+
+[includeIf "gitdir:~/personal/"]
+    path = ~/.gitconfig-personal

@@ -44,12 +44,11 @@ cd $HOME/.dotfiles
 ./install.sh
 ```
 This will do:
-- Install apt packages: git, zsh, tmux, curl, wget, ...
+- Install apt packages: git, zsh, tmux, curl, wget, vim, ...
 - Install tools with git/curl: nvm, pyenv, zinit, ...
 - Setup zsh as the default shell
 - Setup symlinks from dotfiles to $HOME
 - Restart $SHELL
-
 
 ### 3. Info
 
@@ -59,14 +58,15 @@ Add package name to apt-packages.txt and it will be installed.
 #### 3.2 Installing other tools
 Add install script for tool to scripts/tools.
 Add name of new install script to install.sh installer variable in main function.
+To initialize tool in ZSH create a **TOOL/path.zsh** file (which will be sourced in .zshrc).
 
 #### 3.3 Add symlink to dotfile
-To add a symlink to dotfile add the source_file and target_location to scripts/system/setup-symlinks.sh FILE_MAP
+To add a symlink to dotfile add the **source_file** and **target_location** to **scripts/system/symlinks.txt** file.
 
 #### 3.4 Installing zsh plugins & themes
-The plugin/theme manager we are using is zinit.
-To add a plugin add it with zinit in zsh/plugins.zsh and then integrate it in zsh/integrations.zsh
-To add a theme add it with zinit in zsh/plugins.zsh and then add the theme file to zsh/themes folder and symlink it in scripts/system/setup-symlinks.sh FILE_MAP.
+The plugin/theme manager we are using is **zinit**.
+To add a plugin add it with zinit in **zsh/plugins.zsh** and then integrate it in **zsh/integrations.zsh**.
+To add a theme add it with zinit in **zsh/plugins.zsh** and then add the theme file to **zsh/themes folder** and symlink it in **scripts/system/symlinks.txt** file.
 
 
 ## 🔗 Usefull Links
