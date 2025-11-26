@@ -40,7 +40,14 @@ main() {
 
     success "Installation & Setup complete!"
 
-    exec $SHELL -l
+    # Launch Zsh shell
+    if command -v zsh >/dev/null 2>&1; then
+        success "Zsh is installed. Launching Zsh shell..."
+        exec zsh -l
+    else
+        warning "Zsh is not installed. Please install Zsh and set it as your default shell manually."
+        return
+    fi
 }
 
 main "$@"
