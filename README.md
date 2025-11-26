@@ -27,7 +27,7 @@ chmod 600 ~/.ssh/id_ed25519
 chmod 644 ~/.ssh/id_ed25519.pub
 ```
 Copy your public key `cat ~/.ssh/id_ed25519.pub` and paste it to: **GitHub → Settings → SSH and GPG keys → New SSH key**.  
-Verify is SSH is setup correctly:  
+Verify if SSH is setup correctly:  
 ```bash
 ssh -T git@github.com
 ```
