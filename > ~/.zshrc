@@ -1,0 +1,1 @@
+/home/mlinm/.dotfiles/zsh/.zshrc

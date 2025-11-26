@@ -1,0 +1,14 @@
+# Symlinks: source => target
+
+# Shell config
+zsh/.zshrc => ~/.zshrc
+tmux/.tmux.conf => ~/.tmux.conf
+zsh/themes/powerlevel10k.zsh => ~/.p10k.zsh
+
+# Git config
+git/.gitconfig => ~/.gitconfig
+
+# VSCode config
+# vscode/settings-user.json => ~/.config/Code/User/settings.json
+# vscode/keybindings.json => ~/.config/Code/User/keybindings.json
+vscode/settings-remote.json => ~/.vscode-server/data/Machine/settings.json
