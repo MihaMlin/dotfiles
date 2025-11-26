@@ -25,17 +25,6 @@ alias rm='rm -i'            # Confirm before delete
 alias cp='cp -i'            # Confirm before overwrite
 alias mv='mv -i'            # Confirm before overwrite
 
-# Git shortcuts (more used from oh-my-zsh git plugin)
-alias gs='git status'
-alias ga='git add'
-alias gc='git commit'
-alias gcm='git commit -m'
-alias gp='git push'
-alias gl='git log --oneline --graph --decorate'
-alias gd='git diff'
-alias gco='git checkout'
-alias gb='git branch'
-
 # System monitoring
 alias df='df -h'           # Human readable disk space
 alias du='du -h'           # Human readable file sizes
@@ -55,10 +44,6 @@ alias remove='sudo apt remove'
 # Safety nets
 alias chmod='chmod --preserve-root'
 alias chown='chown --preserve-root'
-
-# Development
-alias py='python3'
-alias pip='pip3'
 
 # Docker
 alias dps='docker ps'
