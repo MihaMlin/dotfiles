@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+#
+# A simple system information fetcher script.
+
+echo "=== System Info ==="
+echo "OS: $(grep PRETTY_NAME /etc/os-release | cut -d= -f2 | tr -d '\"')"
+echo "Host: $(hostname)"
+echo "Kernel: $(uname -r)"
+echo "Uptime: $(uptime -p | sed 's/up //')"
+echo "Shell: $(basename $SHELL)"
+echo "CPU: $(grep "model name" /proc/cpuinfo | head -1 | cut -d: -f2 | xargs)"
+echo "Memory: $(free -h | awk '/^Mem:/ {print $3 "/" $2}')"

@@ -1,78 +1,113 @@
 # Dotfiles
 
-My personal configuration files for Docker, Git, VSCode and ZSH.  
+Personal development environment configuration for Zsh, Git, VSCode, and Docker.
 
-## 🚀 Features
+## ✨ Features
 
-- **Zsh**: configurations with plugin manager ZInit    
-- **Git**: aliases and global ignores  
-- **VS Code**: settings sync  
-- **One-command setup** for all configurations
+- **Zsh** - Shell configuration with Zinit plugin manager
+- **Git** - Custom aliases and global ignore patterns
+- **VS Code** - Synchronized editor settings
+- **Docker** - Container development setup
+- **Automated installation** - One command to set up everything
 
-## 🔧 Installation
+## 🚀 Quick Start
 
-### 0. Setup SSH for GitHub
+Complete setup guide for fresh Linux installations.
+
+### Prerequisites
+
+#### SSH Configuration for GitHub
+
 ```bash
+# Update system
 sudo apt update && sudo apt upgrade -y
 
-# Make directory
+# Create SSH directory
 mkdir -p ~/.ssh
 chmod 700 ~/.ssh
 
-# Generate key
+# Generate SSH key
 ssh-keygen -t ed25519 -C "$(whoami)@$(hostname)"
 
-# Set proper permissions
+# Set permissions
 chmod 600 ~/.ssh/id_ed25519
 chmod 644 ~/.ssh/id_ed25519.pub
 ```
-Copy your public key `cat ~/.ssh/id_ed25519.pub` and paste it to: **GitHub → Settings → SSH and GPG keys → New SSH key**.  
-Verify if SSH is setup correctly:  
+
+Add your public key to GitHub:
+1. Copy key: `cat ~/.ssh/id_ed25519.pub`
+2. Navigate to **GitHub → Settings → SSH and GPG keys → New SSH key**
+3. Paste and save
+
+Verify connection:
 ```bash
 ssh -T git@github.com
 ```
 
-### 1. Configure Git & Clone the Repository
+### Installation
+
+#### 1. Clone Repository
+
 ```bash
+# Install Git
 sudo apt update && sudo apt upgrade -y
 sudo apt install git -y
 
+# Configure Git
 git config --global user.name "Miha Mlinaric"
 git config --global user.email "mlinmiha@gmail.com"
 
-git clone git@github.com:MihaMlin/dotfiles.git $HOME/.dotfiles
-cd $HOME/.dotfiles
+# Clone dotfiles
+git clone git@github.com:MihaMlin/dotfiles.git ~/.dotfiles
+cd ~/.dotfiles
 ```
 
-### 2. Run the installation script
+#### 2. Run Installer
+
 ```bash
 ./install.sh
 ```
-This will do:
-- Install apt packages: git, zsh, tmux, curl, wget, vim, ...
-- Install tools with git/curl: nvm, pyenv, zinit, ...
-- Setup zsh as the default shell
-- Setup symlinks from dotfiles to $HOME
-- Start new shell session
 
-### 3. Info
+The script will:
+- Install essential packages (git, zsh, tmux, curl, wget, vim, etc.)
+- Install development tools (nvm, pyenv, zinit)
+- Configure Zsh as default shell
+- Create symlinks for all dotfiles
+- Initialize new shell session
 
-#### 3.1 Installing apt packages
-Add package name to apt-packages.txt and it will be installed.
+## 📝 Configuration Guide
 
-#### 3.2 Installing other tools  
-Add install script for tool to **scripts/tools folder**.  
-Add name of new install script to **install.sh** installer variable in main function.  
-To initialize tool in ZSH create a **TOOL/path.zsh** file (which will be sourced in .zshrc).  
+### Adding APT Packages
 
-#### 3.3 Add symlink to dotfile  
-To add a symlink to dotfile add the **source_file** and **target_location** to **scripts/system/symlinks.txt** file.  
+Add package names to `apt-packages.txt` - they will be installed automatically.
 
-#### 3.4 Installing zsh plugins & themes  
-The plugin/theme manager we are using is **zinit**.  
-To add a plugin add it with zinit in **zsh/plugins.zsh** and then integrate it in **zsh/integrations.zsh**.  
-To add a theme add it with zinit in **zsh/plugins.zsh** and then add the theme file to **zsh/themes folder** and symlink it in **scripts/system/symlinks.txt** file.  
+### Installing Additional Tools
 
+1. Create installation script in `scripts/tools/`
+2. Add script name to `installer` variable in `install.sh`
+3. Create `TOOL/path.zsh` for Zsh initialization (sourced in `.zshrc`)
 
-## 🔗 Usefull Links
-[Guide to dotfiles](https://mskadu.medium.com/the-developers-guide-to-dot-files-versioning-your-development-environment-a4b642216680)
+### Managing Symlinks
+
+Add entries to `scripts/system/symlinks.txt`:
+```
+source_file target_location
+```
+
+### Configuring Zsh
+
+**Plugins and themes** are managed via Zinit:
+- Add plugins in `zsh/plugins.zsh`
+- Configure integrations in `zsh/integrations.zsh`
+- For themes: add to `zsh/plugins.zsh`, create theme file in `zsh/themes/`, and symlink via `scripts/system/symlinks.txt`
+
+### Adding Binary Scripts
+
+1. Place script in `/bin/` directory
+2. Remove file extension
+3. Include shebang at top of file
+4. Make executable: `chmod +x /bin/script-name`
+
+## 📚 Resources
+
+- [Developer's Guide to Dotfiles](https://mskadu.medium.com/the-developers-guide-to-dot-files-versioning-your-development-environment-a4b642216680)

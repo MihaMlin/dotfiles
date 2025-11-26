@@ -69,23 +69,3 @@ alias extract='tar -zxvf'
 alias grep='grep --color=auto'
 alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
-
-
-# -----------------------------
-# Custom Functions
-# -----------------------------
-
-# Make and change to directory
-mkcd() {
-    mkdir -p "$1" && cd "$1"
-}
-
-# Quick backup file
-backup() {
-    cp "$1" "$1.bak"
-}
-
-# Calculator
-calc() {
-    echo "$*" | bc -l
-}
