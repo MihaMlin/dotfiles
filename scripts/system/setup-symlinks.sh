@@ -13,18 +13,29 @@ echo "Dotfiles symlinking setup..."
 
 DOTFILES_DIR="$HOME/.dotfiles"
 
-# Map of source => target
-declare -A FILE_MAP=(
-    ["zsh/.zshrc"]="$HOME/.zshrc"
-    ["tmux/.tmux.conf"]="$HOME/.tmux.conf"
-    ["zsh/themes/powerlevel10k.zsh"]="$HOME/.p10k.zsh"
-    ["git/.gitconfig"]="$HOME/.gitconfig"
-    ["vscode/settings.json"]="$HOME/.config/Code/User/settings.json"
-    ["vscode/keybindings.json"]="$HOME/.config/Code/User/keybindings.json"
-)
+# Read symlinks from file
+SYMLINKS_FILE="$DOTFILES_DIR/scripts/system/symlinks.txt"
 
-for src in "${!FILE_MAP[@]}"; do
-    target="${FILE_MAP[$src]}"
+if [[ ! -f "$SYMLINKS_FILE" ]]; then
+    error "Symlinks file not found: $SYMLINKS_FILE"
+    exit 1
+fi
+
+# Read each line from the symlinks file
+# IFS (Internal Field Separator) set to '=>' to separate source and target
+while IFS='=>' read -r src target; do
+    # Remove leading/trailing whitespace & removing '>' from target
+    src=$(echo "$src" | xargs)
+    target="${target#>}"
+    target=$(echo "$target" | xargs)
+
+    # Skip empty lines and comments
+    if [[ -z "$src" || "$src" == \#* ]]; then
+        continue
+    fi
+
+    # Expand ~ to $HOME
+    target="${target/#\~/$HOME}"
 
     # Create target directory if it doesn't exist
     mkdir -p "$(dirname "$target")"
@@ -36,7 +47,7 @@ for src in "${!FILE_MAP[@]}"; do
 
     # Create symlink
     ln -s "$DOTFILES_DIR/$src" "$target"
-    info "Linked: $DOTFILES_DIR/$src → $target"
-done
+    info "Linked: $DOTFILES_DIR/$src -> $target"
+done < "$SYMLINKS_FILE"
 
-success "All specified dotfiles symlinked successfully"
+success "All dotfiles symlinked successfully"
