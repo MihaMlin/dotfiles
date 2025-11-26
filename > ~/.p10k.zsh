@@ -1,1 +1,0 @@
-/home/mlinm/.dotfiles/zsh/themes/powerlevel10k.zsh
