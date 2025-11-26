@@ -27,3 +27,5 @@ uuid-dev
 # Useful
 htop
 tree
+neofetch
+inxi
