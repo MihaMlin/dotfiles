@@ -111,3 +111,4 @@ source_file target_location
 ## 📚 Resources
 
 - [Developer's Guide to Dotfiles](https://mskadu.medium.com/the-developers-guide-to-dot-files-versioning-your-development-environment-a4b642216680)
+- [Zen Dotfiles YT](https://youtu.be/ud7YxC33Z3w?si=jFv5l_agBGGy5OLM)
