@@ -6,7 +6,7 @@
 zinit ice depth=1
 zinit light romkatv/powerlevel10k
 
-# ZSH plugins
+# ZSH plugins - syntax highlighting, autosuggestions, completions, fzf-tab
 zinit light zsh-users/zsh-syntax-highlighting
 zinit light zsh-users/zsh-completions
 zinit light zsh-users/zsh-autosuggestions
