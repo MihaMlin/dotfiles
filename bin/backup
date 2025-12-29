@@ -7,8 +7,6 @@
 # `backup {{filename}}`
 #
 # ---
-# Author: Miha Mlinarič
-# License: MIT
 
 set -euo pipefail
 

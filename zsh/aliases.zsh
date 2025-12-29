@@ -69,3 +69,6 @@ alias extract='tar -zxvf'
 alias grep='grep --color=auto'
 alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
+
+# Cursor AppImage launcher
+alias cursor='~/Applications/cursor.AppImage --no-sandbox'
