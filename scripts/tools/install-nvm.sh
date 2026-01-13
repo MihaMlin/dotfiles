@@ -22,10 +22,10 @@ fi
 
 success "Latest NVM installed."
 
-# Install Node.js versions from nvm/versions.txt
-nvm_versions_file="nvm/versions.txt"
-if [ -f "$nvm_versions_file" ]; then
-    info "Installing Node.js versions from $nvm_versions_file..."
+# Install Node.js environments from nvm/environments.txt
+nvm_environments_file="nvm/environments.txt"
+if [ -f "$nvm_environments_file" ]; then
+    info "Installing Node.js environments from $nvm_environments_file..."
 
     # Load NVM
     export NVM_DIR="$HOME/.nvm"
@@ -36,9 +36,9 @@ if [ -f "$nvm_versions_file" ]; then
             info "Installing Node.js version $version..."
             nvm install "$version"
         fi
-    done < "$nvm_versions_file"
+    done < "$nvm_environments_file"
 
-    success "Node.js versions installed."
+    success "Node.js environments installed."
 else
-    warning "$nvm_versions_file not found. Skipping Node.js version installation."
+    warning "$nvm_environments_file not found. Skipping Node.js version installation."
 fi

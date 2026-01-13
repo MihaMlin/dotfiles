@@ -45,11 +45,6 @@ alias remove='sudo apt remove'
 alias chmod='chmod --preserve-root'
 alias chown='chown --preserve-root'
 
-# Docker
-alias dps='docker ps'
-alias dpsa='docker ps -a'
-alias di='docker images'
-
 # Quick edits
 alias zshconfig='code ~/.zshrc'
 alias ohmyzsh='code ~/.oh-my-zsh'
@@ -70,5 +65,20 @@ alias grep='grep --color=auto'
 alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
 
-# Cursor AppImage launcher
-alias cursor='~/Applications/cursor.AppImage --no-sandbox'
+# Alias for Cursor AI (WSL Remote Mode)
+alias cursor='/mnt/c/Users/mlinm/AppData/Local/Programs/cursor/resources/app/bin/cursor'
+
+# Mamba aliases
+alias mc="mamba create -n"
+alias ma="mamba activate"
+alias md="mamba deactivate"
+alias mi="mamba install"
+alias ml="mamba env list"
+alias mr="mamba remove --all -n"
+alias mup="mamba install -n base --file $ZSH/mamba/environments.txt" # Update base env from environments.txt
+
+# Quick tmux commands
+alias t='tmux'
+alias ta='tmux attach' # To go back to your previous session
+alias tl='tmux ls'     # To see all running sessions
+alias tk='tmux kill-server' # To kill all tmux sessions

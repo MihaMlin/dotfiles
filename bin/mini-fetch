@@ -2,6 +2,8 @@
 #
 # A simple system information fetcher script.
 
+set -euo pipefail
+
 echo "=== System Info ==="
 echo "OS: $(grep PRETTY_NAME /etc/os-release | cut -d= -f2 | tr -d '\"')"
 echo "Host: $(hostname)"

@@ -21,7 +21,7 @@ main() {
     installers=(
         "scripts/tools/install-apt.sh"        # Install APT packages first
         "scripts/tools/install-nvm.sh"        # Install other tools
-        "scripts/tools/install-pyenv.sh"
+        "scripts/tools/install-miniforge.sh"
         "scripts/tools/install-zinit.sh"
         "scripts/tools/install-fzf.sh"
         "scripts/system/setup-default-zsh.sh" # Set ZSH as default shell
