@@ -54,8 +54,8 @@ sudo apt update && sudo apt upgrade -y
 sudo apt install git -y
 
 # Configure Git
-git config --global user.name "Miha Mlinaric"
-git config --global user.email "mlinmiha@gmail.com"
+git config --global user.name "Your Name"
+git config --global user.email "your.email@example.com"
 
 # Clone dotfiles
 git clone git@github.com:MihaMlin/dotfiles.git ~/.dotfiles
@@ -70,7 +70,7 @@ cd ~/.dotfiles
 
 The script will:
 - Install essential packages (git, zsh, tmux, curl, wget, vim, etc.)
-- Install development tools (nvm, pyenv, zinit)
+- Install development tools (nvm, miniforge/mamba, zinit)
 - Configure Zsh as default shell
 - Create symlinks for all dotfiles
 - Initialize new shell session

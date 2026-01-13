@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+#
+# Display current Python environment status (Mamba, venv, or system).
+
+set -euo pipefail
+
+# Color definitions
+CYAN='\033[0;36m'
+YELLOW='\033[1;33m'
+RED='\033[0;31m'
+NC='\033[0m' # No Color
+
+echo -e "${CYAN}--- Python Environment Status ---${NC}"
+
+# 1. Check for active environment (Mamba/Conda or Venv)
+# Using :- to handle unbound variables with set -u
+if [[ -n "${CONDA_DEFAULT_ENV:-}" ]]; then
+    echo -e "Environment (Mamba): ${YELLOW}$CONDA_DEFAULT_ENV${NC}"
+elif [[ -n "${VIRTUAL_ENV:-}" ]]; then
+    echo -e "Environment (Venv):  ${YELLOW}$(basename "$VIRTUAL_ENV")${NC}"
+else
+    echo -e "Environment:         ${YELLOW}System (No active environment)${NC}"
+fi
+
+# 2. Dynamically find the python binary (python or python3)
+# We use a subshell and || true to prevent 'set -e' from exiting if one is missing
+PY_BIN=$(command -v python 2>/dev/null || command -v python3 2>/dev/null || echo "")
+
+if [[ -z "$PY_BIN" ]]; then
+    echo -e "${RED}Error: Python is not installed or not in PATH.${NC}"
+    exit 1
+fi
+
+# 3. Retrieve version and absolute path
+PYTHON_VERSION=$("$PY_BIN" --version 2>&1)
+PYTHON_PATH=$(command -v "$PY_BIN")
+
+# 4. Final output
+echo -e "Command:             ${YELLOW}$(basename "$PY_BIN")${NC}"
+echo -e "Version:             $PYTHON_VERSION"
+echo -e "Path:                $PYTHON_PATH"
+echo -e "${CYAN}---------------------------------${NC}"

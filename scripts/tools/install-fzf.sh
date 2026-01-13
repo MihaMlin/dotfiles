@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 #
 # Installer script to install the latest version of fzf
+# Command-line fuzzy finder
 
 set -e
 

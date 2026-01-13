@@ -1,4 +1,0 @@
-# Python versions to install
-
-3.12.12
-3.14.0
