@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+#
+# Lists all network ports and Docker mappings with professional formatting.
+
+set -euo pipefail
+
+# Check for required tools
+if ! command -v lsof >/dev/null 2>&1; then
+    echo "Error: 'lsof' is not installed."
+    exit 1
+fi
+
+# Define colors
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+YELLOW='\033[1;33m'
+BOLD='\033[1m'
+NC='\033[0m'
+
+echo -e "${BOLD}${BLUE}=== SYSTEM NETWORK CONNECTIONS ===${NC}"
+printf "${BOLD}%-15s %-7s %-10s %-8s %-45s %-15s${NC}\n" "COMMAND" "PID" "USER" "PROTO" "LOCAL/REMOTE ADDRESS" "STATE"
+echo "-------------------------------------------------------------------------------------------------------"
+
+# System Ports
+lsof -i -P -n +c 15 | sed 1d | awk -v grn="$GREEN" -v yel="$YELLOW" -v nc="$NC" '{
+    state = $10;
+    if (state == "(LISTEN)") state_col = grn state nc;
+    else if (state == "(ESTABLISHED)") state_col = yel state nc;
+    else state_col = state;
+
+    printf "%-15s %-7s %-10s %-8s %-45s %-15s\n", $1, $2, $3, $5, $9, state_col
+}'
+
+# Docker Section
+if command -v docker >/dev/null 2>&1; then
+    echo -e "\n${BOLD}${BLUE}=== DOCKER COMPOSE MAPPINGS ===${NC}"
+    printf "${BOLD}%-25s %-30s %-20s${NC}\n" "CONTAINER" "PORTS (HOST -> CONT)" "STATUS"
+    echo "-------------------------------------------------------------------------------------------------------"
+
+    # Docker formatting logic:
+    # 1. Get container names, ports, and status
+    docker ps --format "{{.Names}}\t{{.Ports}}\t{{.Status}}" | grep ":" | sed -e 's/0.0.0.0://g' -e 's/\[::\]://g' -e 's/\/tcp//g' | awk -F'\t' '{
+        printf "%-25s %-30s %-20s\n", $1, $2, $3
+    }' || echo "No active Docker mappings found."
+fi
+echo "-------------------------------------------------------------------------------------------------------"
