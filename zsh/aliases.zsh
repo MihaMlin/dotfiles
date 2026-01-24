@@ -65,9 +65,6 @@ alias grep='grep --color=auto'
 alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
 
-# Alias for Cursor AI (WSL Remote Mode)
-alias cursor='/mnt/c/Users/mlinm/AppData/Local/Programs/cursor/resources/app/bin/cursor'
-
 # Mamba aliases
 alias mc="mamba create -n"
 alias ma="mamba activate"
@@ -75,7 +72,7 @@ alias md="mamba deactivate"
 alias mi="mamba install"
 alias ml="mamba env list"
 alias mr="mamba remove --all -n"
-alias mup="mamba install -n base --file $ZSH/mamba/environments.txt" # Update base env from environments.txt
+alias mup="mamba install -n base --file $DOTFILES/config/mamba/environments.txt" # Update base env from environments.txt
 
 # Quick tmux commands
 alias t='tmux'

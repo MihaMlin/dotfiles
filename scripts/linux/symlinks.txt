@@ -1,0 +1,19 @@
+# Dotfiles Symlink Manifest
+# Format: [platform] source => target
+# Platform: linux, darwin, windows, or omit for all
+
+# -------------------------------------------------------------
+# Shell
+# -------------------------------------------------------------
+zsh/.zshrc            => ~/.zshrc
+zsh/themes/p10k.zsh   => ~/.p10k.zsh
+
+# -------------------------------------------------------------
+# Terminal
+# -------------------------------------------------------------
+config/tmux/tmux.conf => ~/.config/tmux/tmux.conf
+
+# -------------------------------------------------------------
+# Git
+# -------------------------------------------------------------
+config/git/config     => ~/.config/git/config
