@@ -1,9 +1,0 @@
-# Symlinks: source => target
-
-# Shell config
-zsh/.zshrc => ~/.zshrc
-tmux/.tmux.conf => ~/.tmux.conf
-zsh/themes/powerlevel10k.zsh => ~/.p10k.zsh
-
-# Git config
-git/.gitconfig => ~/.gitconfig
