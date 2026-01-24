@@ -1,112 +1,78 @@
 # Dotfiles
 
-Personal development environment configuration for Zsh, Git, VSCode, and Docker.
+Personal XDG-compliant development environment for Linux/WSL.
 
 ## ✨ Features
 
-- **Zsh** - Shell configuration with Zinit plugin manager
-- **Git** - Custom aliases and global ignore patterns
-- **VS Code** - Synchronized editor settings
-- **Docker** - Container development setup
-- **Automated installation** - One command to set up everything
+- **Performance First**: Lazy-loading for NVM, Pyenv, and Zinit Turbo mode for <300ms shell startup.
+- **XDG Compliant**: Keeps `$HOME` clean. Configs live in `~/.config`, data in `~/.local/share`, state/history in `~/.local/state`.
+- **Zsh Framework**:
+  - **Plugins**: Managed via `zinit` for asynchronous loading.
+  - **Theme**: Powerlevel10k (instant prompt enabled).
+  - **Completion**: Optimized caching (rebuilds only once/day).
+- **Toolchain**:
+  - **Python**: `pyenv` for version management.
+  - **Node**: `nvm` for version management.
+  - **Terminal**: `tmux` with standard keybindings.
+
+## 📂 Structure
+
+```text
+├── bin/          # Utility scripts (added to PATH)
+├── config/       # Tool configurations (XDG_CONFIG_HOME)
+│   ├── git/
+│   ├── nvm/
+│   ├── pyenv/
+│   ├── tmux/
+│   └── zinit/
+├── scripts/
+│   └── linux/    # Linux/WSL specific setup
+│       ├── install/   # Tool installers
+│       ├── setup/     # Environment setup
+│       ├── apt-packages.txt
+│       └── symlinks.txt
+├── zsh/          # Modular Zsh config
+└── install.sh    # Main entry point
+```
 
 ## 🚀 Quick Start
 
-Complete setup guide for fresh Linux installations.
-
 ### Prerequisites
 
-#### SSH Configuration for GitHub
+1. **SSH Keys** (for GitHub access):
+   ```bash
+   ssh-keygen -t ed25519 -C "email@example.com"
+   # Add ~/.ssh/id_ed25519.pub to GitHub
+   ```
 
-```bash
-# Update system
-sudo apt update && sudo apt upgrade -y
+2. **Clone & Install**:
+   ```bash
+   git clone git@github.com:MihaMlin/dotfiles.git ~/.dotfiles
+   cd ~/.dotfiles
+   ./install.sh
+   ```
 
-# Create SSH directory
-mkdir -p ~/.ssh
-chmod 700 ~/.ssh
+## 🛠️ Configuration
 
-# Generate SSH key
-ssh-keygen -t ed25519 -C "$(whoami)@$(hostname)"
-
-# Set permissions
-chmod 600 ~/.ssh/id_ed25519
-chmod 644 ~/.ssh/id_ed25519.pub
-```
-
-Add your public key to GitHub:
-1. Copy key: `cat ~/.ssh/id_ed25519.pub`
-2. Navigate to **GitHub → Settings → SSH and GPG keys → New SSH key**
-3. Paste and save
-
-Verify connection:
-```bash
-ssh -T git@github.com
-```
-
-### Installation
-
-#### 1. Clone Repository
-
-```bash
-# Install Git
-sudo apt update && sudo apt upgrade -y
-sudo apt install git -y
-
-# Configure Git
-git config --global user.name "Your Name"
-git config --global user.email "your.email@example.com"
-
-# Clone dotfiles
-git clone git@github.com:MihaMlin/dotfiles.git ~/.dotfiles
-cd ~/.dotfiles
-```
-
-#### 2. Run Installer
-
-```bash
-./install.sh
-```
-
-The script will:
-- Install essential packages (git, zsh, tmux, curl, wget, vim, etc.)
-- Install development tools (nvm, miniforge/mamba, zinit)
-- Configure Zsh as default shell
-- Create symlinks for all dotfiles
-- Initialize new shell session
-
-## 📝 Configuration Guide
-
-### Adding APT Packages
-
-Add package names to `apt-packages.txt` - they will be installed automatically.
-
-### Installing Additional Tools
-
-1. Create installation script in `scripts/tools/`
-2. Add script name to `installer` variable in `install.sh`
-3. Create `TOOL/path.zsh` for Zsh initialization (sourced in `.zshrc`)
+### Adding Tools
+1. **System Packages**: Add package names to `scripts/linux/apt-packages.txt`.
+2. **External Tools**: Create an installer in `scripts/linux/install/` and register it in `install.sh`.
+3. **Shell Integration**:
+   - Create `config/<tool>/path.zsh` for PATH exports (automatically sourced).
+   - Use `lazy_load` functions if the tool is heavy.
 
 ### Managing Symlinks
-
-Add entries to `scripts/system/symlinks.txt`:
+Mappings are defined in `scripts/linux/symlinks.txt`:
+```text
+# source_in_dotfiles => target_on_system
+zsh/.zshrc           => ~/.zshrc
+config/tmux/tmux.conf => ~/.config/tmux/tmux.conf
 ```
-source_file target_location
-```
 
-### Configuring Zsh
-
-**Plugins and themes** are managed via Zinit:
-- Add plugins in `zsh/plugins.zsh`
-- Configure integrations in `zsh/integrations.zsh`
-- For themes: add to `zsh/plugins.zsh`, create theme file in `zsh/themes/`, and symlink via `scripts/system/symlinks.txt`
-
-### Adding Binary Scripts
-
-1. Place script in `/bin/` directory
-2. Remove file extension
-3. Include shebang at top of file
-4. Make executable: `chmod +x /bin/script-name`
+### Zsh Customization
+- **Aliases**: `zsh/aliases.zsh`
+- **Plugins**: `zsh/plugins.zsh` (clean via `blockf`, `lucid`, `wait` ice modifiers)
+- **Functions**: `zsh/integrations.zsh`
 
 ## 📚 Resources
 

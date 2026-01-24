@@ -1,6 +1,6 @@
-# -----------------------------
 # Aliases
-# -----------------------------
+
+# Shell
 alias reload!='. ~/.zshrc'  # Reload ZSH configuration (source .zshrc)
 alias cls='clear'           # Good 'ol Clear Screen command
 
@@ -19,7 +19,7 @@ alias l='ls -CF'
 alias lt='ls -laht'         # Sort by time
 alias lsize='ls -lahS'      # Sort by size
 
-# Directory operations
+# File operations (safe defaults)
 alias mkdir='mkdir -p'
 alias rm='rm -i'            # Confirm before delete
 alias cp='cp -i'            # Confirm before overwrite
@@ -35,47 +35,35 @@ alias psg='ps aux | grep'  # Search processes
 alias myip='curl ifconfig.me'
 alias ports='netstat -tulanp'
 
-# Package management (apt)
-alias update='sudo apt update'
-alias upgrade='sudo apt upgrade -y'
-alias install='sudo apt install -y'
-alias remove='sudo apt remove'
+# APT
+alias apt-up='sudo apt update && sudo apt upgrade -y'
+alias apt-i='sudo apt install -y'
+alias apt-rm='sudo apt remove'
+alias apt-search='apt search'
 
-# Safety nets
-alias chmod='chmod --preserve-root'
-alias chown='chown --preserve-root'
+# Pyenv
+alias py='python'
+alias pyenv-ls='pyenv versions'
+alias pyenv-i='pyenv install'
+alias pyenv-list='pyenv install --list | grep -E "^\s*3\.(1[0-9]|[0-9])\.[0-9]+$"'
+alias pyenv-g='pyenv global'
+alias pyenv-s='pyenv shell'
+
+# Tmux
+alias t='tmux'
+alias ta='tmux attach'
+alias tl='tmux ls'
+alias tk='tmux kill-server'
 
 # Quick edits
-alias zshconfig='code ~/.zshrc'
-alias ohmyzsh='code ~/.oh-my-zsh'
+alias zshrc='${EDITOR:-code} ~/.zshrc'
+alias dotfiles='cd $DOTFILES'
 
 # History
 alias h='history'
 alias hg='history | grep'
 
-# Time
+# Misc
 alias now='date +"%T"'
 alias today='date +"%Y-%m-%d"'
-
-# Extract any archive
-alias extract='tar -zxvf'
-
-# Grep with colors
-alias grep='grep --color=auto'
-alias egrep='egrep --color=auto'
-alias fgrep='fgrep --color=auto'
-
-# Mamba aliases
-alias mc="mamba create -n"
-alias ma="mamba activate"
-alias md="mamba deactivate"
-alias mi="mamba install"
-alias ml="mamba env list"
-alias mr="mamba remove --all -n"
-alias mup="mamba install -n base --file $DOTFILES/config/mamba/environments.txt" # Update base env from environments.txt
-
-# Quick tmux commands
-alias t='tmux'
-alias ta='tmux attach' # To go back to your previous session
-alias tl='tmux ls'     # To see all running sessions
-alias tk='tmux kill-server' # To kill all tmux sessions
+alias week='date +%V'
