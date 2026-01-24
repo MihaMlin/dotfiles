@@ -19,7 +19,6 @@ $ErrorActionPreference = "Stop"
 $Apps = @(
     "Microsoft.WindowsTerminal",
     "Microsoft.VisualStudioCode",
-    "Microsoft.GitCredentialManager",
     "Docker.DockerDesktop",
     "Microsoft.PowerToys",
     "7zip.7zip"
