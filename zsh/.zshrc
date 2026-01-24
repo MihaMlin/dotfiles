@@ -15,7 +15,7 @@ export PROJECTS="$HOME/Code"
 
 # Path Configuration
 typeset -U path fpath cdpath      # Deduplicate
-path=(${path:#/mnt/c/*})          # Remove Windows/WSL paths for speed
+# path=(${path:#/mnt/c/*})          # Remove Windows/WSL paths for speed
 export PATH="$DOTFILES/bin:$PATH"
 
 # Load Tool Configs
