@@ -1,6 +1,4 @@
-# Pyenv Setup (Lazy-loaded)
-
-export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
+# Pyenv (Lazy-loaded)
 export PYENV_ROOT="$XDG_DATA_HOME/pyenv"
 
 # Add pyenv to PATH if it exists

@@ -1,27 +1,28 @@
-# -----------------------------
 # Zinit Plugins
-# -----------------------------
 
-# Powerlevel10k theme (load immediately for instant prompt)
-zinit ice depth=1
+# Theme (immediate)
+zinit ice depth=1 atload'source $XDG_CONFIG_HOME/zsh/p10k.zsh'
 zinit light romkatv/powerlevel10k
 
-# Turbo mode: load these plugins asynchronously after prompt
-zinit ice wait lucid
-zinit light zsh-users/zsh-syntax-highlighting
-
-zinit ice wait lucid
+# Completions
+zinit ice wait'0' lucid blockf
 zinit light zsh-users/zsh-completions
 
-zinit ice wait lucid
+# Autosuggestions - defer binding to reduce startup time
+zinit ice wait'0' lucid atload'_zsh_autosuggest_start'
 zinit light zsh-users/zsh-autosuggestions
 
-zinit ice wait lucid
+# Syntax highlighting - load last, defer more
+zinit ice wait'1' lucid atinit'zicompinit; zicdreplay'
+zinit light zsh-users/zsh-syntax-highlighting
+
+# FZF-tab (after completions)
+zinit ice wait'1' lucid
 zinit light Aloxaf/fzf-tab
 
-# OMZ snippets (https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins)
-zinit ice wait lucid
-zinit snippet OMZP::git   # git aliases and functions
+# OMZ snippets
+zinit ice wait'2' lucid
+zinit snippet OMZP::git
 
-zinit ice wait lucid
-zinit snippet OMZP::sudo  # double [esc] for sudo prefix on previous command
+zinit ice wait'2' lucid
+zinit snippet OMZP::sudo

@@ -1,8 +1,4 @@
-# Initialize NVM (Lazy-loaded for fast shell startup)
-#
-# https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating
-
-export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
+# NVM (Lazy-loaded)
 export NVM_DIR="$XDG_DATA_HOME/nvm"
 
 # Add node to PATH if default version exists (for non-interactive scripts)
