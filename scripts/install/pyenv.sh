@@ -1,68 +1,65 @@
 #!/usr/bin/env bash
 #
-# Install pyenv and pyenv-virtualenv for Python version management
+# Install pyenv and base Python versions from a 2-column config file
 
 set -e
 
-error()   { echo "❌ $1"; }
-warning() { echo "⚠️ $1"; }
-info()    { echo "ℹ️ $1"; }
-success() { echo "✅ $1"; }
+# Logging helpers
+error()   { echo -e "\e[31m❌ $1\e[0m"; }
+warning() { echo -e "\e[33m⚠️ $1\e[0m"; }
+info()    { echo -e "\e[34mℹ️ $1\e[0m"; }
+success() { echo -e "\e[32m✅ $1\e[0m"; }
 
 # XDG-compliant install path
 export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
 export PYENV_ROOT="$XDG_DATA_HOME/pyenv"
 
-echo "Installing pyenv..."
+info "Starting pyenv installation..."
 
 # 1. Install pyenv
 if [ -d "$PYENV_ROOT" ]; then
     warning "pyenv already exists at $PYENV_ROOT. Updating..."
-    cd "$PYENV_ROOT" && git pull
+    git -C "$PYENV_ROOT" pull
 else
     info "Cloning pyenv..."
     git clone https://github.com/pyenv/pyenv.git "$PYENV_ROOT"
 fi
 
-# 2. Install pyenv-virtualenv plugin
-if [ -d "$PYENV_ROOT/plugins/pyenv-virtualenv" ]; then
-    warning "pyenv-virtualenv already exists. Updating..."
-    cd "$PYENV_ROOT/plugins/pyenv-virtualenv" && git pull
-else
-    info "Installing pyenv-virtualenv plugin..."
-    git clone https://github.com/pyenv/pyenv-virtualenv.git "$PYENV_ROOT/plugins/pyenv-virtualenv"
-fi
-
-success "pyenv installation complete at $PYENV_ROOT"
-
-# 3. Install Python versions from environments.txt
-env_file="$HOME/.dotfiles/config/pyenv/environments.txt"
-
+# 2. Initialize pyenv for current session
 export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$("$PYENV_ROOT/bin/pyenv" init -)"
 
+# 3. Process Python versions from config
+env_file="$HOME/.dotfiles/config/pyenv/environments.txt"
+
 if [ -f "$env_file" ]; then
-    info "Installing Python versions from $env_file..."
+    info "Reading versions from $env_file..."
 
-    while read -r version; do
-        [[ -z "$version" || "$version" =~ ^# ]] && continue
+    # Extract unique versions from the second column
+    # - grep -v removes comments and empty lines
+    # - cut -d':' -f2 gets the version number
+    # - sort -u ensures we don't try to install the same version twice
+    versions=$(grep -v '^#' "$env_file" | grep -v '^$' | cut -d':' -f2 | sort -u)
 
+    for version in $versions; do
         if pyenv versions --bare | grep -q "^$version$"; then
-            info "Python $version already installed"
+            info "Python $version is already installed."
         else
             info "Installing Python $version..."
             pyenv install "$version"
         fi
-    done < "$env_file"
+    done
 
-    # Set first version as global default
-    first_version=$(grep -v '^#' "$env_file" | grep -v '^$' | head -1)
-    if [ -n "$first_version" ]; then
-        pyenv global "$first_version"
-        success "Set Python $first_version as global default"
+    # 4. Set the Global Version
+    # We take the version number from the first non-comment line in the file
+    first_line_version=$(grep -v '^#' "$env_file" | grep -v '^$' | head -1 | cut -d':' -f2)
+
+    if [ -n "$first_line_version" ]; then
+        pyenv global "$first_line_version"
+        success "Global Python set to $first_line_version"
     fi
 else
-    warning "$env_file not found. Skipping Python version installation."
+    error "$env_file not found. Skipping installation."
 fi
 
-success "pyenv setup complete!"
+success "pyenv setup completed!"

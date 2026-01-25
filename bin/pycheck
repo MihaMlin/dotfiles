@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Display current Python environment status (Mamba, venv, or system).
+# Display current Python environment status (pyenv, venv, or system).
 
 set -euo pipefail
 
@@ -12,18 +12,20 @@ NC='\033[0m' # No Color
 
 echo -e "${CYAN}--- Python Environment Status ---${NC}"
 
-# 1. Check for active environment (Mamba/Conda or Venv)
-# Using :- to handle unbound variables with set -u
-if [[ -n "${CONDA_DEFAULT_ENV:-}" ]]; then
-    echo -e "Environment (Mamba): ${YELLOW}$CONDA_DEFAULT_ENV${NC}"
+# 1. Check for active environment
+if command -v pyenv &> /dev/null; then
+    # pyenv version-name shows the active version (global, local, or shell)
+    # We use a variable to avoid multiple calls
+    CURRENT_PY=$(pyenv version-name)
+    echo -e "Environment (pyenv): ${YELLOW}$CURRENT_PY${NC}"
 elif [[ -n "${VIRTUAL_ENV:-}" ]]; then
     echo -e "Environment (Venv):  ${YELLOW}$(basename "$VIRTUAL_ENV")${NC}"
 else
     echo -e "Environment:         ${YELLOW}System (No active environment)${NC}"
 fi
 
-# 2. Dynamically find the python binary (python or python3)
-# We use a subshell and || true to prevent 'set -e' from exiting if one is missing
+# 2. Dynamically find the python binary
+# This will find the pyenv 'shim' if pyenv is active
 PY_BIN=$(command -v python 2>/dev/null || command -v python3 2>/dev/null || echo "")
 
 if [[ -z "$PY_BIN" ]]; then
@@ -33,10 +35,16 @@ fi
 
 # 3. Retrieve version and absolute path
 PYTHON_VERSION=$("$PY_BIN" --version 2>&1)
-PYTHON_PATH=$(command -v "$PY_BIN")
+
+# To see the REAL path behind the pyenv shim, we use 'pyenv which'
+if command -v pyenv &> /dev/null && [[ "$PY_BIN" == *"shims"* ]]; then
+    PYTHON_PATH=$(pyenv which python 2>/dev/null || echo "$PY_BIN")
+else
+    PYTHON_PATH=$(command -v "$PY_BIN")
+fi
 
 # 4. Final output
 echo -e "Command:             ${YELLOW}$(basename "$PY_BIN")${NC}"
 echo -e "Version:             $PYTHON_VERSION"
-echo -e "Path:                $PYTHON_PATH"
+echo -e "Real Path:           $PYTHON_PATH"
 echo -e "${CYAN}---------------------------------${NC}"

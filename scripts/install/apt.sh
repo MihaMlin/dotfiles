@@ -17,7 +17,7 @@ sudo apt upgrade -y
 
 # Read packages, skip comments and empty lines
 packages=()
-packages_path="scripts/tools/apt-packages.txt"
+packages_path="scripts/apt-packages.txt"
 while IFS= read -r pkg; do
     [[ -n "$pkg" ]] && [[ ! "$pkg" =~ ^# ]]&& packages+=("$pkg")
 done < "$packages_path"
