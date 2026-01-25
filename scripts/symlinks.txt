@@ -1,6 +1,5 @@
 # Dotfiles Symlink Manifest
-# Format: [platform] source => target
-# Platform: linux, darwin, windows, or omit for all
+# Format: source => target
 
 # -------------------------------------------------------------
 # Shell

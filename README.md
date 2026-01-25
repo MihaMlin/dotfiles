@@ -26,11 +26,10 @@ Personal XDG-compliant development environment for Linux/WSL.
 │   ├── tmux/
 │   └── zinit/
 ├── scripts/
-│   └── linux/    # Linux/WSL specific setup
-│       ├── install/   # Tool installers
-│       ├── setup/     # Environment setup
-│       ├── apt-packages.txt
-│       └── symlinks.txt
+│   ├── install/   # Tool installers
+│   ├── setup/     # Environment setup
+│   ├── apt-packages.txt
+│   └── symlinks.txt
 ├── zsh/          # Modular Zsh config
 └── install.sh    # Main entry point
 ```
