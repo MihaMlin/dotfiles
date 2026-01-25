@@ -19,13 +19,13 @@ main() {
     step "Running installer & setup scripts..."
 
     installers=(
-        "scripts/linux/install/apt.sh"        # APT packages first
-        "scripts/linux/install/nvm.sh"        # Dev tools
-        "scripts/linux/install/pyenv.sh"
-        "scripts/linux/install/zinit.sh"
-        "scripts/linux/install/fzf.sh"
-        "scripts/linux/setup/default-zsh.sh"  # Set ZSH as default shell
-        "scripts/linux/setup/symlinks.sh"     # Symlinks last
+        "scripts/install/apt.sh"        # APT packages first
+        "scripts/install/nvm.sh"        # Dev tools
+        "scripts/install/pyenv.sh"
+        "scripts/install/zinit.sh"
+        "scripts/install/fzf.sh"
+        "scripts/setup/default-zsh.sh"  # Set ZSH as default shell
+        "scripts/setup/symlinks.sh"     # Symlinks last
     )
     counter=1
     for installer in "${installers[@]}"; do

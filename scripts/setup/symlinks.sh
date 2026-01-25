@@ -15,7 +15,7 @@ set -e
 # =============================================================================
 
 DOTFILES_DIR="$HOME/.dotfiles"
-SYMLINKS_FILE="$DOTFILES_DIR/scripts/linux/symlinks.txt"
+SYMLINKS_FILE="$DOTFILES_DIR/scripts/symlinks.txt"
 BACKUP_DIR="$HOME/.dotfiles-backup/$(date +%Y%m%d_%H%M%S)"
 
 DRY_RUN=false
