@@ -56,7 +56,6 @@
     # =========================[ Line #2 ]=========================
     newline                   # \n
     # virtualenv              # python virtual environment
-    # anaconda                 # conda environment
     prompt_char               # prompt symbol
   )
 
@@ -65,7 +64,6 @@
     # =========================[ Line #1 ]=========================
     command_execution_time    # previous command duration
     virtualenv                # python virtual environment
-    anaconda                  # conda environment
     context                   # user@host
     time                      # current time
     # =========================[ Line #2 ]=========================
@@ -100,15 +98,10 @@
   # Grey Python Virtual Environment.
   typeset -g POWERLEVEL9K_VIRTUALENV_FOREGROUND=$env_color
   typeset -g POWERLEVEL9K_VIRTUALENV_VISUAL_IDENTIFIER_EXPANSION=
-  typeset -g POWERLEVEL9K_VIRTUALENV_SHOW_PYTHON_VERSION=false
+  typeset -g POWERLEVEL9K_VIRTUALENV_SHOW_PYTHON_VERSION=true
+  typeset -g POWERLEVEL9K_VIRTUALENV_SHOW_WITH_PYENV=true
   # typeset -g POWERLEVEL9K_VIRTUALENV_{LEFT,RIGHT}_DELIMITER=
   typeset -g POWERLEVEL9K_VIRTUALENV_DESCRIPTION_EXIT_NONZERO=false
-
-  # Nastavi sivo barvo (Grey), da se ujema s Pure stilom
-  typeset -g POWERLEVEL9K_ANACONDA_FOREGROUND=$env_color
-  typeset -g POWERLEVEL9K_ANACONDA_VISUAL_IDENTIFIER_EXPANSION=
-  typeset -g POWERLEVEL9K_ANACONDA_SHOW_PYTHON_VERSION=false
-  typeset -g POWERLEVEL9K_ANACONDA_{LEFT,RIGHT}_DELIMITER=
 
   # Blue current directory.
   typeset -g POWERLEVEL9K_DIR_FOREGROUND=$blue

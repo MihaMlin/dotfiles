@@ -1,14 +1,14 @@
 # NVM (Lazy-loaded)
-export NVM_DIR="$XDG_DATA_HOME/nvm"
+export NVM_ROOT="$XDG_DATA_HOME/nvm"
 
 # Add node to PATH if default version exists (for non-interactive scripts)
-[[ -d "$NVM_DIR/versions/node" ]] && \
-    export PATH="$NVM_DIR/versions/node/$(ls -1 $NVM_DIR/versions/node | tail -1)/bin:$PATH"
+[[ -d "$NVM_ROOT/versions/node" ]] && \
+    export PATH="$NVM_ROOT/versions/node/$(ls -1 $NVM_ROOT/versions/node | tail -1)/bin:$PATH"
 
 # Lazy load NVM - only initialize when nvm/node/npm/npx is called
 _load_nvm() {
     unfunction nvm node npm npx 2>/dev/null
-    [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
+    [ -s "$NVM_ROOT/nvm.sh" ] && source "$NVM_ROOT/nvm.sh"
 }
 
 nvm() { _load_nvm; nvm "$@"; }

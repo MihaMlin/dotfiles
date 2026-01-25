@@ -1,5 +1,12 @@
-# Format: name package1 package2 package3
+# Format -> purpose_label:version_number
+# ---------------------------------------------------
 
-ml_core python=3.10 numpy pandas scikit-learn matplotlib
-pytorch_env python=3.11 pytorch torchvision torchaudio pytorch-cuda=11.8 -c pytorch -c nvidia
-nlp_dev python=3.9 transformers spacy
+# Default Version
+default:3.10.13
+
+# Data Science & Machine Learning
+deep_learning:3.11.7
+
+# Web Development & General Scripting
+web_api:3.12.1
+
