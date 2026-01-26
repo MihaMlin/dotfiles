@@ -28,11 +28,13 @@ This guide outlines the steps for a **clean and optimized installation of Window
 ---
 
 ### 3. Prepare Critical Drivers (on USB)
-Due to HP ZBook hardware specifics, keep these drivers on the USB drive:
+Due to HP ZBook hardware specifics, keep these drivers on the USB drive (folder !DRIVERS):
 - **Intel Rapid Storage Technology (IRST)**
   Required so the installer can detect the SSD.
 - **Wi-Fi / Ethernet Drivers**
   Ensures immediate internet access after installation.
+
+Use 7-Zip to extract drivers to inf files.
 
 ---
 
