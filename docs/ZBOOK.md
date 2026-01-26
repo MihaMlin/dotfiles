@@ -140,8 +140,10 @@ To prevent WSL from consuming all your system RAM, create a configuration file i
    memory=8GB
    processors=4
    swap=2GB
-   localhostForwarding=true
    networkingMode=mirrored
+   
+   dnsTunneling=true
+   autoProxy=true
    ```
 3. Restart WSL to apply:
    ```powershell
