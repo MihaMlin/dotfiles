@@ -1,28 +1,90 @@
-# 💻 Windows & WSL2 Development Setup
+# Windows & WSL2 Development Setup
 
 This guide provides a streamlined workflow for stripping Windows bloat, installing core development tools, and configuring a high-performance WSL2 environment.
 
 ---
 
-## 🛠️ Phase 1: Windows Optimization (WinUtil)
-Follow: [How to setup Windows](https://youtu.be/0PA1wgdMeeI?si=4AGD_mKhzrdth1rE)
+# 💻 Phase 1: Windows 11 Clean Install Guide (HP ZBook)
 
-Before installing any software, use **Chris Titus' Windows Utility** to remove telemetry and system bloat.
+This guide outlines the steps for a **clean and optimized installation of Windows 11** on an **HP ZBook workstation**.
 
-1. Open **PowerShell (Admin)**.
-2. Run the utility:
+---
+
+## 🛠️ Preparation and Backup
+
+### 1. Backup (Mandatory)
+- [ ] **BitLocker**: Verify and save the recovery key at
+  https://account.microsoft.com/devices/recoverykey
+- [ ] **System Image**: Create a full system image on an external drive (fallback option).
+- [ ] **Personal Files**: Move all important documents to the cloud or an external medium.
+
+---
+
+### 2. Installation Media Preparation
+- **ISO**: Download the official Windows 11 ISO from Microsoft.
+- **Rufus**: Use Rufus to create a bootable USB drive.
+- **Tip**: In Rufus, enable **“Disable BitLocker automatic device encryption”** (enable it later).
+
+---
+
+### 3. Prepare Critical Drivers (on USB)
+Due to HP ZBook hardware specifics, keep these drivers on the USB drive:
+- **Intel Rapid Storage Technology (IRST)**
+  Required so the installer can detect the SSD.
+- **Wi-Fi / Ethernet Drivers**
+  Ensures immediate internet access after installation.
+
+---
+
+## 💿 Operating System Installation
+
+### Boot from USB
+1. Insert the USB drive.
+2. Power on the ZBook.
+3. Press **F9** or **ecs** (Boot Menu or Startup Menu).
+4. Select the USB device.
+
+### Clean Installation
+1. Choose **Custom: Install Windows only (advanced)**.
+2. Delete **all existing partitions** on the primary disk until only
+   **Unallocated Space** remains.
+3. If the disk is not visible:
+   - Click **Load Driver**
+   - Load the **IRST driver** from the USB drive.
+4. Follow on-screen instructions until reaching the desktop.
+
+---
+
+## 🚀 Updates and Drivers
+
+### Windows Update
+- Run Windows Update repeatedly until **no updates remain**.
+
+### HP-Specific Software
+- Install **HP Support Assistant** or **HP Image Assistant** to update:
+  - BIOS
+  - Firmware
+  - HP-specific drivers (fingerprint reader, NFC, etc.)
+
+### Device Manager
+- Verify all devices are properly recognized
+  (**no yellow warning icons**).
+
+---
+
+## 🛡️ Optimization (Debloat)
+
+To remove telemetry and unnecessary system components, use
+**Chris Titus Tech Windows Utility**.
+
+### Steps
+1. Right-click **Start** → **Terminal (Admin)** or **PowerShell (Admin)**.
+2. Run:
    ```powershell
    irm https://christitus.com/winutil | iex
-   ```
-
-**Recommended Tweaks:**
-- Navigate to the **Tweaks** tab.
-- Select the **Desktop** preset.
-- Click **Run Tweaks**.
 
 
-
-## 📦 Phase 2: Tool Installation (Winget)
+# 📦 Phase 2: Tool Installation (Winget)
 Use the Windows Package Manager to install essential software without manual downloads.
 
 Run the following in PowerShell:
@@ -41,7 +103,7 @@ winget install --id Docker.DockerDesktop -e
 winget install --id 7zip.7zip -e
 ```
 
-## 🐧 Phase 3: WSL2 Setup (Ubuntu 24.04 Manual Install)
+# 🐧 Phase 3: WSL2 Setup (Ubuntu 24.04 Manual Install)
 This procedure uses the official Ubuntu 24.04 (Noble Numbat) image and allows for a custom installation path, providing better control and portability.
 
 ### 0. Enable WSL2
