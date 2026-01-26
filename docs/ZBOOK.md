@@ -171,13 +171,7 @@ Open **PowerShell (Admin)** and import the image. This creates a virtual disk (`
 wsl --import Ubuntu24 C:\WSL\Ubuntu24 C:\Temp\noble-wsl-amd64.wsl --version 2
 ```
 
-### 5. Storage Optimization (Sparse VHDX)
-To automatically reclaim unused disk space:
-```powershell
-wsl --manage Ubuntu24 --set-sparse true
-```
-
-### 6. Configure User
+### 5. Configure User
 The official image defaults to the `root` user. You must create a standard user account.
 
 **1. Enter the instance:**
@@ -217,7 +211,7 @@ generateResolvConf=true
 ```
 Save with `Ctrl+O`, `Enter`, then exit with `Ctrl+X`.
 
-### 7. Finalize Setup
+### 6. Finalize Setup
 Exit the instance and terminate it to apply changes:
 
 ```powershell
