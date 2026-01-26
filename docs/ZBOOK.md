@@ -96,9 +96,12 @@ Run the following in PowerShell:
 winget install --id Google.Chrome -e
 
 # Core Tools
-winget install --id Microsoft.WindowsTerminal -e
-winget install --id Microsoft.VisualStudioCode -e
-winget install --id Postman.Postman -e
+winget install --id Microsoft.PowerShell --source winget
+winget install --id Microsoft.PowerShell.Preview --source winget
+winget install --id Microsoft.WindowsTerminal -e --source winget
+winget install --id Microsoft.VisualStudioCode -e --source winget
+winget install --id Postman.Postman -e --source winget
+winget install --id MongoDB.Compass.Full -e --source winget
 
 # System Utilities
 winget install --id Docker.DockerDesktop -e
