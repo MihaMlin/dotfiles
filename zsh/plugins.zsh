@@ -13,7 +13,7 @@ zinit ice wait'0' lucid atload'_zsh_autosuggest_start'
 zinit light zsh-users/zsh-autosuggestions
 
 # Syntax highlighting - load last, defer more
-zinit ice wait'1' lucid atinit'zicompinit; zicdreplay'
+zinit ice wait'1' lucid atinit'zicompinit -d "$XDG_CACHE_HOME/zsh/zcompdump"; zicdreplay'
 zinit light zsh-users/zsh-syntax-highlighting
 
 # FZF-tab (after completions)
