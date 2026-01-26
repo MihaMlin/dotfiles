@@ -32,5 +32,3 @@ done
 [[ -f ~/.localrc ]] && source ~/.localrc
 
 unset file
-
-[ -f "${XDG_CONFIG_HOME:-$HOME/.config}"/fzf/fzf.zsh ] && source "${XDG_CONFIG_HOME:-$HOME/.config}"/fzf/fzf.zsh
