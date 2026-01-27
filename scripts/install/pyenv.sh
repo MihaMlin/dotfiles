@@ -25,9 +25,20 @@ else
     git clone https://github.com/pyenv/pyenv.git "$PYENV_ROOT"
 fi
 
+# 1.1 Install pyenv-virtualenv plugin
+VIRTUALENV_PLUGIN="$PYENV_ROOT/plugins/pyenv-virtualenv"
+if [ -d "$VIRTUALENV_PLUGIN" ]; then
+    warning "pyenv-virtualenv already exists. Updating..."
+    git -C "$VIRTUALENV_PLUGIN" pull
+else
+    info "Cloning pyenv-virtualenv..."
+    git clone https://github.com/pyenv/pyenv-virtualenv.git "$VIRTUALENV_PLUGIN"
+fi
+
 # 2. Initialize pyenv for current session
 export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$("$PYENV_ROOT/bin/pyenv" init -)"
+eval "$("$PYENV_ROOT/bin/pyenv" virtualenv-init -)"
 
 # 3. Process Python versions from config
 env_file="$HOME/.dotfiles/config/pyenv/environments.txt"

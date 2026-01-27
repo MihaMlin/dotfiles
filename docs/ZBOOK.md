@@ -151,16 +151,18 @@ To prevent WSL from consuming all your system RAM, create a configuration file i
    notepad "$env:USERPROFILE\.wslconfig"
    ```
 2. Paste the following configuration:
+
    ```ini
    [wsl2]
    memory=8GB
    processors=4
    swap=2GB
    networkingMode=mirrored
-   
+
    dnsTunneling=true
    autoProxy=true
    ```
+
 3. Restart WSL to apply:
    ```powershell
    wsl --shutdown
