@@ -1,5 +1,6 @@
 # Essentials
 build-essential
+cmake
 curl
 git
 python3
@@ -29,3 +30,5 @@ htop
 tree
 neofetch
 inxi
+traceroute
+nmap
