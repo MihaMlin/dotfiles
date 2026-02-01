@@ -20,6 +20,7 @@ main() {
 
     installers=(
         "scripts/install/apt.sh"        # APT packages first
+        "scripts/install/neovim.sh"     # Neovim
         "scripts/install/nvm.sh"        # Dev tools
         "scripts/install/pyenv.sh"
         "scripts/install/zinit.sh"
