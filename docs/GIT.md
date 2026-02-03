@@ -303,33 +303,36 @@ git push origin main
 #### Case 1: Main has NO local changes (clean sync with origin/main)
 
 ```bash
-git checkout -b feature/new-feature
-# Make changes and commits
-
-git fetch origin
-git rebase origin/main                   # Put feature commits on top of origin/main
+# 1. Update local main to match the remote state
 git checkout main
-git merge origin/main --ff-only          # Fast-forward main to origin/main
-git merge feature/new-feature --ff-only  # Fast-forward main to feature commits
+git fetch origin
+git merge origin/main --ff-only
+
+# 2. Rebase the feature branch onto the updated main
+git checkout feature/new-feature
+git rebase main
+
+# 3. Fast-forward merge the feature into main and push to server
+git checkout main
+git merge feature/new-feature --ff-only
 git push origin main
 ```
 
 #### Case 2: Main HAS local changes (ahead of origin/main)
 
 ```bash
-git checkout -b feature/new-feature
-# Make changes and commits
-
-git fetch origin
-git rebase origin/main                   # Put feature commits on top of origin/main
-
-# First, update main branch with remote changes
+# 1. Update main by putting your local commits on top of origin/main
 git checkout main
-git rebase origin/main                   # Rebase main's local commits on top of origin/main
+git fetch origin
+git rebase origin/main
 
-# Now merge feature branch
-git merge feature/new-feature --ff-only  # Fast-forward main to include feature commits
+# 2. Rebase your feature branch onto the now-updated local main
+# This is where you solve any conflicts between your feature and main
+git checkout feature/new-feature
+git rebase main
+
+# 3. Fast-forward merge the feature into main and push to server
+git checkout main
+git merge feature/new-feature --ff-only
 git push origin main
 ```
-
-**Note**: In Case 2, if main has local commits, you need to rebase main first to put those commits on top of origin/main, then you can fast-forward merge your feature branch.
