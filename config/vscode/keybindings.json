@@ -79,4 +79,9 @@
     "key": "ctrl+oem_3",
     "command": "workbench.action.terminal.toggleTerminal"
   }
+  // {
+  //   "key": "j k",
+  //   "command": "vscode-neovim.escape",
+  //   "when": "editorTextFocus && neovim.mode != ''",
+  // },
 ]

@@ -2,6 +2,12 @@
   // --------------------------------------------------------------------------
   // UI CUSTOMIZATION
   // --------------------------------------------------------------------------
+  "workbench.colorTheme": "One Dark Pro",
 
-  "workbench.colorTheme": "One Dark Pro"
+  // --------------------------------------------------------------------------
+  // NEOVIM INTEGRATION
+  // --------------------------------------------------------------------------
+  "vscode-neovim.enabled": false,
+  "vscode-neovim.useWSL": true,
+  "vscode-neovim.neovimExecutablePaths.linux": "/usr/bin/nvim"
 }
