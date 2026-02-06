@@ -41,15 +41,41 @@
   // LANGUAGE SPECIFIC SETTINGS
   // --------------------------------------------------------------------------
   "[python]": {
-    "editor.defaultFormatter": "ms-python.black-formatter",
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true,
     "editor.tabSize": 4
   },
   "[javascript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    },
+    "javascript.preferences.importModuleSpecifier": "relative"
   },
   "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    },
+    "typescript.preferences.importModuleSpecifier": "relative"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    },
+    "javascript.preferences.importModuleSpecifier": "relative"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    },
+    "typescript.preferences.importModuleSpecifier": "relative"
   },
   "[json]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
@@ -100,7 +126,7 @@
   // --------------------------------------------------------------------------
   "workbench.editorAssociations": {
     "*.index": "default",
-    "*.db": "sqlite-viewer.option"
+    "*.db": "workbench.editor.chatSession"
   },
 
   // --------------------------------------------------------------------------
@@ -112,8 +138,10 @@
     "*.js": "${capture}.js.map, ${capture}.min.js, ${capture}.d.ts",
     "*.jsx": "${capture}.js",
     "*.tsx": "${capture}.ts",
+    ".env": ".env.*",
+    "Dockerfile": "Dockerfile.*",
     "tsconfig.json": "tsconfig.*.json",
-    "package.json": "package-lock.json, yarn.lock, pnpm-lock.yaml, bun.lockb, bun.lock",
+    "package.json": "package-lock.json, yarn.lock, pnpm-lock.yaml, bun.lockb, .nvmrc, .prettierrc, .prettierignore, eslint.config.*, .eslintrc*",
     "*.sqlite": "${capture}.${extname}-*",
     "*.db": "${capture}.${extname}-*",
     "*.sqlite3": "${capture}.${extname}-*",
@@ -150,5 +178,8 @@
   // --------------------------------------------------------------------------
   "projectManager.git.baseFolders": ["~/projects"],
   "github.copilot.nextEditSuggestions.enabled": false,
-  "editor.formatOnSave": true
+  "editor.formatOnSave": true,
+  "extensions.experimental.affinity": {
+    "asvetliakov.vscode-neovim": 1
+  }
 }
