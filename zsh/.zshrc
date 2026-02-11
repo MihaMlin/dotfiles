@@ -17,6 +17,7 @@ export PROJECTS="$HOME/Code"
 typeset -U path fpath cdpath      # Deduplicate
 # path=(${path:#/mnt/c/*})          # Remove Windows/WSL paths for speed
 export PATH="$DOTFILES/bin:$PATH"
+export PATH="/home/mlinmiha/.local/bin:$PATH"
 
 # Load Tool Configs
 for file in "$DOTFILES"/config/*/path.zsh(N); do
