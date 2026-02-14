@@ -12,10 +12,10 @@ mkdir -p "$XDG_CONFIG_HOME" "$XDG_DATA_HOME" "$XDG_CACHE_HOME" "$XDG_STATE_HOME"
 # Environment
 export DOTFILES="$HOME/.dotfiles"
 export PROJECTS="$HOME/Code"
+export DISPLAY=:0
 
 # Path Configuration
 typeset -U path fpath cdpath      # Deduplicate
-# path=(${path:#/mnt/c/*})          # Remove Windows/WSL paths for speed
 export PATH="$DOTFILES/bin:$PATH"
 export PATH="/home/mlinmiha/.local/bin:$PATH"
 
