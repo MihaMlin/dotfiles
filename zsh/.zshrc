@@ -12,7 +12,12 @@ mkdir -p "$XDG_CONFIG_HOME" "$XDG_DATA_HOME" "$XDG_CACHE_HOME" "$XDG_STATE_HOME"
 # Environment
 export DOTFILES="$HOME/.dotfiles"
 export PROJECTS="$HOME/Code"
+
+# WSLg Environment Variables
 export DISPLAY=:0
+export WAYLAND_DISPLAY=wayland-0
+export XDG_RUNTIME_DIR=/mnt/wslg/runtime-dir
+export PULSE_SERVER=unix:/mnt/wslg/PulseServer
 
 # Path Configuration
 typeset -U path fpath cdpath      # Deduplicate
