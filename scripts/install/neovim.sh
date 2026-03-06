@@ -21,7 +21,7 @@ sudo apt update
 sudo apt install -y neovim
 
 # Create Neovim config directory and init.lua file
-mkdir -p ~/.config/nvim && cp ../../config/neovim/init.lua ~/.config/nvim/init.lua
+mkdir -p ~/.config/nvim && cp ./config/neovim/init.lua ~/.config/nvim/init.lua
 
 echo "Neovim installed successfully!"
 nvim --version
