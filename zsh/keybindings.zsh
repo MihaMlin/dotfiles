@@ -7,4 +7,3 @@ bindkey '^[[1;5D' backward-word
 bindkey ';5C' forward-word
 bindkey ';5D' backward-word
 bindkey '^H' backward-kill-word
-
