@@ -13,14 +13,3 @@ nvm() { _load_nvm; nvm "$@"; }
 node() { _load_nvm; node "$@"; }
 npm() { _load_nvm; npm "$@"; }
 npx() { _load_nvm; npx "$@"; }
-
-# Auto-use .nvmrc ob cd
-autoload -U add-zsh-hook
-load-nvmrc() {
-    if [[ -f ".nvmrc" ]]; then
-        _load_nvm          # ← najprej naloži nvm
-        nvm use
-    fi
-}
-add-zsh-hook chpwd load-nvmrc
-load-nvmrc  # ← zaženi tudi ob odprtju terminala
