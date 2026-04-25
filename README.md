@@ -18,20 +18,23 @@ Personal XDG-compliant development environment for Linux/WSL.
 ## 📂 Structure
 
 ```text
-├── bin/          # Utility scripts (added to PATH)
-├── config/       # Tool configurations (XDG_CONFIG_HOME)
+├── bin/           # Utility scripts (added to PATH)
+├── config/        # Tool configurations (XDG_CONFIG_HOME)
 │   ├── git/
+│   ├── neovim/
 │   ├── nvm/
 │   ├── pyenv/
 │   ├── tmux/
 │   └── zinit/
+├── docs/          # Setup guides (e.g. ZBOOK.md for WSL2)
 ├── scripts/
-│   ├── install/   # Tool installers
-│   ├── setup/     # Environment setup
+│   ├── install/   # Tool installers (apt, neovim, nvm, pyenv, zinit, fzf)
+│   ├── setup/     # Environment setup (default-zsh, symlinks)
 │   ├── apt-packages.txt
 │   └── symlinks.txt
-├── zsh/          # Modular Zsh config
-└── install.sh    # Main entry point
+├── vscode/
+├── zsh/           # Modular Zsh config
+└── install.sh     # Main entry point
 ```
 
 ## 🚀 Quick Start
@@ -54,19 +57,37 @@ Personal XDG-compliant development environment for Linux/WSL.
 ## 🛠️ Configuration
 
 ### Adding Tools
-1. **System Packages**: Add package names to `scripts/linux/apt-packages.txt`.
-2. **External Tools**: Create an installer in `scripts/linux/install/` and register it in `install.sh`.
+1. **System Packages**: Add package names to `scripts/apt-packages.txt`.
+2. **External Tools**: Create an installer in `scripts/install/` and register it in `install.sh`.
 3. **Shell Integration**:
    - Create `config/<tool>/path.zsh` for PATH exports (automatically sourced).
    - Use `lazy_load` functions if the tool is heavy.
 
 ### Managing Symlinks
-Mappings are defined in `scripts/linux/symlinks.txt`:
+Mappings are defined in `scripts/symlinks.txt`:
 ```text
 # source_in_dotfiles => target_on_system
 zsh/.zshrc           => ~/.zshrc
 config/tmux/tmux.conf => ~/.config/tmux/tmux.conf
 ```
+
+### Maintenance
+
+- **Re-run symlinks only** (no sudo, no installs):
+  ```bash
+  bash ~/.dotfiles/scripts/setup/symlinks.sh
+  ```
+  Existing real files (non-symlinks) are backed up to `~/.dotfiles-backup/<timestamp>/`.
+
+- **Re-run a single installer** (idempotent):
+  ```bash
+  bash ~/.dotfiles/scripts/install/nvm.sh
+  ```
+
+- **Update tools**: each installer detects existing installs and self-updates (e.g. `nvm`, `pyenv`, `zinit`).
+  For APT packages re-run `scripts/install/apt.sh`.
+
+- **Local overrides**: machine-specific config goes in `~/.localrc` (auto-sourced by `.zshrc`, not tracked).
 
 ### Zsh Customization
 - **Aliases**: `zsh/aliases.zsh`

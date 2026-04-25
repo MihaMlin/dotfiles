@@ -1,38 +1,66 @@
 #!/usr/bin/env bash
 #
 # Main installation script to run all installers and set up dotfiles.
+#
+# Usage:
+#   ./install.sh                  # Full install
+#   ./install.sh --only-symlinks  # Re-run symlinks only (no sudo needed)
+#   ./install.sh --skip-apt       # Skip apt packages (faster re-run)
 
-set -e
+set -euo pipefail
 
-error()   { echo "❌ $1"; }
-warning() { echo "⚠️ $1"; }
-info()    { echo "ℹ️ $1"; }
-success() { echo "✅ $1"; }
-running() { echo "🚀 $1"; }
-step()    { echo "📦 $1"; }
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$SCRIPT_DIR"
 
+# shellcheck source=scripts/lib/log.sh
+source "$SCRIPT_DIR/scripts/lib/log.sh"
+# shellcheck source=scripts/lib/preflight.sh
+source "$SCRIPT_DIR/scripts/lib/preflight.sh"
 
-echo "Starting dotfiles installation..."
+ONLY_SYMLINKS=false
+SKIP_APT=false
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --only-symlinks) ONLY_SYMLINKS=true ;;
+        --skip-apt)      SKIP_APT=true ;;
+        *) error "Unknown flag: $1"; exit 1 ;;
+    esac
+    shift
+done
 
 main() {
-    # Installer scripts - install and configure tools
+    if [[ "$ONLY_SYMLINKS" == true ]]; then
+        running "Running symlinks only..."
+        bash "$SCRIPT_DIR/scripts/setup/symlinks.sh"
+        success "Symlinking done."
+        return
+    fi
+
+    preflight_check
+
     step "Running installer & setup scripts..."
 
     installers=(
         "scripts/install/apt.sh"        # APT packages first
         "scripts/install/neovim.sh"     # Neovim
-        "scripts/install/nvm.sh"        # Dev tools
-        "scripts/install/pyenv.sh"
-        "scripts/install/zinit.sh"
-        "scripts/install/fzf.sh"
-        "scripts/setup/default-zsh.sh"  # Set ZSH as default shell
+        "scripts/install/nvm.sh"        # Node
+        "scripts/install/pyenv.sh"      # Python
+        "scripts/install/zinit.sh"      # Zsh plugin manager
+        "scripts/install/fzf.sh"        # Fuzzy finder
+        "scripts/setup/default-zsh.sh"  # Set Zsh as default shell
         "scripts/setup/symlinks.sh"     # Symlinks last
     )
+
     counter=1
     for installer in "${installers[@]}"; do
+        if [[ "$SKIP_APT" == true && "$installer" == "scripts/install/apt.sh" ]]; then
+            info "Skipping apt.sh (--skip-apt)"
+            continue
+        fi
         if [[ -f "$installer" ]]; then
             running "[$counter] Running $installer..."
-            bash "$installer"
+            bash "$SCRIPT_DIR/$installer"
             ((counter++))
         else
             warning "Installer not found: $installer"
@@ -41,13 +69,11 @@ main() {
 
     success "Installation & Setup complete!"
 
-    # Launch Zsh shell
     if command -v zsh >/dev/null 2>&1; then
-        success "Zsh is installed. Launching Zsh shell..."
+        success "Launching Zsh shell..."
         exec zsh -l
     else
-        warning "Zsh is not installed. Please install Zsh and set it as your default shell manually."
-        return
+        warning "Zsh not found. Install it and set it as default shell manually."
     fi
 }
 

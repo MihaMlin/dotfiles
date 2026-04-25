@@ -1,48 +1,48 @@
 #!/usr/bin/env bash
 #
-# Simple symlink setup for dotfiles.
-# Always verbose. Overwrites existing links.
+# Symlink setup for dotfiles.
+# Always verbose. Overwrites existing symlinks, backs up real files.
 
-set -e
+set -euo pipefail
 
-# Configuration
-DOTFILES_DIR="$HOME/.dotfiles"
+DOTFILES_DIR="${DOTFILES_DIR:-$HOME/.dotfiles}"
 SYMLINKS_FILE="$DOTFILES_DIR/scripts/symlinks.txt"
 BACKUP_DIR="$HOME/.dotfiles-backup/$(date +%Y%m%d_%H%M%S)"
 
-echo -e "\033[0;34mℹ️ Starting dotfiles symlinking...\033[0m"
+# shellcheck source=../lib/log.sh
+source "$DOTFILES_DIR/scripts/lib/log.sh"
 
-# Ensure symlinks file exists
+info "Starting dotfiles symlinking..."
+
 if [[ ! -f "$SYMLINKS_FILE" ]]; then
-    echo "❌ Error: $SYMLINKS_FILE not found."
+    error "$SYMLINKS_FILE not found."
     exit 1
 fi
 
-# Process each line
 while IFS='=>' read -r src target || [[ -n "$src" ]]; do
-    # Cleanup whitespace and comments
+    # Cleanup whitespace and skip comments/blank lines
     src=$(echo "$src" | xargs)
     target=$(echo "${target#>}" | xargs)
     [[ -z "$src" || "$src" == \#* ]] && continue
 
-    # Expand ~ and prepare full paths
+    # Expand ~ and resolve full paths
     target_path="${target/#\~/$HOME}"
     src_path="$DOTFILES_DIR/$src"
 
-    # 1. Create target parent directory if missing
+    # Create target parent directory if missing
     mkdir -p "$(dirname "$target_path")"
 
-    # 2. Backup if it's a real file (not a symlink)
+    # Backup if it's a real file (not already a symlink)
     if [[ -f "$target_path" && ! -L "$target_path" ]]; then
         mkdir -p "$BACKUP_DIR"
         cp -L "$target_path" "$BACKUP_DIR/"
-        echo "⚠️  Backed up existing file: $(basename "$target_path")"
+        warning "Backed up existing file: $(basename "$target_path")"
     fi
 
-    # 3. Create Symlink (v=verbose, f=force/overwrite, s=symbolic)
+    # Create symlink (s=symbolic, f=force/overwrite, v=verbose)
     ln -sfv "$src_path" "$target_path"
 
 done < "$SYMLINKS_FILE"
 
-echo -e "\033[0;32m✅ Symlinking complete.\033[0m"
-[[ -d "$BACKUP_DIR" ]] && echo "ℹ️  Backups located in: $BACKUP_DIR"
+success "Symlinking complete."
+[[ -d "$BACKUP_DIR" ]] && info "Backups located in: $BACKUP_DIR"
