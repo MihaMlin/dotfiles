@@ -1,0 +1,63 @@
+{
+  "model": "claude-opus-4-7",
+  "permissions": {
+    "allow": [
+      // Read-only git (orientacija, pregled diff-a)
+      "Bash(git status)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git branch:*)",
+      "Bash(git show:*)",
+
+      // Filesystem navigation
+      "Bash(ls:*)",
+      "Bash(cat:*)",
+      "Bash(pwd)",
+      "Bash(which:*)",
+      "Bash(find:*)",
+      "Bash(rg:*)",
+      "Read(*)",
+
+      // Test & lint runners
+      "Bash(npm test:*)",
+      "Bash(npm run lint:*)",
+      "Bash(pnpm test:*)",
+      "Bash(pnpm lint:*)",
+      "Bash(pnpm typecheck:*)",
+      "Bash(pytest:*)"
+    ],
+    "deny": [
+      // Destructive shell
+      "Bash(rm -rf:*)",
+      "Bash(sudo:*)",
+      "Bash(curl * | sh)",
+      "Bash(curl * | bash)",
+      "Bash(wget * | sh)",
+      "Bash(wget * | bash)",
+
+      // Mutating git — JAZ commitam, Claude predlaga
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(git checkout -b:*)",
+      "Bash(git switch -c:*)",
+      "Bash(git merge:*)",
+      "Bash(git rebase:*)",
+      "Bash(git reset:*)",
+      "Bash(git restore:*)",
+      "Bash(git stash:*)",
+      "Bash(git cherry-pick:*)",
+      "Bash(git revert:*)",
+      "Bash(git clean:*)",
+
+      // Sensitive paths
+      "Write(~/.ssh/*)",
+      "Write(~/.aws/*)",
+      "Write(~/.gnupg/*)",
+      "Write(~/.config/gh/*)"
+    ]
+  },
+  "env": {
+    "EDITOR": "code --wait"
+  }
+}
