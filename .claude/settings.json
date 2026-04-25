@@ -1,15 +1,14 @@
 {
-  "model": "claude-opus-4-7",
+  "env": {
+    "EDITOR": "code --wait"
+  },
   "permissions": {
     "allow": [
-      // Read-only git (orientacija, pregled diff-a)
       "Bash(git status)",
       "Bash(git diff:*)",
       "Bash(git log:*)",
       "Bash(git branch:*)",
       "Bash(git show:*)",
-
-      // Filesystem navigation
       "Bash(ls:*)",
       "Bash(cat:*)",
       "Bash(pwd)",
@@ -17,8 +16,6 @@
       "Bash(find:*)",
       "Bash(rg:*)",
       "Read(*)",
-
-      // Test & lint runners
       "Bash(npm test:*)",
       "Bash(npm run lint:*)",
       "Bash(pnpm test:*)",
@@ -27,15 +24,12 @@
       "Bash(pytest:*)"
     ],
     "deny": [
-      // Destructive shell
       "Bash(rm -rf:*)",
       "Bash(sudo:*)",
       "Bash(curl * | sh)",
       "Bash(curl * | bash)",
       "Bash(wget * | sh)",
       "Bash(wget * | bash)",
-
-      // Mutating git — JAZ commitam, Claude predlaga
       "Bash(git add:*)",
       "Bash(git commit:*)",
       "Bash(git push:*)",
@@ -49,15 +43,10 @@
       "Bash(git cherry-pick:*)",
       "Bash(git revert:*)",
       "Bash(git clean:*)",
-
-      // Sensitive paths
       "Write(~/.ssh/*)",
       "Write(~/.aws/*)",
       "Write(~/.gnupg/*)",
       "Write(~/.config/gh/*)"
     ]
-  },
-  "env": {
-    "EDITOR": "code --wait"
   }
 }

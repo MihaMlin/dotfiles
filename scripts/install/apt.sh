@@ -1,14 +1,12 @@
 #!/usr/bin/env bash
 #
-# Install system packages via apt from a file
+# Install system packages via apt from a file.
 
-set -e
+set -euo pipefail
 
-error()   { echo "❌ $1"; }
-warning() { echo "⚠️ $1"; }
-info()    { echo "ℹ️ $1"; }
-success() { echo "✅ $1"; }
-
+DOTFILES_DIR="${DOTFILES_DIR:-$HOME/.dotfiles}"
+# shellcheck source=../lib/log.sh
+source "$DOTFILES_DIR/scripts/lib/log.sh"
 
 echo "Updating apt and installing system packages..."
 
@@ -17,19 +15,16 @@ sudo apt upgrade -y
 
 # Read packages, skip comments and empty lines
 packages=()
-packages_path="scripts/apt-packages.txt"
+packages_path="$DOTFILES_DIR/scripts/apt-packages.txt"
 while IFS= read -r pkg; do
-    [[ -n "$pkg" ]] && [[ ! "$pkg" =~ ^# ]]&& packages+=("$pkg")
+    [[ -n "$pkg" ]] && [[ ! "$pkg" =~ ^# ]] && packages+=("$pkg")
 done < "$packages_path"
 
-# Install packages
 if [[ ${#packages[@]} -gt 0 ]]; then
     sudo apt install -y "${packages[@]}"
     sudo apt autoremove -y
     sudo apt clean
     success "${#packages[@]} packages installed"
 else
-    warning "No packages found"
+    warning "No packages found in $packages_path"
 fi
-
-success "Apt installation complete."

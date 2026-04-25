@@ -16,3 +16,8 @@ config/tmux/tmux.conf => ~/.config/tmux/tmux.conf
 # Git
 # -------------------------------------------------------------
 config/git/config     => ~/.config/git/config
+
+# -------------------------------------------------------------
+# Editors
+# -------------------------------------------------------------
+config/neovim/init.lua => ~/.config/nvim/init.lua
