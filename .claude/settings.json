@@ -48,5 +48,6 @@
       "Write(~/.gnupg/*)",
       "Write(~/.config/gh/*)"
     ]
-  }
+  },
+  "model": "opus"
 }

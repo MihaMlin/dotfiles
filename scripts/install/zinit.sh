@@ -7,18 +7,11 @@ set -euo pipefail
 DOTFILES_DIR="${DOTFILES_DIR:-$HOME/.dotfiles}"
 # shellcheck source=../lib/log.sh
 source "$DOTFILES_DIR/scripts/lib/log.sh"
+# shellcheck source=../lib/git-clone.sh
+source "$DOTFILES_DIR/scripts/lib/git-clone.sh"
+# shellcheck source=../../stow/zinit/.config/zinit/path.zsh
+source "$DOTFILES_DIR/stow/zinit/.config/zinit/path.zsh"
 
-echo "Installing latest zinit via git..."
-
-ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
-
-if [ -d "$ZINIT_HOME/.git" ]; then
-    warning "Zinit already installed at $ZINIT_HOME. Updating..."
-    git -C "$ZINIT_HOME" pull
-else
-    info "Cloning Zinit repository..."
-    mkdir -p "$(dirname "$ZINIT_HOME")"
-    git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
-fi
-
-success "Zinit installed at $ZINIT_HOME."
+info "Installing Zinit..."
+git_install https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+success "Zinit installed at $ZINIT_HOME"

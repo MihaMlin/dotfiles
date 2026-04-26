@@ -1,15 +1,17 @@
 #!/usr/bin/env bash
 #
-# Installer for the latest Neovim from the unstable PPA.
-# Config (init.lua) is symlinked separately via scripts/symlinks.txt.
+# Install the latest Neovim from the unstable PPA.
+# Config (init.lua) is symlinked separately via stow/nvim/.
 
-set -e
+set -euo pipefail
 
-echo "Installing Neovim..."
+DOTFILES_DIR="${DOTFILES_DIR:-$HOME/.dotfiles}"
+# shellcheck source=../lib/log.sh
+source "$DOTFILES_DIR/scripts/lib/log.sh"
 
+info "Installing Neovim from PPA..."
 sudo add-apt-repository -y ppa:neovim-ppa/unstable
 sudo apt update
 sudo apt install -y neovim
 
-echo "Neovim installed successfully!"
-nvim --version
+success "Neovim installed: $(nvim --version | head -1)"

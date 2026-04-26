@@ -1,26 +1,17 @@
 #!/usr/bin/env bash
-#
-# Install the latest fzf (fuzzy finder) via git.
+# Install fzf (fuzzy finder).
 
 set -euo pipefail
 
 DOTFILES_DIR="${DOTFILES_DIR:-$HOME/.dotfiles}"
 # shellcheck source=../lib/log.sh
 source "$DOTFILES_DIR/scripts/lib/log.sh"
+# shellcheck source=../lib/git-clone.sh
+source "$DOTFILES_DIR/scripts/lib/git-clone.sh"
+# shellcheck source=../../stow/fzf/.config/fzf/path.zsh
+source "$DOTFILES_DIR/stow/fzf/.config/fzf/path.zsh"
 
-export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
-INSTALL_PATH="$XDG_DATA_HOME/fzf"
-
-echo "Installing latest fzf via git..."
-
-if [ -d "$INSTALL_PATH" ]; then
-    warning "fzf repo already exists. Updating..."
-    git -C "$INSTALL_PATH" pull && "$INSTALL_PATH/install" --all --xdg
-else
-    info "Cloning fzf repository..."
-    mkdir -p "$XDG_DATA_HOME"
-    git clone --depth 1 https://github.com/junegunn/fzf.git "$INSTALL_PATH"
-    "$INSTALL_PATH/install" --all --xdg
-fi
-
-success "fzf installed at $INSTALL_PATH"
+info "Installing fzf..."
+git_install "https://github.com/junegunn/fzf.git" "$FZF_HOME" --depth 1
+"$FZF_HOME/install" --bin   # only install the binary, not shell integration
+success "fzf installed at $FZF_HOME"

@@ -1,0 +1,125 @@
+[user]
+    name = Miha Mlinaric
+    email = mlinmiha@gmail.com
+
+[core]
+    editor = code --wait
+    autocrlf = input
+
+[init]
+    defaultBranch = main
+
+[pull]
+    ff = only
+
+[push]
+    default = current
+    autoSetupRemote = true
+
+[fetch]
+    prune = true
+
+[merge]
+    conflictStyle = diff3
+    tool = vscode
+
+[mergetool "vscode"]
+    cmd = code --wait --merge $REMOTE $LOCAL $BASE $MERGED
+
+[mergetool]
+    prompt = false
+    keepBackup = false
+
+[diff]
+    tool = vscode
+    renames = copies
+
+[difftool "vscode"]
+    cmd = code --wait --diff $LOCAL $REMOTE
+
+[rebase]
+    autoStash = true
+
+[rerere]
+    enabled = true
+
+[commit]
+    verbose = true
+
+[color]
+    ui = auto
+
+[alias]
+    # --- Status & info ---
+    s     = status -sb
+    last  = log -1 HEAD --stat
+    who   = shortlog -sne --no-merges
+
+    # --- Staging & commit ---
+    a     = add
+    aa    = add --all
+    ap    = add --patch
+    c     = commit
+    cm    = commit -m
+    ca    = commit --amend
+    amend = commit --amend --no-edit
+    fixup = commit --fixup
+
+    # --- Branching ---
+    b     = branch
+    bd    = branch -d
+    bD    = branch -D
+    co    = checkout
+    sw    = switch
+    swc   = switch -c
+    recent = branch --sort=-committerdate --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:dim)%(committerdate:relative)%(color:reset)'
+
+    # --- Diff ---
+    d     = diff
+    dc    = diff --cached
+    dh    = diff HEAD
+    ds    = diff --stat
+
+    # --- Log / history graphs ---
+    l     = log --oneline --graph --decorate -20
+    lg    = log --graph --abbrev-commit --decorate \
+            --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(auto)%d%C(reset)%n          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)'
+    lga   = log --graph --abbrev-commit --decorate --all \
+            --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(auto)%d%C(reset)%n          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)'
+    lol   = log --graph --decorate --oneline
+    lola  = log --graph --decorate --oneline --all
+    today = log --since=midnight --author='Miha Mlinaric' --oneline
+
+    # --- Stash ---
+    ss    = stash push
+    ssm   = stash push -m
+    sl    = stash list
+    sp    = stash pop
+    sa    = stash apply
+    sd    = stash drop
+    ssh   = stash show -p
+
+    # --- Undo / reset ---
+    unstage = reset HEAD --
+    undo    = reset --soft HEAD~1
+    nuke    = reset --hard HEAD
+
+    # --- Reflog & recovery ---
+    rl    = reflog --date=relative
+    rlf   = reflog --date=iso --format='%C(yellow)%h%Creset %C(blue)%gd%Creset %C(green)%cr%Creset %gs'
+
+    # --- Remote / sync ---
+    f     = fetch --all --prune
+    pu    = push -u origin HEAD
+    pf    = push --force-with-lease
+
+    # --- Rebase helpers ---
+    rb    = rebase
+    rbi   = rebase -i
+    rbc   = rebase --continue
+    rba   = rebase --abort
+    rbs   = rebase --skip
+    autosquash = rebase -i --autosquash
+
+    # --- Cleanup ---
+    cleanup = "!git branch --merged | grep -vE '^\\*|^\\s*(main|master|develop)$' | xargs -r git branch -d"
