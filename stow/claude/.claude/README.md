@@ -2,12 +2,6 @@
 
 Moja globalna Claude Code konfiguracija.
 
-## Setup
-
-\`\`\`bash
-~/.dotfiles/.claude/install.sh
-\`\`\`
-
 ## Struktura
 
 - \`CLAUDE.md\` — globalne preference (vsi projekti)
