@@ -1,20 +1,25 @@
 #!/usr/bin/env bash
 # Preflight dependency checks — source this file, don't run it directly.
+# Requires log.sh to be sourced first.
 
 preflight_check() {
-    local missing=()
+    local failed=0
 
-    for cmd in curl git; do
-        command -v "$cmd" &>/dev/null || missing+=("$cmd")
-    done
-
-    # Require sudo access for non-root users
-    if [[ $EUID -ne 0 ]] && ! sudo -n true 2>/dev/null; then
-        missing+=("sudo access (run: sudo -v)")
+    # DOTFILES_DIR must be set and valid
+    if [[ ! -d "${DOTFILES_DIR:-}" ]]; then
+        error "DOTFILES_DIR not set or not found: '${DOTFILES_DIR:-}'"
+        failed=1
     fi
 
-    if [[ ${#missing[@]} -gt 0 ]]; then
-        error "Missing prerequisites: ${missing[*]}"
-        exit 1
-    fi
+    [[ $failed -eq 0 ]] || exit 1
+
+    # Ensure XDG and .local/bin directories exist
+    mkdir -p \
+        "$HOME/.config" \
+        "$HOME/.local/bin" \
+        "$HOME/.local/share" \
+        "$HOME/.local/state" \
+        "$HOME/.cache"
+
+    success "Preflight OK."
 }

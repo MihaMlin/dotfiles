@@ -1,0 +1,7 @@
+# --- Pyenv environments to install ---
+# --- Format is purpose_label:version_number ---
+
+default:3.10.13
+deep_learning:3.11.7
+web_api:3.12.1
+

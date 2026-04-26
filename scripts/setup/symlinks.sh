@@ -1,48 +1,31 @@
 #!/usr/bin/env bash
-#
-# Symlink setup for dotfiles.
-# Always verbose. Overwrites existing symlinks, backs up real files.
-
 set -euo pipefail
 
 DOTFILES_DIR="${DOTFILES_DIR:-$HOME/.dotfiles}"
-SYMLINKS_FILE="$DOTFILES_DIR/scripts/symlinks.txt"
-BACKUP_DIR="$HOME/.dotfiles-backup/$(date +%Y%m%d_%H%M%S)"
+STOW_DIR="$DOTFILES_DIR/stow"
+echo "Symlinking dotfiles to: $HOME"
 
 # shellcheck source=../lib/log.sh
 source "$DOTFILES_DIR/scripts/lib/log.sh"
 
-info "Starting dotfiles symlinking..."
+info "Starting dotfiles symlinking from $STOW_DIR..."
 
-if [[ ! -f "$SYMLINKS_FILE" ]]; then
-    error "$SYMLINKS_FILE not found."
-    exit 1
+if ! command -v stow &>/dev/null; then
+    info "Installing stow..."
+    sudo apt update
+    sudo apt install -y stow
 fi
 
-while IFS='=>' read -r src target || [[ -n "$src" ]]; do
-    # Cleanup whitespace and skip comments/blank lines
-    src=$(echo "$src" | xargs)
-    target=$(echo "${target#>}" | xargs)
-    [[ -z "$src" || "$src" == \#* ]] && continue
+# Symlink each package in the stow directory
+for pkg_path in "$STOW_DIR"/*/; do
+    pkg=$(basename "$pkg_path")
+    info "Stowing: $pkg"
 
-    # Expand ~ and resolve full paths
-    target_path="${target/#\~/$HOME}"
-    src_path="$DOTFILES_DIR/$src"
+    stow --dir="$STOW_DIR" --target="$HOME" --restow --adopt --no-folding --verbose=2 "$pkg" 2>&1 | while read -r line; do
+        if [[ $line == *"LINK"* ]]; then
+            echo "  🔗 $line"
+        fi
+    done
+done
 
-    # Create target parent directory if missing
-    mkdir -p "$(dirname "$target_path")"
-
-    # Backup if it's a real file (not already a symlink)
-    if [[ -f "$target_path" && ! -L "$target_path" ]]; then
-        mkdir -p "$BACKUP_DIR"
-        cp -L "$target_path" "$BACKUP_DIR/"
-        warning "Backed up existing file: $(basename "$target_path")"
-    fi
-
-    # Create symlink (s=symbolic, f=force/overwrite, v=verbose)
-    ln -sfv "$src_path" "$target_path"
-
-done < "$SYMLINKS_FILE"
-
-success "Symlinking complete."
-[[ -d "$BACKUP_DIR" ]] && info "Backups located in: $BACKUP_DIR"
+success "Symlinking complete. Preveri z: ls -la ~"

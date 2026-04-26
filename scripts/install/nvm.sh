@@ -1,44 +1,37 @@
 #!/usr/bin/env bash
-#
-# Install nvm (Node Version Manager) and Node.js versions from config.
+# Install nvm (Node Version Manager) and Node.js versions from nvm-environments.txt.
 
 set -euo pipefail
 
 DOTFILES_DIR="${DOTFILES_DIR:-$HOME/.dotfiles}"
 # shellcheck source=../lib/log.sh
 source "$DOTFILES_DIR/scripts/lib/log.sh"
+# shellcheck source=../lib/git-clone.sh
+source "$DOTFILES_DIR/scripts/lib/git-clone.sh"
+# shellcheck source=../../stow/nvm/.config/nvm/path.zsh
+source "$DOTFILES_DIR/stow/nvm/.config/nvm/path.zsh"
 
-# XDG-compliant install path
-export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
-export NVM_DIR="$XDG_DATA_HOME/nvm"
+NVM_VERSION="v0.40.3"
 
-echo "Installing NVM (Node Version Manager) via curl..."
+info "Installing nvm $NVM_VERSION..."
+git_install "https://github.com/nvm-sh/nvm.git" "$NVM_DIR" --branch "$NVM_VERSION" --depth 1
 
-if [ -d "$NVM_DIR" ]; then
-    warning "NVM already installed at $NVM_DIR"
-else
-    mkdir -p "$NVM_DIR"
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+# Load nvm directly — path.zsh lazy-load je zsh-only
+# shellcheck source=/dev/null
+[[ -s "$NVM_DIR/nvm.sh" ]] && source "$NVM_DIR/nvm.sh"
+
+env_file="$DOTFILES_DIR/scripts/install/nvm-environments.txt"
+if [[ ! -f "$env_file" ]]; then
+    warn "$env_file not found. Skipping Node.js environment installation."
+    success "nvm installed at $NVM_DIR"
+    exit 0
 fi
 
-success "NVM available at $NVM_DIR"
+info "Installing Node.js environments from $env_file..."
+while read -r environment; do
+    [[ -z "$environment" || "$environment" =~ ^# ]] && continue
+    info "Installing Node.js $environment..."
+    nvm install "$environment"
+done < "$env_file"
 
-# Install Node.js versions from config
-nvm_versions_file="$DOTFILES_DIR/config/nvm/environments.txt"
-if [ -f "$nvm_versions_file" ]; then
-    info "Installing Node.js versions from $nvm_versions_file..."
-
-    # Load NVM for this session
-    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-
-    while read -r version; do
-        if [[ -n "$version" && ! "$version" =~ ^# ]]; then
-            info "Installing Node.js $version..."
-            nvm install "$version"
-        fi
-    done < "$nvm_versions_file"
-
-    success "Node.js versions installed."
-else
-    warning "$nvm_versions_file not found. Skipping Node.js version installation."
-fi
+success "nvm installed at $NVM_DIR"
