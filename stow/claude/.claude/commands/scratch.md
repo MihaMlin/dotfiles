@@ -1,5 +1,5 @@
 ---
-description: Hitri proof-of-concept (15 min validity test)
+description: Quick proof of concept (15 minute validity test)
 argument-hint: "<idea>"
 ---
 
@@ -7,41 +7,41 @@ PoC: $ARGUMENTS
 
 ## Setup
 
-1. Ustvari:
+1. Create:
    - `~/scratch/<YYYY-MM-DD>-<slug>`
 
-2. `cd` v direktorij
+2. `cd` into the directory
 
 3. Minimal environment:
-   - samo nujne odvisnosti
-   - brez framework overkilla
+   - only essential dependencies
+   - no framework overkill
 
 ---
 
 ## Implementation
 
-- Najmanj kode, ki dokaže hipotezo
+- The smallest amount of code that proves the hypothesis
 - Ignore:
-  - testi
+  - tests
   - linting
-  - arhitektura
+  - architecture
 
-Cilj:
-→ potrditi ali zavrniti idejo, ne “zgraditi rešitev”
+Goal:
+→ confirm or reject the idea, not “build a solution”
 
 ---
 
 ## Output
 
 - `README.md`:
-  - 1 stavek: kaj testiraš
-  - 1 ukaz: kako zagnati
+  - 1 sentence: what you are testing
+  - 1 command: how to run it
 
 ---
 
 ## Constraints
 
-- Časovni limit: ~15 min
-- Če ni jasno → fail fast
-- Če dela → dokumentiraj minimalno
-- Brez premikanja v produkcijo
+- Time limit: ~15 min
+- If unclear → fail fast
+- If it works → document minimally
+- Do not move it into production

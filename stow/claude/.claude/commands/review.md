@@ -1,19 +1,19 @@
 ---
-description: Lokalni code review (pre-PR)
+description: Local code review (pre-PR)
 argument-hint: "[base-branch]"
 ---
 
-Review proti: ${ARGUMENTS:-main}
+Review against: ${ARGUMENTS:-main}
 
-## Postopek
+## Process
 
 1. Scope:
    - `git diff ${ARGUMENTS:-main}...HEAD --stat`
 
-2. File-level analiza:
+2. File-level analysis:
    - `git diff ${ARGUMENTS:-main}...HEAD -- <file>`
 
-3. Preveri sistematično:
+3. Check systematically:
 
    **Correctness**
    - edge cases
@@ -23,30 +23,30 @@ Review proti: ${ARGUMENTS:-main}
    **Security**
    - input validation
    - injection vectors
-   - secrets v diff-u
+   - secrets in the diff
 
    **Tests**
-   - pokritost novega behaviorja
-   - manjkajoči testi
+   - coverage for new behavior
+   - missing tests
 
    **Consistency**
-   - skladnost s CLAUDE.md
-   - naming / struktura
+   - alignment with CLAUDE.md
+   - naming / structure
 
    **Performance**
    - N+1
-   - nepotrebni sync calls
+   - unnecessary sync calls
    - hot paths
 
 ---
 
 ## Output
 
-- 🔴 **Blockers** — mora se popraviti
+- 🔴 **Blockers** — must be fixed
 - 🟡 **Strong recommendations**
 - 🟢 **Nice to have**
 
-Pravila:
-- Brez popravljanja kode.
-- Brez praise.
-- Če je OK → `LGTM` + konkreten razlog.
+Rules:
+- Do not modify code.
+- No praise.
+- If it is OK → `LGTM` + a concrete reason.

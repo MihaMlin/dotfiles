@@ -1,11 +1,11 @@
 # Claude Code dotfiles
 
-Moja globalna Claude Code konfiguracija.
+My global Claude Code configuration.
 
-## Struktura
+## Structure
 
-- \`CLAUDE.md\` — globalne preference (vsi projekti)
-- \`settings.json\` — permissions, model, env
-- \`commands/\` — custom slash commandi
-- \`agents/\` — custom subagenti
-- \`skills/\` — bogatejši workflowi (po želji)
+- `CLAUDE.md` — global preferences (all projects)
+- `settings.json` — permissions, model, env
+- `commands/` — custom slash commands
+- `agents/` — custom subagents
+- `skills/` — richer workflows (optional)

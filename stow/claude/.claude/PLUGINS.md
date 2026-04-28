@@ -1,33 +1,33 @@
-# Plugini, ki jih uporabljam
+# Plugins I use
 
-Kratek seznam pluginov, ki jih uporabljam v Claude.
+Short list of plugins I use in Claude.
 
-## Preverjanje stanja
+## Check status
 
 ```bash
 /plugins
 ```
 
-## Bistveni plugini
+## Essential plugins
 
 - `superpowers`
 - `frontend-design`
 
-## Kako uporabljati posamezni plugin
+## How to use each plugin
 
 ### `superpowers`
 
 - `/superpowers:brainstorming`
-	Uporabi, ko imaš specifikacijo ali zahteve za večstopenjsko nalogo,
-	in še preden začneš pisati kodo.
+	Use when you have a specification or requirements for a multi-step task,
+	and before you start writing code.
 - `/superpowers:writing-plans`
-	Uporabi, ko želiš na podlagi specifikacije pripraviti jasen
-	implementacijski načrt, preden začneš programirati.
+	Use when you want to turn a specification into a clear
+	implementation plan before you start coding.
 - `/superpowers:executing-plans`
-	Uporabi, ko že imaš pripravljen implementacijski načrt in ga želiš
-	izvesti v ločeni seji s kontrolnimi točkami za pregled.
+	Use when you already have an implementation plan and want to
+	execute it in a separate session with review checkpoints.
 
-## Namestitev
+## Installation
 
 ```bash
 /plugin install superpowers

@@ -1,18 +1,18 @@
 ---
-description: Razloži kodo, koncept ali napako
+description: Explain code, a concept, or an error
 argument-hint: "<target>"
 ---
 
-Razloži: $ARGUMENTS
+Explain: $ARGUMENTS
 
 Format (STRICT):
-1. **TL;DR** — 1 stavek, bistvo brez izgube pomena.
-2. **Bistvo** — 2–4 stavki, mentalni model (zakaj in kako deluje).
-3. **Detajli** — samo mehanizmi, ki so nujni za pravilno razumevanje.
-4. **Pasti** — tipične napačne interpretacije + zakaj so napačne.
+1. **TL;DR** — 1 sentence, the core idea without losing meaning.
+2. **Essence** — 2–4 sentences, the mental model (why and how it works).
+3. **Details** — only the mechanisms needed for correct understanding.
+4. **Pitfalls** — common misinterpretations + why they are wrong.
 
-Pravila:
-- Brez intro/zaključkov.
-- Brez redundantnega ponavljanja.
-- Če nekaj ni jasno → eksplicitno povej.
-- Preferiraj primere samo, če odstranijo dvoumnost.
+Rules:
+- No intro/conclusion.
+- No redundant repetition.
+- If something is unclear → state it explicitly.
+- Prefer examples only if they remove ambiguity.
