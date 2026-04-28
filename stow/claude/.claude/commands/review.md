@@ -1,24 +1,52 @@
 ---
-description: Lokalni code review pred PR
+description: Lokalni code review (pre-PR)
 argument-hint: "[base-branch]"
 ---
 
-Naredi review sprememb proti ${ARGUMENTS:-main}.
+Review proti: ${ARGUMENTS:-main}
 
-Postopek:
-1. `git diff ${ARGUMENTS:-main}...HEAD --stat` — kaj se je spremenilo
-2. Za vsak file: `git diff ${ARGUMENTS:-main}...HEAD -- <file>`
-3. Preveri:
-   - Bugge: edge case-i, null, race conditions
-   - Security: input validation, injection, secrets v diff-u
-   - Testi: novi behavior pokrit?
-   - Konvencije: sledi CLAUDE.md projekta?
-   - Performance: N+1, sync v hot pathu
+## Postopek
 
-Output:
-- 🔴 **Blokerji** (mora se popraviti)
+1. Scope:
+   - `git diff ${ARGUMENTS:-main}...HEAD --stat`
+
+2. File-level analiza:
+   - `git diff ${ARGUMENTS:-main}...HEAD -- <file>`
+
+3. Preveri sistematično:
+
+   **Correctness**
+   - edge cases
+   - null/undefined
+   - race conditions
+
+   **Security**
+   - input validation
+   - injection vectors
+   - secrets v diff-u
+
+   **Tests**
+   - pokritost novega behaviorja
+   - manjkajoči testi
+
+   **Consistency**
+   - skladnost s CLAUDE.md
+   - naming / struktura
+
+   **Performance**
+   - N+1
+   - nepotrebni sync calls
+   - hot paths
+
+---
+
+## Output
+
+- 🔴 **Blockers** — mora se popraviti
 - 🟡 **Strong recommendations**
 - 🟢 **Nice to have**
 
-Bodi direkten. Ne hvali za hvaljenje. Če je vse OK, reci "LGTM" + razlog.
-NE popravljaj sam — samo poročaj.
+Pravila:
+- Brez popravljanja kode.
+- Brez praise.
+- Če je OK → `LGTM` + konkreten razlog.

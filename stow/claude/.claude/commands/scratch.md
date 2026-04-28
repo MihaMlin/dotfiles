@@ -1,15 +1,47 @@
 ---
-description: Hitro proof-of-concept v izoliranem direktoriju
-argument-hint: "<ideja>"
+description: Hitri proof-of-concept (15 min validity test)
+argument-hint: "<idea>"
 ---
 
-Naredi izoliran scratch za: $ARGUMENTS
+PoC: $ARGUMENTS
 
-1. Nov direktorij `~/scratch/$(date +%Y-%m-%d)-<kratko-ime>`
-2. cd vanj
-3. Minimalni setup glede na jezik (samo kar **nujno** rabiš)
-4. Implementiraj v najmanj kode, da deluje
-5. README.md: en stavek kaj poskušaš dokazati + ukaz za pogon
+## Setup
 
-Brez testov, brez lintinga, brez build pipelina. Samo dokaz koncepta.
-Cilj: vedeti v 15 minutah, če ideja drži ali ne.
+1. Ustvari:
+   - `~/scratch/<YYYY-MM-DD>-<slug>`
+
+2. `cd` v direktorij
+
+3. Minimal environment:
+   - samo nujne odvisnosti
+   - brez framework overkilla
+
+---
+
+## Implementation
+
+- Najmanj kode, ki dokaže hipotezo
+- Ignore:
+  - testi
+  - linting
+  - arhitektura
+
+Cilj:
+→ potrditi ali zavrniti idejo, ne “zgraditi rešitev”
+
+---
+
+## Output
+
+- `README.md`:
+  - 1 stavek: kaj testiraš
+  - 1 ukaz: kako zagnati
+
+---
+
+## Constraints
+
+- Časovni limit: ~15 min
+- Če ni jasno → fail fast
+- Če dela → dokumentiraj minimalno
+- Brez premikanja v produkcijo
