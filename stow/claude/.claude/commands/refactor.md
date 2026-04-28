@@ -1,64 +1,62 @@
 ---
-description: Sistemski refaktor z determinističnim planom
-argument-hint: "<scope + razlog>"
+description: Systematic refactor with a deterministic plan
+argument-hint: "<scope + reason>"
 ---
 
-Refaktor: $ARGUMENTS
+Refactor: $ARGUMENTS
 
-## Phase 1 — Analiza & Plan (NO CODE)
+## Phase 1 — Analysis & Plan (NO CODE)
 
-1. Analiziraj obstoječo implementacijo:
+1. Analyze the existing implementation:
    - kompleksnost
-   - podvajanje (DRY)
+   - duplication (DRY)
    - coupling / cohesion
    - type safety
    - readability
 
-2. Ustvari/posodobi `plan.md`:
+2. Create/update `plan.md`:
 
-   **Cilj**
-   - merljiv razlog (npr. ↓ cyclomatic complexity, ↑ type safety)
+   **Goal**
+   - measurable reason (e.g. ↓ cyclomatic complexity, ↑ type safety)
 
-   **Obseg**
-   - točne datoteke / funkcije
+   **Scope**
+   - exact files / functions
 
-   **Spremembe**
-   - konkretni posegi (rename, extract, split, replace…)
+   **Changes**
+   - concrete operations (rename, extract, split, replace...)
 
-   **Invarianti (Behavior Lock)**
-   - kaj se NE sme spremeniti
+   **Invariants (Behavior Lock)**
+   - what must NOT change
 
-   **Verifikacija**
-   - kateri testi / checks garantirajo enak behavior
+   **Verification**
+   - which tests / checks guarantee the same behavior
 
-   **Tveganja**
-   - kje lahko pride do regresije
+   **Risks**
+   - where regressions may occur
 
 3. STOP:
-   - izpiši kratek plan (brez kode)
-   - čakaj na **GO**
+   - print a short plan (no code)
+   - wait for **GO**
 
 ---
 
 ## Phase 2 — Execution (AFTER GO)
 
-1. Implementiraj v atomarnih korakih.
-2. Po vsakem koraku:
-   - build / lint / testi
-3. Prepovedano:
-   - novi feature-ji
-   - nepovezani bugfixi
+1. Implement in atomic steps.
+2. After each step:
+   - build / lint / tests
+3. Forbidden:
+   - new features
+   - unrelated bug fixes
 
-4. Pred zaključkom:
-   - preveri `git diff`
-   - odstrani debug artefakte
-
----
+4. Before finishing:
+   - check `git diff`
+   - remove debug artifacts
 
 Output:
-- Pred GO → samo plan
-- Po GO → implementacija
-- Na koncu → `ready to commit?` + `refactor:` commit message
+- Before GO → plan only
+- After GO → implementation
+- At the end → `ready to commit?` + `refactor:` commit message
 
 Constraint:
-- Če plan postane neveljaven → STOP → nazaj v Phase 1
+- If the plan becomes invalid → STOP → back to Phase 1
