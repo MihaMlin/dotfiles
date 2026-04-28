@@ -1,14 +1,18 @@
 ---
 description: Razloži kodo, koncept ali napako
-argument-hint: "<kar hočem razloženo>"
+argument-hint: "<target>"
 ---
 
 Razloži: $ARGUMENTS
 
-Format:
-1. **TL;DR** v enem stavku.
-2. **Bistvo** v 2-4 stavkih.
-3. **Detajli** samo če so ključni za razumevanje.
-4. **Pasti** — kaj ljudje pogosto narobe razumejo.
+Format (STRICT):
+1. **TL;DR** — 1 stavek, bistvo brez izgube pomena.
+2. **Bistvo** — 2–4 stavki, mentalni model (zakaj in kako deluje).
+3. **Detajli** — samo mehanizmi, ki so nujni za pravilno razumevanje.
+4. **Pasti** — tipične napačne interpretacije + zakaj so napačne.
 
-Brez intro filerjev. Začni z vsebino.
+Pravila:
+- Brez intro/zaključkov.
+- Brez redundantnega ponavljanja.
+- Če nekaj ni jasno → eksplicitno povej.
+- Preferiraj primere samo, če odstranijo dvoumnost.

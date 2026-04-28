@@ -1,54 +1,177 @@
-# Personal Claude preferences
+# CLAUDE.md — Global Operating System
 
-These are MY preferences, applied to every project unless the project's own
-CLAUDE.md says otherwise.
+## Core Principle
+Maximal correctness with minimal assumptions. Every step must be justified, reproducible, and reversible.
+
+---
+
+## The Three-Step Workflow (MANDATORY)
+
+### Phase 1 — Brainstorming (WHAT)
+Analyze the request and explore solution space.
+
+**Output → `specs.md`**
+Must include:
+- Goal (precise, testable)
+- Required functionality
+- Constraints (technical, performance, security)
+- Edge cases
+- Non-goals
+
+**Rules:**
+- No code.
+- No implementation details.
+- No file changes except `specs.md`.
+
+---
+
+### Phase 2 — Writing Plan (HOW)
+Convert specification into deterministic execution steps.
+
+**Output → `plan.md`**
+Must include:
+- File-level changes
+- Data flow
+- Algorithms (if needed)
+- Failure modes
+- Test strategy
+
+**Rules:**
+- No implementation.
+- Every step must map to spec.
+- Stop and wait for explicit **GO**.
+
+---
+
+### Phase 3 — Executing Plan (DO)
+Implement strictly according to plan.
+
+**Rules:**
+- No deviation without returning to Phase 1.
+- Validate after each logical step.
+- Prefer smallest correct change.
+
+---
+
+## Invariants
+
+- Determinism > speed  
+- Correctness > completeness  
+- Explicitness > convenience  
+- Reproducibility > intuition  
+
+---
 
 ## Communication
-- Bodi direkten. Brez "Great question!", brez nepotrebnih intro-jev.
-- Slovenščina za pogovor, angleščina za kodo, commit messages, tehnične izraze.
-- Če nečesa ne veš, povej "ne vem" — ne ugibaj.
-- Ko si negotov o pristopu, vprašaj PREDEN pišeš kodo, ne potem.
-- Brevity > thoroughness za enostavne stvari. Detail za arhitekturne odločitve.
 
-## Working with code
-- **Najprej preberi obstoječe.** Pred pisanjem nove kode preveri strukturo
-  projekta (package manager, naming, kje so testi). Sledim obstoječim konvencijam.
-- **Ne dodajaj dependencies brez vprašanja.** Vedno vprašaj PREDEN dodaš novo.
-- **Manjši koraki.** Pri spremembah >50 vrstic kode mi najprej pokaži plan.
-- **Brez "fix forward"-a pri zlomljenih testih.** Če teste pokvariš, takoj revertaj,
-  ne poskušaj popravljati naprej.
-- **Brez komentarjev, ki ponavljajo kodo.** Komentar razloži ZAKAJ, ne KAJ.
+- No filler.
+- No praise.
+- No summaries.
+- State uncertainty explicitly.
+- Slovenian (discussion), English (code/tech).
 
-## Code defaults (override v projektnem CLAUDE.md če rabi drugače)
-- TypeScript: strict mode, named exports, brez `any`, Zod za validacijo na meji.
-- Python: type hints, ruff formatter, pytest.
-- Bash: `set -euo pipefail`, shellcheck-clean.
-- SQL: eksplicitne kolone v SELECT, brez `SELECT *` v aplikacijski kodi.
+---
 
-## Git — JAZ commitam, ti ne
-- **Ne poganjaj `git add`, `git commit`, `git push`, `git checkout -b` sam od sebe.**
-  Tudi če se zdi naravni naslednji korak. Commite delam jaz.
-- Ko končaš logično enoto dela, povej "ready to commit" + predlagaj
-  conventional commit message (`feat:`, `fix:`, `refactor:`, `chore:`, `docs:`).
-- Lahko poganjaš `git status`, `git diff`, `git log`, `git branch`, `git show` —
-  za orientacijo in pregled. Te ukaze imam tudi v `allow` listi.
-- Če te eksplicitno prosim za git akcijo ("naredi commit", "push to branch"),
-  šele takrat izvedi.
+## Environment
 
-## Security guardrails
-- Brez hardcodanih secretov, API keyev, credentials. Vedno env variables.
-- Pred kakršnim koli predlogom commita preveri, da v diff-u ni nič kot
-  `sk-...`, `ghp_...`, `AKIA...`, `-----BEGIN ... PRIVATE KEY-----`.
-- Brez `eval`, brez `exec` z user inputom.
+- Shell: `zsh`
+- Node: `nvm` (lazy loaded)
+- Python: `python` (lazy loaded)
 
-## Tools I use
-- Editor: VSCode (`EDITOR=code --wait`)
-- Terminal: zsh
-- Notes per project: docs/notes/ (symlink v vault)
+**Implication:**
+- First invocation of `node`, `npm`, `python`, or `pip` may have startup delay.
 
-## When I say...
-- "ready to commit?" → preglej spremembe, predlagaj commit message, čakaj name
-- "naredi commit" → šele zdaj smeš pognati `git add` + `git commit`
-- "naredi PR" → šele zdaj branch + commits + push, ampak NE odpri PR-ja preden rečem
-- "fix" → najprej reproduciraj problem, šele potem popravi
-- "refactor" → najprej teste, potem refactor, behaviorja NE smeš spremeniti
+---
+
+## Code Rules
+
+### General
+- Read existing code first.
+- Match conventions exactly.
+- No hidden side effects.
+
+### Dependencies
+- Forbidden without approval.
+
+### Changes
+- >50 LOC → require plan.
+
+### Testing
+- Failing tests → immediate stop.
+- No fix-forward.
+
+### Comments
+- Explain **why**, not **what**.
+
+---
+
+## Tech Defaults
+
+### TypeScript
+- `strict: true`
+- No `any`
+- Named exports
+- Zod validation
+
+### Python
+- Type hints mandatory
+- `ruff`
+- `pytest`
+
+### Bash
+- `set -euo pipefail`
+- shellcheck clean
+
+---
+
+## Git Protocol
+
+### Allowed
+- `status`, `diff`, `log`, `show`
+
+### Restricted
+- `add`, `commit` → require approval  
+- `push`, branching → forbidden without explicit command  
+
+### Commit Flow
+1. Propose commit
+2. Provide conventional message
+3. Wait for approval
+4. Execute
+
+---
+
+## Security
+
+- No secrets in code
+- Use `.env`
+- Scan diffs before commit
+
+---
+
+## Failure Handling
+
+On any inconsistency:
+1. Stop
+2. Identify root cause
+3. Return to Phase 1
+
+---
+
+## Trigger Keywords
+
+- `superpowers brainstorming` → Phase 1  
+- `writing-plan` → Phase 2  
+- `GO` → Phase 3  
+- `fix` → reproduce → isolate → fix  
+- `refactor` → preserve behavior  
+
+---
+
+## Anti-Patterns (FORBIDDEN)
+
+- Writing code during Phase 1 or 2  
+- Implicit assumptions  
+- Silent deviations from plan  
+- Adding dependencies without approval  
+- Continuing after test failure  
