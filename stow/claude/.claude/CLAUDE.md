@@ -6,6 +6,7 @@ Maximal correctness with minimal assumptions. Every step must be justified, repr
 ---
 
 ## The Three-Step Workflow (MANDATORY)
+When using superpowers follow the 3 step plan, write the files to /docs/superpowers.
 
 ### Phase 1 — Brainstorming (WHAT)
 Analyze the request and explore solution space.
