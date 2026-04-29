@@ -2,6 +2,11 @@
 #
 # Main entry point — runs installers and stows configs into $HOME.
 # All sub-scripts inherit DOTFILES_DIR from this script's environment.
+#
+# Usage:
+#   ./install.sh                  # full install
+#   ./install.sh --skip-apt       # everything except apt
+#   ./install.sh --only-symlinks  # just refresh symlinks
 
 set -euo pipefail
 
