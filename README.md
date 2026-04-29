@@ -92,6 +92,7 @@ bash scripts/install/nvm.sh   # re-install or update one tool
     ├── nvim/                     # → ~/.config/nvim/
     ├── git/                      # → ~/.config/git/
     ├── tmux/                     # → ~/.config/tmux/
+    ├── claude/                   # → ~/.claude/
     └── bin/                      # → ~/.local/bin/
 ```
 
