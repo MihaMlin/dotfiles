@@ -104,12 +104,12 @@ Each directory inside `stow/` is a **stow package**. Stow mirrors the package's 
 
 This repo follows the [XDG Base Directory Specification](https://specifications.freedesktop.org/basedir-spec/latest/). Four environment variables decide where things live:
 
-| Variable | Default | What goes here |
-|---|---|---|
-| `XDG_CONFIG_HOME` | `~/.config` | Configuration (read by tools) |
-| `XDG_DATA_HOME` | `~/.local/share` | Persistent app data (plugins, version managers, databases) |
-| `XDG_STATE_HOME` | `~/.local/state` | Logs, history, runtime state |
-| `XDG_CACHE_HOME` | `~/.cache` | Disposable cached data |
+| Variable             | Default                | What goes here                                             |
+| -------------------- | ---------------------- | -----------------------------------------------------------|
+| `XDG_CONFIG_HOME`    | `~/.config`            | Configuration (read by tools)                              |
+| `XDG_DATA_HOME`      | `~/.local/share`       | Persistent app data (plugins, version managers, databases) |
+| `XDG_STATE_HOME`     | `~/.local/state`       | Logs, history, runtime state                               |
+| `XDG_CACHE_HOME`     | `~/.cache`             | Disposable cached data                                     |
 
 These are exported at the top of `.zshrc` so every tool started from the shell inherits them.
 
@@ -158,23 +158,23 @@ Two categories. The distinction is whether the tool runs as a separate process (
 
 These tools are normal binaries on `$PATH` and read `$XDG_CONFIG_HOME/<name>/` automatically. Stow places the config there; the tool finds it. Done.
 
-| Tool | Why no `path.zsh` |
-|---|---|
-| `nvim` | Apt-installed via PPA → `/usr/bin/nvim` (default `$PATH`). Reads `~/.config/nvim/init.lua`. |
-| `git` | System binary. Reads `~/.config/git/config`. |
-| `tmux` | System binary. Reads `~/.config/tmux/tmux.conf`. |
-| `bin` | Just user scripts symlinked to `~/.local/bin/`. No tool, no config to load. |
+| Tool    | Why no `path.zsh`                                                                           |
+| ------- | --------------------------------------------------------------------------------------------|
+| `nvim`  | Apt-installed via PPA → `/usr/bin/nvim` (default `$PATH`). Reads `~/.config/nvim/init.lua`. |
+| `git`   | System binary. Reads `~/.config/git/config`.                                                |
+| `tmux`  | System binary. Reads `~/.config/tmux/tmux.conf`.                                            |
+| `bin`   | Just user scripts symlinked to `~/.local/bin/`. No tool, no config to load.                 |
 
 #### Category 2 — `path.zsh` required, tool extends the shell
 
 These modify `$PATH`, define shell functions, or register hooks — work that must happen inside the running shell session. Their `path.zsh` exports the tool's location variable (so the tool knows where its data lives) and sources its runtime (so the shell gains the functions/bindings).
 
-| Tool | Var | What `path.zsh` does |
-|---|---|---|
-| `zinit` | `ZINIT_HOME` | Sources `zinit.zsh` to register the plugin manager. |
-| `nvm` | `NVM_DIR` | Defines lazy wrappers for `nvm`/`node`/`npm`/`npx`. |
-| `pyenv` | `PYENV_ROOT` | Prepends `bin/` and `shims/` to `$PATH`; defines lazy wrappers for `pyenv`/`python`/`pip`. |
-| `fzf` | — | Currently no `path.zsh` (fzf installer writes its own shell init via `--xdg`); add one if/when needed, following the standard above. |
+| Tool    | Var              | What `path.zsh`does                                                                        |
+| ------- | ---------------- |--------------------------------------------------------------------------------------------|
+| `zinit` | `ZINIT_HOME`     | Sources `zinit.zsh` to register the plugin manager.                                        |
+| `nvm`   | `NVM_DIR`        | Defines lazy wrappers for `nvm`/`node`/`npm`/`npx`.                                        |
+| `pyenv` | `PYENV_ROOT`     | Prepends `bin/` and `shims/` to `$PATH`; defines lazy wrappers for `pyenv`/`python`/`pip`. |
+| `fzf`   | —                | Currently no `path.zsh` (fzf installer writes its own shell init via `--xdg`)              |
 
 ## Adding a new tool
 
