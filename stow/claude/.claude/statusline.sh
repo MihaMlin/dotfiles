@@ -63,9 +63,9 @@ else
 fi
 
 # line 2
-printf "${DIM}total:%-6s${R}${SEP}${DIM}in:%s${R}${DOT}${DIM}out:%s${R}${DOT}${DIM}cached:%s${R}\n" \
-  "$TOKENS_TOTAL" "$TOKENS_IN" "$TOKENS_OUT" "$TOKENS_CACHED"
+printf "${DIM}%-6s %-5s${R}${SEP}${DIM}in:%s${R}${DOT}${DIM}out:%s${R}${DOT}${DIM}cached:%s${R}\n" \
+  "total:" "$TOKENS_TOTAL" "$TOKENS_IN" "$TOKENS_OUT" "$TOKENS_CACHED"
 
 # line 3
-printf "${DIM}plan:%-7s${R}${SEP}${DIM}reset:%-10s${R}\n" \
-  "${RATE_5H}%" "$RTIMER"
+printf "${DIM}%-6s %-5s${R}${SEP}${DIM}reset:%-10s${R}\n" \
+  "plan:" "${RATE_5H}%" "$RTIMER"
