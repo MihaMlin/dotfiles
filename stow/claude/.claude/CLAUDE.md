@@ -76,8 +76,8 @@ Implement strictly according to plan.
 ## Environment
 
 - Shell: `zsh`
-- Node: `nvm` (lazy loaded)
-- Python: `python` (lazy loaded)
+- Node: `nvm` (lazy loaded - load it by running npm, node, nvm, npx command)
+- Python: `python` (lazy loaded - load it by running python command)
 
 **Implication:**
 - First invocation of `node`, `npm`, `python`, or `pip` may have startup delay.
