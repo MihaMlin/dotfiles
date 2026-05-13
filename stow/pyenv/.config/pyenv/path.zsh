@@ -18,3 +18,6 @@ _load_pyenv() {
 pyenv()  { _load_pyenv; pyenv  "$@"; }
 python() { _load_pyenv; python "$@"; }
 pip()    { _load_pyenv; pip    "$@"; }
+
+# eager load for Claude
+_load_pyenv

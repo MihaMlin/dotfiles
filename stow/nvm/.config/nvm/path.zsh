@@ -13,3 +13,6 @@ nvm()  { _load_nvm; nvm  "$@"; }
 node() { _load_nvm; node "$@"; }
 npm()  { _load_nvm; npm  "$@"; }
 npx()  { _load_nvm; npx  "$@"; }
+
+# eager load for Claude
+_load_nvm
