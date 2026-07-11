@@ -411,34 +411,45 @@ git commit -m "docs: replace pyenv references with uv"
 - Delete: `scripts/install/pyenv-environments.txt`
 - Delete: `stow/pyenv/` (entire directory, including `stow/pyenv/.config/pyenv/path.zsh`)
 
-- [ ] **Step 1: Delete the files**
+- [ ] **Step 1: Unstow pyenv while the source package still exists**
+
+`symlinks.sh` only ever calls `stow --restow` over whatever packages currently exist under `stow/*/` — it never unlinks a package whose source directory has been deleted. `~/.config/pyenv/path.zsh` is a real symlink on this machine today (confirmed via `ls -la ~/.config/pyenv`), so it must be explicitly unstowed *before* the source is removed, or it will be left dangling.
+
+```bash
+stow --dir="$(pwd)/stow" --target="$HOME" -D pyenv
+```
+
+Expected: no error; `ls ~/.config/pyenv` now reports `No such file or directory` (stow removes the now-empty `~/.config/pyenv` dir along with the symlink).
+
+- [ ] **Step 2: Delete the files**
 
 ```bash
 git rm scripts/install/pyenv.sh scripts/install/pyenv-environments.txt
 git rm -r stow/pyenv
 ```
 
-- [ ] **Step 2: Repo-wide check for leftover references**
+- [ ] **Step 3: Repo-wide check for leftover references**
 
 Run: `grep -rin pyenv . --include='*.sh' --include='*.zsh' --include='*.md' --include='*.txt' | grep -v '^./.git/'`
 Expected: no output (exit code 1) — confirms Tasks 4–6 and this deletion caught every reference.
 
-- [ ] **Step 3: Full symlink + installer smoke test**
+- [ ] **Step 4: Full symlink + installer smoke test**
 
 ```bash
 ./install.sh --only-symlinks
 ls -la ~/.config/uv/path.zsh
+ls ~/.config/pyenv
 ```
-Expected: `install.sh --only-symlinks` completes without error; `~/.config/uv/path.zsh` is a symlink into the repo's `stow/uv/.config/uv/path.zsh`; there is no `~/.config/pyenv` left over (stow removed it when the package was deleted — if it still exists, `stow -D` it manually: `cd stow && stow -D pyenv`).
+Expected: `install.sh --only-symlinks` completes without error; `~/.config/uv/path.zsh` is a symlink into the repo's `stow/uv/.config/uv/path.zsh`; `~/.config/pyenv` reports `No such file or directory` (already removed in Step 1, and `symlinks.sh` won't recreate it since the source package is gone).
 
-- [ ] **Step 4: Fresh shell sanity check**
+- [ ] **Step 5: Fresh shell sanity check**
 
 ```bash
 zsh -lc 'command -v uv && command -v python && python --version'
 ```
 Expected: both commands resolve, `python --version` prints `Python 3.10.13`.
 
-- [ ] **Step 5: Commit**
+- [ ] **Step 6: Commit**
 
 ```bash
 git commit -m "chore: remove pyenv artifacts, uv is now the Python version manager"
