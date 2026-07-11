@@ -1,7 +1,7 @@
-# NVM — Node Version Manager (lazy-loaded)
+# NVM — Node Version Manager
 export NVM_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/nvm"
 
-# Bash-safe: installers source this file only for NVM_DIR.
+# Bash-safe: installers only need NVM_DIR; the rest is zsh-only.
 [[ -n "${ZSH_VERSION:-}" ]] || return 0
 
 _load_nvm() {
@@ -14,5 +14,7 @@ node() { _load_nvm; node "$@"; }
 npm()  { _load_nvm; npm  "$@"; }
 npx()  { _load_nvm; npx  "$@"; }
 
-# eager load for Claude
+# Load eagerly despite the lazy wrappers above — some tools (e.g. Claude
+# Code) invoke node/npm directly without going through an interactive
+# shell prompt, so the lazy wrapper would never get a chance to trigger.
 _load_nvm
