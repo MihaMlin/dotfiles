@@ -62,16 +62,15 @@ The installer:
 The installer is idempotent. Safe to re-run.
 
 ```bash
-./install.sh                  # full
-./install.sh --skip-apt       # skip apt step (faster on re-runs)
-./install.sh --only stow      # just re-stow (no sudo needed)
-./install.sh --only nvm       # re-run a single step
+./install.sh   # full install — takes no arguments
 ```
 
-Or via `make`: `make install`, `make update` (skip apt), `make stow` (re-stow only),
-`make unstow` (remove symlinks), `make apt` (apt packages only),
-`make install-nvm` / `install-uv` / `install-zinit` / `install-fzf` / `install-shell`
-(one tool at a time), `make lint` (shellcheck). Run `make help` for the full list.
+For a single step, run its script directly (`bash scripts/install/nvm.sh`) or
+use a `make` target: `make install`, `make update` (skip apt), `make stow`
+(re-stow only), `make unstow` (remove symlinks), `make apt` (apt packages only),
+`make install-nvm` / `install-uv` / `install-zinit` / `install-fzf`,
+`make shell` (set zsh as default shell), `make lint` (shellcheck). Run
+`make help` for the full list.
 
 ## Repo layout
 
@@ -301,9 +300,10 @@ git_install https://github.com/owner/<tool>.git "$TOOL_HOME"
 success "<tool> installed at $TOOL_HOME"
 ```
 
-**4. Register the installer in `install.sh`:** add the step's short name to
-`STEP_NAMES` and its script path to `STEP_SCRIPTS` (same index in both
-arrays) — this also makes it runnable on its own via `./install.sh --only <name>`.
+**4. Register the installer in `install.sh`'s `STEPS` array** so the full
+install picks it up. It's already runnable on its own via
+`bash scripts/install/<tool>.sh` or `make install-<tool>` (the `install-%`
+Makefile target covers any script under `scripts/install/`).
 
 **5. Run:**
 

@@ -1,13 +1,12 @@
 #!/usr/bin/env bash
 #
-# Main entry point — runs installers and stows configs into $HOME.
+# Main entry point — runs the full install and stows configs into $HOME.
 # All sub-scripts inherit DOTFILES_DIR from this script's environment.
+# Takes no arguments; for a single step, run its script directly
+# (see scripts/install/ and scripts/setup/) or use the Makefile targets.
 #
 # Usage:
-#   ./install.sh                  # full install
-#   ./install.sh --skip-apt       # everything except apt
-#   ./install.sh --only stow      # just refresh symlinks
-#   ./install.sh --only nvm       # just (re)run one step
+#   ./install.sh
 
 set -euo pipefail
 
@@ -20,17 +19,8 @@ source "$SCRIPT_DIR/lib/log.sh"
 # shellcheck source=lib/preflight.sh
 source "$SCRIPT_DIR/lib/preflight.sh"
 
-# Steps, run in order. Each name is a valid --only argument.
-STEP_NAMES=(
-    apt
-    stow
-    nvm
-    uv
-    zinit
-    fzf
-    shell
-)
-STEP_SCRIPTS=(
+# Steps, run in order.
+STEPS=(
     scripts/install/apt.sh
     scripts/setup/symlinks.sh
     scripts/install/nvm.sh
@@ -39,55 +29,6 @@ STEP_SCRIPTS=(
     scripts/install/fzf.sh
     scripts/setup/default-zsh.sh
 )
-
-ONLY_STEP=""
-SKIP_APT=false
-
-
-usage() {
-    cat <<EOF
-Usage: ./install.sh [options]
-
-Options:
-  --skip-apt     Skip apt packages step (faster on re-runs)
-  --only <step>  Run a single step, no sudo unless the step needs it
-                 Valid steps: ${STEP_NAMES[*]}
-  -h, --help     Show this help and exit
-
-Examples:
-  ./install.sh                  # full install
-  ./install.sh --skip-apt       # everything except apt
-  ./install.sh --only stow      # just refresh symlinks
-  ./install.sh --only nvm       # just (re)run the nvm step
-EOF
-}
-
-
-parse_args() {
-    while [[ $# -gt 0 ]]; do
-        case "$1" in
-            --only)
-                ONLY_STEP="${2:-}"
-                [[ -n "$ONLY_STEP" ]] || { error "--only requires a step name"; usage >&2; exit 1; }
-                shift
-                ;;
-            --skip-apt) SKIP_APT=true ;;
-            -h|--help)  usage; exit 0 ;;
-            *)          error "Unknown flag: $1"; usage >&2; exit 1 ;;
-        esac
-        shift
-    done
-}
-
-
-script_for_step() {
-    local step="$1" i
-    for i in "${!STEP_NAMES[@]}"; do
-        [[ "${STEP_NAMES[$i]}" == "$step" ]] && { echo "${STEP_SCRIPTS[$i]}"; return; }
-    done
-    error "Unknown step: '$step'. Valid steps: ${STEP_NAMES[*]}"
-    exit 1
-}
 
 
 run_step() {
@@ -103,22 +44,10 @@ run_step() {
 }
 
 
-run_only_step() {
-    local script
-    script=$(script_for_step "$ONLY_STEP")
-    run_step "$ONLY_STEP" "$script"
-    success "Step '$ONLY_STEP' complete."
-}
-
-
 run_all_steps() {
     local idx=1
-    for i in "${!STEP_NAMES[@]}"; do
-        if [[ "$SKIP_APT" == true && "${STEP_NAMES[$i]}" == "apt" ]]; then
-            info "Skipping apt step (--skip-apt)"
-            continue
-        fi
-        run_step "$idx" "${STEP_SCRIPTS[$i]}"
+    for script in "${STEPS[@]}"; do
+        run_step "$idx" "$script"
         ((idx++))
     done
 }
@@ -135,11 +64,10 @@ launch_zsh() {
 
 
 main() {
-    parse_args "$@"
-
-    if [[ -n "$ONLY_STEP" ]]; then
-        run_only_step
-        return
+    if [[ $# -gt 0 ]]; then
+        error "install.sh takes no arguments (got: $*)"
+        error "For a single step, run its script directly or use a Makefile target (see 'make help')."
+        exit 1
     fi
 
     preflight_check
