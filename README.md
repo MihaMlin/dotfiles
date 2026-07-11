@@ -17,6 +17,7 @@ XDG-compliant development environment for Linux/WSL. Managed with [GNU Stow](htt
   - [How to write `path.zsh`](#how-to-write-pathzsh)
   - [File structure](#file-structure)
   - [Lazy-load template](#lazy-load-template)
+  - [Installer script template](#installer-script-template)
   - [End-to-end steps](#end-to-end-steps)
 - [Conventions](#conventions)
 - [Troubleshooting](#troubleshooting)
@@ -51,7 +52,7 @@ cd ~/.dotfiles
 
 The installer:
 - Runs preflight checks (Linux, sudo available, git installed)
-- Installs apt packages from `scripts/apt-packages.txt` (including `stow`)
+- Installs apt packages from the `PACKAGES` array in `scripts/install/apt.sh` (including `stow`)
 - Runs each tool installer in `scripts/install/`
 - Stows all packages from `stow/` into `$HOME`
 - Sets zsh as the default shell
@@ -66,6 +67,10 @@ The installer is idempotent. Safe to re-run.
 ./install.sh --only-symlinks  # just re-stow (no sudo needed)
 ```
 
+Or via `make`: `make install`, `make update` (skip apt), `make stow` (re-stow only),
+`make unstow` (remove symlinks), `make lint` (shellcheck). Run `make help` for
+the full list.
+
 For a single tool:
 
 ```bash
@@ -76,12 +81,13 @@ bash scripts/install/nvm.sh   # re-install or update one tool
 
 ```text
 ~/.dotfiles/
+├── Makefile                      # `make help` for available commands
 ├── install.sh                    # Main entry point
 ├── scripts/
 │   ├── lib/                      # Shared helpers (logging, git clone, preflight)
 │   ├── install/                  # One installer per tool
 │   └── setup/
-│       ├── symlinks.sh           # Wraps `stow`
+│       ├── symlinks.sh           # Wraps `stow` (supports --delete)
 │       └── default-zsh.sh
 └── stow/                         # Everything that gets symlinked into $HOME
     ├── zsh/                      # → ~/.zshrc + ~/.config/zsh/*
@@ -232,6 +238,47 @@ cmd2() { _load_tool; cmd2 "$@"; }
 
 Wrappers replace themselves with the real tool on first invocation. Zero startup cost; one-time cost when first used.
 
+### Installer script template
+
+Every script in `scripts/install/` and `scripts/setup/` follows the same section order:
+
+1. Shebang + one-line purpose comment.
+2. `set -euo pipefail`.
+3. `DOTFILES_DIR` + `source` block (`scripts/lib/*.sh` helpers, then the tool's `path.zsh` if needed) — each `source` preceded by a `# shellcheck source=` comment.
+4. Config array (only if the script has a configurable list), fenced by `# --- Config (edit here) ---` / `# --- end config ---`, placed immediately after the source block.
+5. Body — the install logic itself.
+6. `success "<tool> installed at $LOCATION"` as the final line.
+
+All output goes through `scripts/lib/log.sh` (`info`/`warning`/`success`/`error`) — never raw `echo`.
+
+Example, with a configurable version list:
+
+```bash
+#!/usr/bin/env bash
+# Install <tool> and its versions.
+
+set -euo pipefail
+
+DOTFILES_DIR="${DOTFILES_DIR:-$HOME/.dotfiles}"
+# shellcheck source=../lib/log.sh
+source "$DOTFILES_DIR/scripts/lib/log.sh"
+# shellcheck source=../../stow/<tool>/.config/<tool>/path.zsh
+source "$DOTFILES_DIR/stow/<tool>/.config/<tool>/path.zsh"
+
+# --- Config (edit here) ---
+VERSIONS=(
+    "1.2.3"
+)
+# --- end config ---
+
+info "Installing <tool>..."
+for version in "${VERSIONS[@]}"; do
+    info "Installing version $version..."
+done
+
+success "<tool> installed at $TOOL_HOME"
+```
+
 ### End-to-end steps
 
 The pattern, end to end:
@@ -244,10 +291,16 @@ The pattern, end to end:
 
 ```bash
 #!/usr/bin/env bash
+# Install <tool>.
+
 set -euo pipefail
+
 DOTFILES_DIR="${DOTFILES_DIR:-$HOME/.dotfiles}"
+# shellcheck source=../lib/log.sh
 source "$DOTFILES_DIR/scripts/lib/log.sh"
+# shellcheck source=../lib/git-clone.sh
 source "$DOTFILES_DIR/scripts/lib/git-clone.sh"
+# shellcheck source=../../stow/<tool>/.config/<tool>/path.zsh
 source "$DOTFILES_DIR/stow/<tool>/.config/<tool>/path.zsh"
 
 git_install https://github.com/owner/<tool>.git "$TOOL_HOME"
