@@ -87,7 +87,7 @@ bash scripts/install/nvm.sh   # re-install or update one tool
     ├── zsh/                      # → ~/.zshrc + ~/.config/zsh/*
     ├── zinit/                    # → ~/.config/zinit/path.zsh
     ├── nvm/                      # → ~/.config/nvm/path.zsh
-    ├── pyenv/                    # → ~/.config/pyenv/path.zsh
+    ├── uv/                       # → ~/.config/uv/path.zsh
     ├── fzf/                      # → ~/.config/fzf/path.zsh
     ├── nvim/                     # → ~/.config/nvim/
     ├── git/                      # → ~/.config/git/
@@ -115,7 +115,7 @@ These are exported at the top of `.zshrc` so every tool started from the shell i
 
 ### How a tool flows through three layers
 
-Take `zinit` as a worked example. The same pattern applies to every shell-extension tool (`nvm`, `pyenv`, `fzf`).
+Take `zinit` as a worked example. The same pattern applies to every shell-extension tool (`nvm`, `uv`, `fzf`).
 
 #### Layer 1: Install — where the tool's files live
 
@@ -173,8 +173,10 @@ These modify `$PATH`, define shell functions, or register hooks — work that mu
 | ------- | ---------------- |--------------------------------------------------------------------------------------------|
 | `zinit` | `ZINIT_HOME`     | Sources `zinit.zsh` to register the plugin manager.                                        |
 | `nvm`   | `NVM_DIR`        | Defines lazy wrappers for `nvm`/`node`/`npm`/`npx`.                                        |
-| `pyenv` | `PYENV_ROOT`     | Prepends `bin/` and `shims/` to `$PATH`; defines lazy wrappers for `pyenv`/`python`/`pip`. |
+| `uv`    | `UV_PYTHON_INSTALL_DIR` | Declares install-location env vars only — no `$PATH` edits or lazy wrappers needed. |
 | `fzf`   | —                | Currently no `path.zsh` (fzf installer writes its own shell init via `--xdg`)              |
+
+`uv` is a partial exception: it still needs `path.zsh` (rule 6 below) to declare where uv keeps its data, but it has no expensive shell-init to defer, so it skips the lazy-wrapper machinery `nvm` needs — its binary and `python`/`python3` shims already land in `$BIN_HOME`.
 
 ## Adding a new tool
 
@@ -182,7 +184,7 @@ These modify `$PATH`, define shell functions, or register hooks — work that mu
 
 `path.zsh` is the single source of truth for a tool's location. The shell sources it on startup; installers source it to learn where to put the tool. Seven rules:
 
-1. **Use the tool's official env var name** — whatever the tool itself reads. `ZINIT_HOME` for zinit, `NVM_DIR` for nvm, `PYENV_ROOT` for pyenv. Don't invent names; if you set `NVM_ROOT`, the nvm runtime won't see it.
+1. **Use the tool's official env var name** — whatever the tool itself reads. `ZINIT_HOME` for zinit, `NVM_DIR` for nvm, `UV_PYTHON_INSTALL_DIR`/`UV_TOOL_DIR` for uv. Don't invent names; if you set `NVM_ROOT`, the nvm runtime won't see it.
 2. **Always `export`** — installers and child processes need to inherit it.
 3. **Always include the XDG fallback** — `${XDG_DATA_HOME:-$HOME/.local/share}/<tool>`. Installers source `path.zsh` before `.zshrc` has a chance to export `XDG_*`, so the file must stand on its own.
 4. **Source runtimes conditionally** — `[[ -s "$X" ]] && source "$X"`. The file may be sourced before the tool is installed; never fail the shell.
@@ -271,7 +273,7 @@ That's it. No edits to `.zshrc` — the glob in `00-tools.zsh` picks up the new 
 
 ## Conventions
 
-- **Performance**: lazy-loading for `nvm` and `pyenv`; `zinit` runs plugins in turbo mode. Target startup: <300ms.
+- **Performance**: lazy-loading for `nvm`; `zinit` runs plugins in turbo mode; `uv` has no shell-init to defer. Target startup: <300ms.
 - **Local overrides**: machine-specific config goes in `~/.localrc`, auto-sourced by `.zshrc`. Not tracked in git.
 - **Backups**: stow refuses to overwrite real files. On first migration, move existing configs out of `$HOME` (or use `stow --adopt`, then verify `git diff` before committing).
 
