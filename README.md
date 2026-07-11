@@ -265,9 +265,9 @@ Example, with a configurable version list:
 set -euo pipefail
 
 DOTFILES_DIR="${DOTFILES_DIR:-$HOME/.dotfiles}"
-# shellcheck source=../../lib/log.sh
+# shellcheck source=lib/log.sh
 source "$DOTFILES_DIR/lib/log.sh"
-# shellcheck source=../../stow/<tool>/.config/<tool>/path.zsh
+# shellcheck source=stow/<tool>/.config/<tool>/path.zsh
 source "$DOTFILES_DIR/stow/<tool>/.config/<tool>/path.zsh"
 
 # --- Config (edit here) ---
@@ -301,11 +301,11 @@ The pattern, end to end:
 set -euo pipefail
 
 DOTFILES_DIR="${DOTFILES_DIR:-$HOME/.dotfiles}"
-# shellcheck source=../../lib/log.sh
+# shellcheck source=lib/log.sh
 source "$DOTFILES_DIR/lib/log.sh"
-# shellcheck source=../../lib/git-clone.sh
+# shellcheck source=lib/git-clone.sh
 source "$DOTFILES_DIR/lib/git-clone.sh"
-# shellcheck source=../../stow/<tool>/.config/<tool>/path.zsh
+# shellcheck source=stow/<tool>/.config/<tool>/path.zsh
 source "$DOTFILES_DIR/stow/<tool>/.config/<tool>/path.zsh"
 
 git_install https://github.com/owner/<tool>.git "$TOOL_HOME"

@@ -4,9 +4,9 @@
 set -euo pipefail
 
 DOTFILES_DIR="${DOTFILES_DIR:-$HOME/.dotfiles}"
-# shellcheck source=../../lib/log.sh
+# shellcheck source=lib/log.sh
 source "$DOTFILES_DIR/lib/log.sh"
-# shellcheck source=../../stow/uv/.config/uv/path.zsh
+# shellcheck source=stow/uv/.config/uv/path.zsh
 source "$DOTFILES_DIR/stow/uv/.config/uv/path.zsh"
 
 # --- Config (edit here) ---

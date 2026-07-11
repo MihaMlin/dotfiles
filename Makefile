@@ -39,4 +39,4 @@ update: stow install-nvm install-uv install-zinit install-fzf shell
 
 ## Shellcheck all scripts
 lint:
-	shellcheck install.sh lib/*.sh $(shell find scripts -name '*.sh')
+	shellcheck -x install.sh lib/*.sh $(shell find scripts -name '*.sh')

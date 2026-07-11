@@ -4,11 +4,11 @@
 set -euo pipefail
 
 DOTFILES_DIR="${DOTFILES_DIR:-$HOME/.dotfiles}"
-# shellcheck source=../../lib/log.sh
+# shellcheck source=lib/log.sh
 source "$DOTFILES_DIR/lib/log.sh"
-# shellcheck source=../../lib/git-clone.sh
+# shellcheck source=lib/git-clone.sh
 source "$DOTFILES_DIR/lib/git-clone.sh"
-# shellcheck source=../../stow/nvm/.config/nvm/path.zsh
+# shellcheck source=stow/nvm/.config/nvm/path.zsh
 source "$DOTFILES_DIR/stow/nvm/.config/nvm/path.zsh"
 
 # --- Config (edit here) ---
