@@ -41,13 +41,12 @@ alias apt-i='sudo apt install -y'
 alias apt-rm='sudo apt remove'
 alias apt-search='apt search'
 
-# Pyenv
+# uv
 alias py='python'
-alias pyenv-ls='pyenv versions'
-alias pyenv-i='pyenv install'
-alias pyenv-list='pyenv install --list | grep -E "^\s*3\.(1[0-9]|[0-9])\.[0-9]+$"'
-alias pyenv-g='pyenv global'
-alias pyenv-s='pyenv shell'
+alias uv-ls='uv python list --only-installed'
+alias uv-i='uv python install'
+alias uv-list='uv python list --all-versions'
+alias uv-g='uv python pin --global'
 
 # Tmux
 alias t='tmux'
