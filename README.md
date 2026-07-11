@@ -331,6 +331,22 @@ That's it. No edits to `.zshrc` — the glob in `00-tools.zsh` picks up the new 
 - **Local overrides**: machine-specific config goes in `~/.localrc`, auto-sourced by `.zshrc`. Not tracked in git.
 - **Backups**: stow refuses to overwrite real files. On first migration, move existing configs out of `$HOME` (or use `stow --adopt`, then verify `git diff` before committing).
 
+### `stow/bin/` script standard
+
+`stow/bin/.local/bin/` holds standalone CLI utilities symlinked onto `$PATH`.
+Unlike `scripts/install/`, they run standalone as day-to-day commands and
+must keep working even if this repo is moved or removed — so they stay
+self-contained: no `DOTFILES_DIR`, no sourcing `lib/log.sh`.
+
+- Shebang + one-line purpose comment, `set -euo pipefail`, blank line, body.
+- `[[ ... ]]` for conditionals — never the POSIX `[ ... ]`.
+- `command -v <tool> &>/dev/null` for dependency checks (no space before
+  `/dev/null`) — matches `scripts/install/*.sh`.
+- Errors go to stderr (`echo "..." >&2`) and exit non-zero; never print a
+  failure to stdout and keep going.
+- Color codes, if any, are declared once near the top under a `# Colors`
+  comment, with `NC='\033[0m'` for reset.
+
 ## Troubleshooting
 
 **`stow` reports conflicts on first run.**
