@@ -1,62 +1,21 @@
 ---
-description: Systematic refactor with a deterministic plan
-argument-hint: "<scope + reason>"
+description: Refactor the specified code to meet clean-code and architecture standards
 ---
 
-Refactor: $ARGUMENTS
+Refactor the code I point you to so it conforms to this project's standards in
+`.claude/docs/` — without changing its observable behavior.
 
-## Phase 1 — Analysis & Plan (NO CODE)
+Rules for this refactor:
 
-1. Analyze the existing implementation:
-   - kompleksnost
-   - duplication (DRY)
-   - coupling / cohesion
-   - type safety
-   - readability
+- **Behavior must not change.** If tests exist, they must still pass. If they don't
+  exist, note what tests should be added to lock behavior before/after.
+- Apply the **Style Guide** and **Naming Conventions**: small single-purpose functions,
+  intention-revealing names, early returns, no dead code.
+- Respect the **Architecture Principles**: correct layering, no new circular
+  dependencies, side effects at the edges.
+- Make **small, reviewable steps**, not one giant rewrite. Prefer a sequence of
+  safe transformations.
 
-2. Create/update `plan.md`:
-
-   **Goal**
-   - measurable reason (e.g. ↓ cyclomatic complexity, ↑ type safety)
-
-   **Scope**
-   - exact files / functions
-
-   **Changes**
-   - concrete operations (rename, extract, split, replace...)
-
-   **Invariants (Behavior Lock)**
-   - what must NOT change
-
-   **Verification**
-   - which tests / checks guarantee the same behavior
-
-   **Risks**
-   - where regressions may occur
-
-3. STOP:
-   - print a short plan (no code)
-   - wait for **GO**
-
----
-
-## Phase 2 — Execution (AFTER GO)
-
-1. Implement in atomic steps.
-2. After each step:
-   - build / lint / tests
-3. Forbidden:
-   - new features
-   - unrelated bug fixes
-
-4. Before finishing:
-   - check `git diff`
-   - remove debug artifacts
-
-Output:
-- Before GO → plan only
-- After GO → implementation
-- At the end → `ready to commit?` + `refactor:` commit message
-
-Constraint:
-- If the plan becomes invalid → STOP → back to Phase 1
+Before editing, give me a short plan: what you'll change and why. After I confirm,
+apply the changes and summarize what improved (readability, coupling, testability),
+citing the specific standards you applied.

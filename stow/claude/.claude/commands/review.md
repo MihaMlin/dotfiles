@@ -1,52 +1,23 @@
 ---
-description: Local code review (pre-PR)
-argument-hint: "[base-branch]"
+description: Review the current changes against the project's code standards
 ---
 
-Review against: ${ARGUMENTS:-main}
+Review the code in the current diff (or the files I specify) against this project's
+standards, defined in `.claude/docs/`.
 
-## Process
+Work through the **Code Review Checklist** (`@docs/CODE_REVIEW_CHECKLIST.md`) and apply
+the **Style Guide** (`@docs/STYLE_GUIDE.md`), **Naming Conventions**
+(`@docs/NAMING_CONVENTIONS.md`), and **Architecture Principles**
+(`@docs/ARCHITECTURE.md`).
 
-1. Scope:
-   - `git diff ${ARGUMENTS:-main}...HEAD --stat`
+Produce your review in this structure:
 
-2. File-level analysis:
-   - `git diff ${ARGUMENTS:-main}...HEAD -- <file>`
+1. **Summary** — one or two sentences on overall quality and readiness to merge.
+2. **Blockers** — issues that must be fixed before merge (correctness, security,
+   broken standards). Cite the specific rule.
+3. **Suggestions** — improvements worth making but not blocking.
+4. **Nits** — minor, optional polish.
 
-3. Check systematically:
-
-   **Correctness**
-   - edge cases
-   - null/undefined
-   - race conditions
-
-   **Security**
-   - input validation
-   - injection vectors
-   - secrets in the diff
-
-   **Tests**
-   - coverage for new behavior
-   - missing tests
-
-   **Consistency**
-   - alignment with CLAUDE.md
-   - naming / structure
-
-   **Performance**
-   - N+1
-   - unnecessary sync calls
-   - hot paths
-
----
-
-## Output
-
-- 🔴 **Blockers** — must be fixed
-- 🟡 **Strong recommendations**
-- 🟢 **Nice to have**
-
-Rules:
-- Do not modify code.
-- No praise.
-- If it is OK → `LGTM` + a concrete reason.
+For each item, reference the file and line, explain *why* it matters, and show a
+concrete fix. Be specific and constructive. If the change is clean, say so plainly
+rather than inventing problems.

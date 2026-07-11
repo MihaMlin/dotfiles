@@ -1,178 +1,46 @@
-# CLAUDE.md — Global Operating System
+# Project Standards
 
-## Core Principle
-Maximal correctness with minimal assumptions. Every step must be justified, reproducible, and reversible.
+> This file is loaded automatically at the start of every Claude Code session.
+> It is the single source of truth for how code in this project should be written,
+> structured, and reviewed. Keep it short — details live in the linked documents.
 
----
+## How to use these standards
 
-## The Three-Step Workflow (MANDATORY)
-When using superpowers follow the 3 step plan, write the files to /docs/superpowers.
+When writing or reviewing code in this repository, follow the standards in the
+linked documents below. If a request conflicts with these standards, flag the
+conflict and propose a compliant alternative rather than silently deviating.
 
-### Phase 1 — Brainstorming (WHAT)
-Analyze the request and explore solution space.
+- **Code & formatting standards** — see @docs/STYLE_GUIDE.md
+- **Naming conventions** — see @docs/NAMING_CONVENTIONS.md
+- **Architecture principles** — see @docs/ARCHITECTURE.md
+- **Review checklist** — see @docs/CODE_REVIEW_CHECKLIST.md
 
-**Output → `specs.md`**
-Must include:
-- Goal (precise, testable)
-- Required functionality
-- Constraints (technical, performance, security)
-- Edge cases
-- Non-goals
+## Non-negotiables (the short list)
 
-**Rules:**
-- No code.
-- No implementation details.
-- No file changes except `specs.md`.
+1. **Clarity over cleverness.** Optimize for the next person reading the code.
+2. **Small, single-purpose units.** Functions do one thing; modules own one concern.
+3. **Names carry intent.** No abbreviations, no `data`/`tmp`/`obj` placeholders.
+4. **No dead code, no commented-out blocks.** Delete it; version control remembers.
+5. **Fail loudly, fail early.** Validate inputs at boundaries; never swallow errors.
+6. **Every change is tested.** New behavior ships with tests that would fail without it.
+7. **Formatting is automated, not debated.** The formatter is the authority.
+8. **No secrets in code.** Credentials come from environment/config, never literals.
 
----
+## Working agreements for Claude
 
-### Phase 2 — Writing Plan (HOW)
-Convert specification into deterministic execution steps.
+- Prefer editing existing files over creating new ones unless a new module is warranted.
+- Before large refactors, propose a short plan and wait for confirmation.
+- When unsure about a convention, ask or check the linked docs — do not guess.
+- Match the surrounding code's existing style when it doesn't violate these standards.
+- Explain *why* in commit messages and PR descriptions, not just *what*.
 
-**Output → `plan.md`**
-Must include:
-- File-level changes
-- Data flow
-- Algorithms (if needed)
-- Failure modes
-- Test strategy
+## Project-specific context
 
-**Rules:**
-- No implementation.
-- Every step must map to spec.
-- Stop and wait for explicit **GO**.
+<!-- Fill these in for your project so Claude has the right context. -->
 
----
-
-### Phase 3 — Executing Plan (DO)
-Implement strictly according to plan.
-
-**Rules:**
-- No deviation without returning to Phase 1.
-- Validate after each logical step.
-- Prefer smallest correct change.
-
----
-
-## Invariants
-
-- Determinism > speed  
-- Correctness > completeness  
-- Explicitness > convenience  
-- Reproducibility > intuition  
-
----
-
-## Communication
-
-- No filler.
-- No praise.
-- No summaries.
-- State uncertainty explicitly.
-- Slovenian (discussion), English (code/tech).
-
----
-
-## Environment
-
-- Shell: `zsh`
-- Node: `nvm` (lazy loaded)
-- Python: `python` (lazy loaded)
-
-**Implication:**
-- First invocation of `node`, `npm`, `python`, or `pip` may have startup delay.
-
----
-
-## Code Rules
-
-### General
-- Read existing code first.
-- Match conventions exactly.
-- No hidden side effects.
-
-### Dependencies
-- Forbidden without approval.
-
-### Changes
-- >50 LOC → require plan.
-
-### Testing
-- Failing tests → immediate stop.
-- No fix-forward.
-
-### Comments
-- Explain **why**, not **what**.
-
----
-
-## Tech Defaults
-
-### TypeScript
-- `strict: true`
-- No `any`
-- Named exports
-- Zod validation
-
-### Python
-- Type hints mandatory
-- `ruff`
-- `pytest`
-
-### Bash
-- `set -euo pipefail`
-- shellcheck clean
-
----
-
-## Git Protocol
-
-### Allowed
-- `status`, `diff`, `log`, `show`
-
-### Restricted
-- `add`, `commit` → require approval  
-- `push`, branching → forbidden without explicit command  
-
-### Commit Flow
-1. Propose commit
-2. Provide conventional message
-3. Wait for approval
-4. Execute
-
----
-
-## Security
-
-- No secrets in code
-- Use `.env`
-- Scan diffs before commit
-
----
-
-## Failure Handling
-
-On any inconsistency:
-1. Stop
-2. Identify root cause
-3. Return to Phase 1
-
----
-
-## Trigger Keywords
-
-- `superpowers brainstorming` → Phase 1  
-- `writing-plan` → Phase 2  
-- `GO` → Phase 3  
-- `fix` → reproduce → isolate → fix  
-- `refactor` → preserve behavior  
-
----
-
-## Anti-Patterns (FORBIDDEN)
-
-- Writing code during Phase 1 or 2  
-- Implicit assumptions  
-- Silent deviations from plan  
-- Adding dependencies without approval  
-- Continuing after test failure  
+- **Primary language(s):** _e.g. TypeScript, Python_
+- **Framework(s):** _e.g. React, FastAPI_
+- **Package manager:** _e.g. pnpm, uv_
+- **Test command:** _e.g. `pnpm test`, `pytest`_
+- **Lint/format command:** _e.g. `pnpm lint`, `ruff format`_
+- **Build command:** _e.g. `pnpm build`_
