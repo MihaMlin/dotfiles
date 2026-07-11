@@ -25,7 +25,7 @@ STEPS=(
     "scripts/setup/symlinks.sh"     # Stow symlinks
     "scripts/install/neovim.sh"     # Neovim + plugins
     "scripts/install/nvm.sh"        # Node Version Manager
-    "scripts/install/pyenv.sh"      # Python Version Manager
+    "scripts/install/uv.sh"         # Python Version Manager (uv)
     "scripts/install/zinit.sh"      # Zsh plugin manager
     "scripts/install/fzf.sh"        # Fzf fuzzy finder
     "scripts/setup/default-zsh.sh"  # Default zsh shell
