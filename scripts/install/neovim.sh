@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-#
 # Install the latest Neovim from the unstable PPA.
 # Config (init.lua) is symlinked separately via stow/nvim/.
 

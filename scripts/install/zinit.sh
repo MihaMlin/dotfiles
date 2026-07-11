@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-#
 # Install Zinit plugin manager for Zsh.
 
 set -euo pipefail
