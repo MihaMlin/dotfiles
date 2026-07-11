@@ -323,7 +323,7 @@ Makefile target covers any script under `scripts/install/`).
 ./install.sh
 ```
 
-That's it. No edits to `.zshrc` — the glob in `00-tools.zsh` picks up the new `path.zsh` automatically.
+That's it. No edits to `.zshrc` — its `path.zsh` glob picks up the new file automatically.
 
 ## Conventions
 

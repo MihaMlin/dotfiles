@@ -1,8 +1,8 @@
 # 30-plugins.zsh — Zinit plugin declarations
+# Zinit itself is loaded by stow/zinit/.config/zinit/path.zsh, sourced
+# earlier in .zshrc — this file only declares plugins.
 
-ZINIT_HOME="${XDG_DATA_HOME}/zinit/zinit.git"
-[[ -f "$ZINIT_HOME/zinit.zsh" ]] || return
-source "$ZINIT_HOME/zinit.zsh"
+(( $+functions[zinit] )) || return
 
 # Theme (immediate)
 zinit ice depth=1 atload'source "$XDG_CONFIG_HOME/zsh/themes/p10k.zsh"'

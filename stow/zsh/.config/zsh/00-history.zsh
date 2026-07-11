@@ -1,4 +1,4 @@
-# 00-history.zsh
+# 00-history.zsh — history file location and dedup options
 
 mkdir -p "$XDG_STATE_HOME/zsh"
 HISTFILE="$XDG_STATE_HOME/zsh/history"

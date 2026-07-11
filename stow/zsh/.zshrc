@@ -28,13 +28,14 @@ typeset -U path fpath cdpath
 path=("$BIN_HOME" $path)
 export PATH
 
-# Source all config modules in order
-for _f in "$XDG_CONFIG_HOME/zsh/"[0-9][0-9]-*.zsh(N); do
+# Source tool path files first (each stow package drops one here), so tools
+# like zinit are already loaded by the time the numbered configs need them.
+for _f in "$XDG_CONFIG_HOME"/*/path.zsh(N); do
     source "$_f"
 done
 
-# Source tool path files (each stow package drops one here)
-for _f in "$XDG_CONFIG_HOME"/*/path.zsh(N); do
+# Source all config modules in order
+for _f in "$XDG_CONFIG_HOME/zsh/"[0-9][0-9]-*.zsh(N); do
     source "$_f"
 done
 

@@ -1,4 +1,4 @@
-# 20-aliases.zsh
+# 20-aliases.zsh — everyday shell aliases
 
 # Shell
 alias reload!='. ~/.zshrc'

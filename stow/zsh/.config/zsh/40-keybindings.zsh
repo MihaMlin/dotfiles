@@ -1,4 +1,4 @@
-# 40-keybindings.zsh
+# 40-keybindings.zsh — Emacs-mode key bindings
 
 bindkey -e  # Emacs mode
 
