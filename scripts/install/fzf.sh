@@ -4,10 +4,10 @@
 set -euo pipefail
 
 DOTFILES_DIR="${DOTFILES_DIR:-$HOME/.dotfiles}"
-# shellcheck source=../lib/log.sh
-source "$DOTFILES_DIR/scripts/lib/log.sh"
-# shellcheck source=../lib/git-clone.sh
-source "$DOTFILES_DIR/scripts/lib/git-clone.sh"
+# shellcheck source=../../lib/log.sh
+source "$DOTFILES_DIR/lib/log.sh"
+# shellcheck source=../../lib/git-clone.sh
+source "$DOTFILES_DIR/lib/git-clone.sh"
 # shellcheck source=../../stow/fzf/.config/fzf/path.zsh
 source "$DOTFILES_DIR/stow/fzf/.config/fzf/path.zsh"
 

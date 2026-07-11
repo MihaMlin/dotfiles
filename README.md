@@ -64,18 +64,14 @@ The installer is idempotent. Safe to re-run.
 ```bash
 ./install.sh                  # full
 ./install.sh --skip-apt       # skip apt step (faster on re-runs)
-./install.sh --only-symlinks  # just re-stow (no sudo needed)
+./install.sh --only stow      # just re-stow (no sudo needed)
+./install.sh --only nvm       # re-run a single step
 ```
 
 Or via `make`: `make install`, `make update` (skip apt), `make stow` (re-stow only),
-`make unstow` (remove symlinks), `make lint` (shellcheck). Run `make help` for
-the full list.
-
-For a single tool:
-
-```bash
-bash scripts/install/nvm.sh   # re-install or update one tool
-```
+`make unstow` (remove symlinks), `make apt` (apt packages only),
+`make install-nvm` / `install-uv` / `install-zinit` / `install-fzf` / `install-shell`
+(one tool at a time), `make lint` (shellcheck). Run `make help` for the full list.
 
 ## Repo layout
 
@@ -83,8 +79,8 @@ bash scripts/install/nvm.sh   # re-install or update one tool
 ~/.dotfiles/
 ├── Makefile                      # `make help` for available commands
 ├── install.sh                    # Main entry point
+├── lib/                          # Shared helpers (logging, git clone, preflight)
 ├── scripts/
-│   ├── lib/                      # Shared helpers (logging, git clone, preflight)
 │   ├── install/                  # One installer per tool
 │   └── setup/
 │       ├── symlinks.sh           # Wraps `stow` (supports --delete)
@@ -95,7 +91,6 @@ bash scripts/install/nvm.sh   # re-install or update one tool
     ├── nvm/                      # → ~/.config/nvm/path.zsh
     ├── uv/                       # → ~/.config/uv/path.zsh
     ├── fzf/                      # → ~/.config/fzf/path.zsh
-    ├── nvim/                     # → ~/.config/nvim/
     ├── git/                      # → ~/.config/git/
     ├── tmux/                     # → ~/.config/tmux/
     ├── claude/                   # → ~/.claude/
@@ -166,7 +161,6 @@ These tools are normal binaries on `$PATH` and read `$XDG_CONFIG_HOME/<name>/` a
 
 | Tool    | Why no `path.zsh`                                                                           |
 | ------- | --------------------------------------------------------------------------------------------|
-| `nvim`  | Apt-installed via PPA → `/usr/bin/nvim` (default `$PATH`). Reads `~/.config/nvim/init.lua`. |
 | `git`   | System binary. Reads `~/.config/git/config`.                                                |
 | `tmux`  | System binary. Reads `~/.config/tmux/tmux.conf`.                                            |
 | `bin`   | Just user scripts symlinked to `~/.local/bin/`. No tool, no config to load.                 |
@@ -244,12 +238,12 @@ Every script in `scripts/install/` and `scripts/setup/` follows the same section
 
 1. Shebang + one-line purpose comment.
 2. `set -euo pipefail`.
-3. `DOTFILES_DIR` + `source` block (`scripts/lib/*.sh` helpers, then the tool's `path.zsh` if needed) — each `source` preceded by a `# shellcheck source=` comment.
+3. `DOTFILES_DIR` + `source` block (`lib/*.sh` helpers, then the tool's `path.zsh` if needed) — each `source` preceded by a `# shellcheck source=` comment.
 4. Config array (only if the script has a configurable list), fenced by `# --- Config (edit here) ---` / `# --- end config ---`, placed immediately after the source block.
 5. Body — the install logic itself.
 6. `success "<tool> installed at $LOCATION"` as the final line.
 
-All output goes through `scripts/lib/log.sh` (`info`/`warning`/`success`/`error`) — never raw `echo`.
+All output goes through `lib/log.sh` (`info`/`warning`/`success`/`error`) — never raw `echo`.
 
 Example, with a configurable version list:
 
@@ -260,8 +254,8 @@ Example, with a configurable version list:
 set -euo pipefail
 
 DOTFILES_DIR="${DOTFILES_DIR:-$HOME/.dotfiles}"
-# shellcheck source=../lib/log.sh
-source "$DOTFILES_DIR/scripts/lib/log.sh"
+# shellcheck source=../../lib/log.sh
+source "$DOTFILES_DIR/lib/log.sh"
 # shellcheck source=../../stow/<tool>/.config/<tool>/path.zsh
 source "$DOTFILES_DIR/stow/<tool>/.config/<tool>/path.zsh"
 
@@ -296,10 +290,10 @@ The pattern, end to end:
 set -euo pipefail
 
 DOTFILES_DIR="${DOTFILES_DIR:-$HOME/.dotfiles}"
-# shellcheck source=../lib/log.sh
-source "$DOTFILES_DIR/scripts/lib/log.sh"
-# shellcheck source=../lib/git-clone.sh
-source "$DOTFILES_DIR/scripts/lib/git-clone.sh"
+# shellcheck source=../../lib/log.sh
+source "$DOTFILES_DIR/lib/log.sh"
+# shellcheck source=../../lib/git-clone.sh
+source "$DOTFILES_DIR/lib/git-clone.sh"
 # shellcheck source=../../stow/<tool>/.config/<tool>/path.zsh
 source "$DOTFILES_DIR/stow/<tool>/.config/<tool>/path.zsh"
 
@@ -307,14 +301,9 @@ git_install https://github.com/owner/<tool>.git "$TOOL_HOME"
 success "<tool> installed at $TOOL_HOME"
 ```
 
-**4. Register the installer in `install.sh`:**
-
-```bash
-installers=(
-    # ...existing...
-    "scripts/install/<tool>.sh"
-)
-```
+**4. Register the installer in `install.sh`:** add the step's short name to
+`STEP_NAMES` and its script path to `STEP_SCRIPTS` (same index in both
+arrays) — this also makes it runnable on its own via `./install.sh --only <name>`.
 
 **5. Run:**
 

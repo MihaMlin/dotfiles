@@ -4,24 +4,36 @@
 
 .DEFAULT_GOAL := help
 
-.PHONY: help install stow unstow clean update lint
+.PHONY: help install stow unstow clean apt update lint
 
-help: ## Show this help
-	@grep -hE '^[a-zA-Z_-]+:.*##' $(MAKEFILE_LIST) | awk 'BEGIN{FS=":.*##"}{printf "  %-10s %s\n", $$1, $$2}'
+## Show this help
+help:
+	@awk '/^## / { desc = substr($$0, 4) } /^[a-zA-Z0-9_%-]+:/ && desc { sub(/:.*/, "", $$0); printf "  %-14s %s\n", $$0, desc; desc = "" }' $(MAKEFILE_LIST)
 
-install: ## Full install (apt + installers + stow + default shell)
+## Full install (apt + installers + stow + default shell)
+install:
 	./install.sh
 
-stow: ## Symlink configs only (no sudo)
-	./install.sh --only-symlinks
+## Symlink configs only (no sudo)
+stow:
+	./install.sh --only stow
 
-unstow: ## Remove symlinks from $HOME (reversible via `make stow`)
+## Remove symlinks from $HOME (reversible via `make stow`)
+unstow:
 	./scripts/setup/symlinks.sh --delete
 
-clean: unstow
+## Install apt packages only
+apt:
+	./install.sh --only apt
 
-update: ## Re-run installers to update tools/versions (skips apt)
+## Install a single tool: nvm, uv, zinit, fzf, shell
+install-%:
+	./install.sh --only $*
+
+## Re-run installers to update tools/versions (skips apt)
+update:
 	./install.sh --skip-apt
 
-lint: ## Shellcheck all scripts
-	shellcheck install.sh $(shell find scripts -name '*.sh')
+## Shellcheck all scripts
+lint:
+	shellcheck install.sh lib/*.sh $(shell find scripts -name '*.sh')

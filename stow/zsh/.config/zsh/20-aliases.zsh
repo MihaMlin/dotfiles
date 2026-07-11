@@ -55,7 +55,7 @@ alias tl='tmux ls'
 alias tk='tmux kill-server'
 
 # Quick edits
-alias zshrc='${EDITOR:-nvim} ~/.zshrc'
+alias zshrc='${EDITOR:-vim} ~/.zshrc'
 alias dotfiles='cd "$DOTFILES"'
 
 # History

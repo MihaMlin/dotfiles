@@ -201,8 +201,5 @@
   "projectManager.git.baseFolders": ["~/projects"],
   "github.copilot.nextEditSuggestions.enabled": false,
   "editor.formatOnSave": true,
-  "extensions.experimental.affinity": {
-    "asvetliakov.vscode-neovim": 1
-  },
   "chat.viewSessions.orientation": "stacked"
 }

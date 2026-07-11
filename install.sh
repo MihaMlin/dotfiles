@@ -6,7 +6,8 @@
 # Usage:
 #   ./install.sh                  # full install
 #   ./install.sh --skip-apt       # everything except apt
-#   ./install.sh --only-symlinks  # just refresh symlinks
+#   ./install.sh --only stow      # just refresh symlinks
+#   ./install.sh --only nvm       # just (re)run one step
 
 set -euo pipefail
 
@@ -14,24 +15,32 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 export DOTFILES_DIR="$SCRIPT_DIR"
 cd "$SCRIPT_DIR"
 
-# shellcheck source=scripts/lib/log.sh
-source "$SCRIPT_DIR/scripts/lib/log.sh"
-# shellcheck source=scripts/lib/preflight.sh
-source "$SCRIPT_DIR/scripts/lib/preflight.sh"
+# shellcheck source=lib/log.sh
+source "$SCRIPT_DIR/lib/log.sh"
+# shellcheck source=lib/preflight.sh
+source "$SCRIPT_DIR/lib/preflight.sh"
 
-# Installation steps, run in order.
-STEPS=(
-    "scripts/install/apt.sh"        # APT packages
-    "scripts/setup/symlinks.sh"     # Stow symlinks
-    "scripts/install/neovim.sh"     # Neovim + plugins
-    "scripts/install/nvm.sh"        # Node Version Manager
-    "scripts/install/uv.sh"         # Python Version Manager (uv)
-    "scripts/install/zinit.sh"      # Zsh plugin manager
-    "scripts/install/fzf.sh"        # Fzf fuzzy finder
-    "scripts/setup/default-zsh.sh"  # Default zsh shell
+# Steps, run in order. Each name is a valid --only argument.
+STEP_NAMES=(
+    apt
+    stow
+    nvm
+    uv
+    zinit
+    fzf
+    shell
+)
+STEP_SCRIPTS=(
+    scripts/install/apt.sh
+    scripts/setup/symlinks.sh
+    scripts/install/nvm.sh
+    scripts/install/uv.sh
+    scripts/install/zinit.sh
+    scripts/install/fzf.sh
+    scripts/setup/default-zsh.sh
 )
 
-ONLY_SYMLINKS=false
+ONLY_STEP=""
 SKIP_APT=false
 
 
@@ -40,14 +49,16 @@ usage() {
 Usage: ./install.sh [options]
 
 Options:
-  --skip-apt        Skip apt packages step (faster on re-runs)
-  --only-symlinks   Re-run stow only (no sudo, no installers)
-  -h, --help        Show this help and exit
+  --skip-apt     Skip apt packages step (faster on re-runs)
+  --only <step>  Run a single step, no sudo unless the step needs it
+                 Valid steps: ${STEP_NAMES[*]}
+  -h, --help     Show this help and exit
 
 Examples:
   ./install.sh                  # full install
   ./install.sh --skip-apt       # everything except apt
-  ./install.sh --only-symlinks  # just refresh symlinks
+  ./install.sh --only stow      # just refresh symlinks
+  ./install.sh --only nvm       # just (re)run the nvm step
 EOF
 }
 
@@ -55,13 +66,27 @@ EOF
 parse_args() {
     while [[ $# -gt 0 ]]; do
         case "$1" in
-            --only-symlinks) ONLY_SYMLINKS=true ;;
-            --skip-apt)      SKIP_APT=true ;;
-            -h|--help)       usage; exit 0 ;;
-            *)               error "Unknown flag: $1"; usage >&2; exit 1 ;;
+            --only)
+                ONLY_STEP="${2:-}"
+                [[ -n "$ONLY_STEP" ]] || { error "--only requires a step name"; usage >&2; exit 1; }
+                shift
+                ;;
+            --skip-apt) SKIP_APT=true ;;
+            -h|--help)  usage; exit 0 ;;
+            *)          error "Unknown flag: $1"; usage >&2; exit 1 ;;
         esac
         shift
     done
+}
+
+
+script_for_step() {
+    local step="$1" i
+    for i in "${!STEP_NAMES[@]}"; do
+        [[ "${STEP_NAMES[$i]}" == "$step" ]] && { echo "${STEP_SCRIPTS[$i]}"; return; }
+    done
+    error "Unknown step: '$step'. Valid steps: ${STEP_NAMES[*]}"
+    exit 1
 }
 
 
@@ -78,14 +103,22 @@ run_step() {
 }
 
 
-run_installers() {
+run_only_step() {
+    local script
+    script=$(script_for_step "$ONLY_STEP")
+    run_step "$ONLY_STEP" "$script"
+    success "Step '$ONLY_STEP' complete."
+}
+
+
+run_all_steps() {
     local idx=1
-    for script in "${STEPS[@]}"; do
-        if [[ "$SKIP_APT" == true && "$script" == "scripts/install/apt.sh" ]]; then
-            info "Skipping apt.sh (--skip-apt)"
+    for i in "${!STEP_NAMES[@]}"; do
+        if [[ "$SKIP_APT" == true && "${STEP_NAMES[$i]}" == "apt" ]]; then
+            info "Skipping apt step (--skip-apt)"
             continue
         fi
-        run_step "$idx" "$script"
+        run_step "$idx" "${STEP_SCRIPTS[$i]}"
         ((idx++))
     done
 }
@@ -104,17 +137,15 @@ launch_zsh() {
 main() {
     parse_args "$@"
 
-    if [[ "$ONLY_SYMLINKS" == true ]]; then
-        running "Running symlinks only..."
-        bash "$SCRIPT_DIR/scripts/setup/symlinks.sh"
-        success "Symlinking done."
+    if [[ -n "$ONLY_STEP" ]]; then
+        run_only_step
         return
     fi
 
     preflight_check
 
     step "Running installer & setup scripts..."
-    run_installers
+    run_all_steps
 
     success "Installation & setup complete!"
     launch_zsh

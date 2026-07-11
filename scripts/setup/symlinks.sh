@@ -5,8 +5,8 @@
 set -euo pipefail
 
 DOTFILES_DIR="${DOTFILES_DIR:-$HOME/.dotfiles}"
-# shellcheck source=../lib/log.sh
-source "$DOTFILES_DIR/scripts/lib/log.sh"
+# shellcheck source=../../lib/log.sh
+source "$DOTFILES_DIR/lib/log.sh"
 
 STOW_DIR="$DOTFILES_DIR/stow"
 STOW_ACTION_ARGS=(--restow --adopt)
