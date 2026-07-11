@@ -23,7 +23,8 @@ NVM_VERSION="v0.40.3"
 info "Installing nvm $NVM_VERSION..."
 git_install "https://github.com/nvm-sh/nvm.git" "$NVM_DIR" --branch "$NVM_VERSION" --depth 1
 
-# Load nvm directly — path.zsh's lazy-load wrapper is zsh-only.
+# Make nvm usable in this script — it has no binary, so path.zsh only
+# defines a zsh-only lazy-load wrapper; source its runtime directly instead.
 # shellcheck source=/dev/null
 [[ -s "$NVM_DIR/nvm.sh" ]] && source "$NVM_DIR/nvm.sh"
 

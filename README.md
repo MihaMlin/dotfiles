@@ -244,6 +244,18 @@ Every script in `scripts/install/` and `scripts/setup/` follows the same section
 
 All output goes through `lib/log.sh` (`info`/`warning`/`success`/`error`) — never raw `echo`.
 
+**Making a freshly-installed tool usable within the same script.** `path.zsh`
+never does eager work (rule 5 above), so if the body needs to invoke the tool
+itself right after installing it (e.g. to install versions in a loop), the
+installer must activate it explicitly — right after the install step, with a
+one-line comment explaining why:
+- **Binary on disk** (e.g. `uv`): prepend its directory to `PATH`.
+  `export PATH="$UV_INSTALL_DIR:$PATH"`
+- **Shell-function-only tool** (e.g. `nvm`, which has no binary): `source`
+  its runtime script directly — `path.zsh`'s lazy-load wrapper is zsh-only
+  and can't be reused from a bash installer.
+  `[[ -s "$NVM_DIR/nvm.sh" ]] && source "$NVM_DIR/nvm.sh"`
+
 Example, with a configurable version list:
 
 ```bash

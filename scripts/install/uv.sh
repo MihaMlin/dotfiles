@@ -24,7 +24,8 @@ else
     curl -LsSf https://astral.sh/uv/install.sh | env UV_NO_MODIFY_PATH=1 sh
 fi
 
-# Make uv callable for the rest of this script, even on first install.
+# Make uv usable in this script — it's a real binary, so prepend its
+# directory to PATH (path.zsh only declares UV_INSTALL_DIR, no eager work).
 export PATH="$UV_INSTALL_DIR:$PATH"
 
 for version in "${VERSIONS[@]}"; do
