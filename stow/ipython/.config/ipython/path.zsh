@@ -1,0 +1,2 @@
+# IPython
+export IPYTHONDIR="${XDG_CONFIG_HOME:-$HOME/.config}/ipython"

@@ -1,0 +1,3 @@
+default_context: {}
+cookiecutters_dir: "~/.local/share/cookiecutters"
+replay_dir: "~/.local/state/cookiecutter/replay"

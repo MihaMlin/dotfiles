@@ -12,6 +12,6 @@ source "$DOTFILES_DIR/lib/git-clone.sh"
 source "$DOTFILES_DIR/stow/fzf/.config/fzf/path.zsh"
 
 info "Installing fzf..."
-git_install "https://github.com/junegunn/fzf.git" "$FZF_HOME" --depth 1
-"$FZF_HOME/install" --bin   # only install the binary, not shell integration
-success "fzf installed at $FZF_HOME"
+git_install "https://github.com/junegunn/fzf.git" "$FZF_DIR" --depth 1
+"$FZF_DIR/install" --bin   # only install the binary, not shell integration
+success "fzf installed at $FZF_DIR"

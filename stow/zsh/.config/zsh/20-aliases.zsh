@@ -1,7 +1,7 @@
 # 20-aliases.zsh — everyday shell aliases
 
 # Shell
-alias reload!='. ~/.zshrc'
+alias reload!='exec zsh'
 alias cls='clear'
 
 # Navigation
@@ -55,7 +55,7 @@ alias tl='tmux ls'
 alias tk='tmux kill-server'
 
 # Quick edits
-alias zshrc='${EDITOR:-vim} ~/.zshrc'
+alias zshrc='${EDITOR:-vim} "$ZDOTDIR/.zshrc"'
 alias dotfiles='cd "$DOTFILES"'
 
 # History
