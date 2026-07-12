@@ -1,8 +1,12 @@
-# `.claude/` — Project Configuration for Claude Code
+# `.claude/` — Global Configuration for Claude Code
 
-This folder configures how Claude Code works within this repository and encodes the
-team's engineering standards so that generated and reviewed code is clean, consistent,
+This folder configures how Claude Code works across **all** projects and encodes
+personal engineering standards so that generated and reviewed code is clean, consistent,
 and professional by default.
+
+It lives at `stow/claude/.claude/` in this dotfiles repo and is symlinked by GNU Stow
+into `~/.claude/`, where Claude Code loads it automatically for every session,
+regardless of which project you're working in.
 
 ## What's here
 
@@ -38,11 +42,13 @@ and professional by default.
 
 ## Getting started
 
-1. Drop this `.claude/` folder into the root of your repository.
-2. Open `CLAUDE.md` and fill in the **Project-specific context** section (language,
-   test command, lint command, etc.).
+1. From the dotfiles repo root, run `stow claude` (or your usual `install.sh`/`make`
+   target) to symlink this folder to `~/.claude/`.
+2. `CLAUDE.md`'s **Project-specific context** section is left as generic placeholders
+   on purpose — it's global, so per-project specifics belong in that project's own
+   `CLAUDE.md` instead.
 3. Adjust `settings.json` permissions to match how much autonomy you want to grant.
-4. Tweak the standards in `docs/` to fit your team — they're a strong default, not dogma.
+4. Tweak the standards in `docs/` to fit how you work — they're a strong default, not dogma.
 5. In Claude Code, try `/review` on a branch with changes, or ask Claude to use the
    `code-reviewer` agent.
 
@@ -50,4 +56,6 @@ and professional by default.
 
 These standards are intentionally opinionated but general. Treat them as a starting
 point: sharpen the language-specific rules, add ADRs under `docs/adr/`, and add your
-own slash commands and agents as your workflow grows.
+own slash commands and agents as your workflow grows. Since this config is global,
+changes here apply to every project immediately after Stow re-links (or on next
+session if already linked).
