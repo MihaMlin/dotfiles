@@ -113,6 +113,8 @@
   "editor.bracketPairColorization.enabled": true,
   "editor.bracketPairColorization.independentColorPoolPerBracketType": true,
 
+  "explorer.compactFolders": false,
+
   "workbench.colorTheme": "Dark+", // [Default Dark+, One Dark Pro]
   "workbench.iconTheme": "material-icon-theme",
   "workbench.startupEditor": "none",
@@ -201,5 +203,10 @@
   "projectManager.git.baseFolders": ["~/projects"],
   "github.copilot.nextEditSuggestions.enabled": false,
   "editor.formatOnSave": true,
-  "chat.viewSessions.orientation": "stacked"
+  "extensions.experimental.affinity": {
+    "asvetliakov.vscode-neovim": 1
+  },
+  "chat.viewSessions.orientation": "stacked",
+  "claudeCode.preferredLocation": "panel",
+  "remote.autoForwardPortsSource": "hybrid"
 }
