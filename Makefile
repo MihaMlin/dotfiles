@@ -4,39 +4,36 @@
 
 .DEFAULT_GOAL := help
 
-.PHONY: help install stow unstow apt shell update lint
+.PHONY: help
+help: ## Show this help
+	@grep -E '^[a-zA-Z0-9_%-]+:.*## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*## "}; {printf "  %-14s %s\n", $$1, $$2}'
 
-## Show this help
-help:
-	@awk '/^## / { desc = substr($$0, 4) } /^[a-zA-Z0-9_%-]+:/ && desc { sub(/:.*/, "", $$0); printf "  %-14s %s\n", $$0, desc; desc = "" }' $(MAKEFILE_LIST)
-
-## Full install (apt + stow + installers + default shell)
-install:
+.PHONY: install
+install: ## Full install (apt + stow + installers + default shell)
 	./install.sh
 
-## Symlink configs only (no sudo)
-stow:
+.PHONY: stow
+stow: ## Symlink configs only (no sudo)
 	bash scripts/setup/symlinks.sh
 
-## Remove symlinks from $HOME (reversible via `make stow`)
-unstow:
+.PHONY: unstow
+unstow: ## Remove symlinks from $HOME (reversible via `make stow`)
 	bash scripts/setup/symlinks.sh --delete
 
-## Install apt packages only
-apt:
+.PHONY: apt
+apt: ## Install apt packages only
 	bash scripts/install/apt.sh
 
-## Install a single tool: nvm, uv, zinit, fzf
-install-%:
+install-%: ## Install a single tool: nvm, uv, zinit, fzf
 	bash scripts/install/$*.sh
 
-## Set zsh as the default shell
-shell:
+.PHONY: shell
+shell: ## Set zsh as the default shell
 	bash scripts/setup/default-zsh.sh
 
-## Re-run installers to update tools/versions (skips apt)
-update: stow install-nvm install-uv install-zinit install-fzf shell
+.PHONY: update
+update: stow install-nvm install-uv install-zinit install-fzf shell ## Re-run installers to update tools/versions (skips apt)
 
-## Shellcheck all scripts
-lint:
+.PHONY: lint
+lint: ## Shellcheck all scripts
 	shellcheck -x install.sh lib/*.sh $(shell find scripts -name '*.sh')
