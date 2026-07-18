@@ -14,6 +14,7 @@ conflict and propose a compliant alternative rather than silently deviating.
 - **Naming conventions** — see @docs/NAMING_CONVENTIONS.md
 - **Architecture principles** — see @docs/ARCHITECTURE.md
 - **Review checklist** — see @docs/CODE_REVIEW_CHECKLIST.md
+- **Git & GitHub standards (commit messages, attribution, PRs)** — see @docs/GIT_STANDARDS.md
 
 ## Non-negotiables (the short list)
 
