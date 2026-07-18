@@ -13,7 +13,7 @@
   "editor.mouseWheelZoom": true,
 
   "github.copilot.enable": {
-    "*": true
+    "*": true,
   },
 
   // --------------------------------------------------------------------------
@@ -34,7 +34,7 @@
     "**/.DS_Store": true,
     "**/Thumbs.db": true,
     "**/venv": true,
-    "**/.mypy_cache": true
+    "**/.mypy_cache": true,
   },
 
   // --------------------------------------------------------------------------
@@ -43,59 +43,59 @@
   "[python]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true,
-    "editor.tabSize": 4
+    "editor.tabSize": 4,
   },
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
-      "source.organizeImports": "explicit"
+      "source.organizeImports": "explicit",
     },
-    "javascript.preferences.importModuleSpecifier": "relative"
+    "javascript.preferences.importModuleSpecifier": "relative",
   },
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
-      "source.organizeImports": "explicit"
+      "source.organizeImports": "explicit",
     },
-    "typescript.preferences.importModuleSpecifier": "relative"
+    "typescript.preferences.importModuleSpecifier": "relative",
   },
   "[javascriptreact]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
-      "source.organizeImports": "explicit"
+      "source.organizeImports": "explicit",
     },
-    "javascript.preferences.importModuleSpecifier": "relative"
+    "javascript.preferences.importModuleSpecifier": "relative",
   },
   "[typescriptreact]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
-      "source.organizeImports": "explicit"
+      "source.organizeImports": "explicit",
     },
-    "typescript.preferences.importModuleSpecifier": "relative"
+    "typescript.preferences.importModuleSpecifier": "relative",
   },
   "[json]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.wordWrap": "on",
-    "editor.inlineSuggest.enabled": false
+    "editor.inlineSuggest.enabled": false,
   },
   "[html]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
   },
   "[css]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
   },
   "[scss]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
   },
   "[markdown]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.wordWrap": "on",
     "files.trimTrailingWhitespace": false,
-    "editor.formatOnSave": false
+    "editor.formatOnSave": false,
   },
 
   // --------------------------------------------------------------------------
@@ -130,7 +130,7 @@
   // --------------------------------------------------------------------------
   "workbench.editorAssociations": {
     "*.index": "default",
-    "*.db": "workbench.editor.chatSession"
+    "*.db": "workbench.editor.chatSession",
   },
 
   // --------------------------------------------------------------------------
@@ -166,7 +166,7 @@
     "*.ts": "${capture}.js, ${capture}.d.ts, ${capture}.js.map",
     "*.tsx": "${capture}.ts, ${capture}.js",
     "*.js": "${capture}.js.map, ${capture}.min.js, ${capture}.d.ts",
-    "*.jsx": "${capture}.js"
+    "*.jsx": "${capture}.js",
   },
 
   // --------------------------------------------------------------------------
@@ -194,7 +194,7 @@
   // --------------------------------------------------------------------------
   "eslint.enable": true,
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit"
+    "source.fixAll.eslint": "explicit",
   },
 
   // --------------------------------------------------------------------------
@@ -204,9 +204,9 @@
   "github.copilot.nextEditSuggestions.enabled": false,
   "editor.formatOnSave": true,
   "extensions.experimental.affinity": {
-    "asvetliakov.vscode-neovim": 1
+    "asvetliakov.vscode-neovim": 1,
   },
   "chat.viewSessions.orientation": "stacked",
   "claudeCode.preferredLocation": "panel",
-  "remote.autoForwardPortsSource": "hybrid"
+  "remote.autoForwardPortsSource": "hybrid",
 }
