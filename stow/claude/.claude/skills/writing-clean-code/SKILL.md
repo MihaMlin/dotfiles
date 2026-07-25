@@ -83,8 +83,8 @@ Functions are the unit where most clarity is won or lost.
 ## 3. Comments
 
 - **Prefer self-documenting code over comments.** If you need a comment to explain
-  *what* the code does, first try to rewrite the code so the comment is unnecessary.
-- **Comment the *why*, not the *what*.** Explain intent, trade-offs, and non-obvious
+  _what_ the code does, first try to rewrite the code so the comment is unnecessary.
+- **Comment the _why_, not the _what_.** Explain intent, trade-offs, and non-obvious
   constraints — the things the code itself cannot say.
 
   ```js
@@ -138,6 +138,7 @@ Formatting is not a matter of taste in this project; it is automated.
 
   If you catch, you must handle: recover, translate to a domain error, log with context,
   or re-raise. An empty `except`/`catch` is a bug.
+
 - **Use exceptions for exceptional cases, not control flow.** Expected outcomes
   (a missing cache key, an empty result) are return values, not exceptions.
 - **Preserve context.** When wrapping an error, chain the original (`raise ... from err`,
@@ -198,14 +199,14 @@ Formatting is not a matter of taste in this project; it is automated.
 
 ## 10. Quick reference
 
-| Do                                              | Don't                                         |
-| ----------------------------------------------- | --------------------------------------------- |
-| Small functions that do one thing               | God functions that do everything              |
-| Descriptive, intention-revealing names          | `data`, `tmp`, `obj`, `x`, `handle2`          |
-| Guard clauses / early returns                   | Deeply nested `if/else` pyramids              |
-| Explain *why* in comments                       | Narrate *what* the code already says          |
-| Handle or re-raise errors with context          | Empty `catch` / bare `except: pass`           |
-| Immutable by default                            | Shared mutable state everywhere               |
-| Tests for every behavior change                 | "I'll add tests later"                        |
-| Let the formatter decide layout                 | Hand-tuned, inconsistent whitespace           |
-| Config/secrets from environment                 | Hardcoded credentials                         |
+| Do                                     | Don't                                |
+| -------------------------------------- | ------------------------------------ |
+| Small functions that do one thing      | God functions that do everything     |
+| Descriptive, intention-revealing names | `data`, `tmp`, `obj`, `x`, `handle2` |
+| Guard clauses / early returns          | Deeply nested `if/else` pyramids     |
+| Explain _why_ in comments              | Narrate _what_ the code already says |
+| Handle or re-raise errors with context | Empty `catch` / bare `except: pass`  |
+| Immutable by default                   | Shared mutable state everywhere      |
+| Tests for every behavior change        | "I'll add tests later"               |
+| Let the formatter decide layout        | Hand-tuned, inconsistent whitespace  |
+| Config/secrets from environment        | Hardcoded credentials                |

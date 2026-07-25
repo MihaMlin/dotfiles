@@ -12,7 +12,7 @@ changes in this repository.
 
 ## 1. Commit messages
 
-- **Explain *why*, not just *what*.** The diff already shows what changed; the
+- **Explain _why_, not just _what_.** The diff already shows what changed; the
   message should carry the reasoning, trade-off, or motivating context a diff
   can't express.
 - **Imperative mood, short summary line.** `fix: handle empty response body`,
