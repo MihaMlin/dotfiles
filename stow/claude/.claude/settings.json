@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "cleanupPeriodDays": 30,
+  "env": {},
+  "permissions": {
+    "allow": [
+      "Read",
+      "Edit",
+      "Write",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(./**/secrets/**)",
+      "Read(./**/*.pem)"
+    ],
+    "ask": [
+      "Bash(git push:*)",
+      "Bash(rm:*)"
+    ]
+  },
+  "model": "opus",
+  "attribution": {
+    "commit": "",
+    "pr": "",
+    "sessionUrl": false
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/format-file.sh",
+            "timeout": 30,
+            "statusMessage": "Formatting"
+          }
+        ]
+      }
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "~/.claude/statusline.sh"
+  },
+  "enabledPlugins": {
+    "superpowers@claude-plugins-official": true
+  },
+  "agentPushNotifEnabled": true
+}
