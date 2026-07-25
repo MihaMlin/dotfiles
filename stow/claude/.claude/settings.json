@@ -2,6 +2,11 @@
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "cleanupPeriodDays": 30,
   "env": {},
+  "attribution": {
+    "commit": "",
+    "pr": "",
+    "sessionUrl": false
+  },
   "permissions": {
     "allow": [
       "Read",
@@ -24,12 +29,7 @@
       "Bash(rm:*)"
     ]
   },
-  "model": "opus",
-  "attribution": {
-    "commit": "",
-    "pr": "",
-    "sessionUrl": false
-  },
+  "model": "sonnet",
   "hooks": {
     "PostToolUse": [
       {
