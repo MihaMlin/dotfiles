@@ -3,7 +3,7 @@ description: Write or improve tests for the specified code, following project st
 ---
 
 Write (or improve) tests for the code I specify, following the testing standards in
-`@docs/STYLE_GUIDE.md` §7.
+the `writing-clean-code` skill (§7).
 
 Requirements:
 

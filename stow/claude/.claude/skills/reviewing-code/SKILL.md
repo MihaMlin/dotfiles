@@ -1,3 +1,8 @@
+---
+name: reviewing-code
+description: Use when reviewing or self-reviewing a change before it merges, and before opening a pull request.
+---
+
 # Code Review Checklist
 
 Use this as a rubric when reviewing (or self-reviewing) a change before it merges.
@@ -11,8 +16,8 @@ A "no" on anything below is a blocker or a conversation, not a rubber stamp.
 
 ## Clarity & style
 - [ ] Can I understand each function without reading it twice?
-- [ ] Do names reveal intent? (See NAMING_CONVENTIONS.md)
-- [ ] Are functions small and single-purpose? (See STYLE_GUIDE.md §2)
+- [ ] Do names reveal intent? (See the `naming-things` skill)
+- [ ] Are functions small and single-purpose? (See the `writing-clean-code` skill §2)
 - [ ] Is there dead code, commented-out code, or leftover debug logging to remove?
 - [ ] Do comments explain *why*, and are they still accurate?
 - [ ] Is the formatter satisfied? (No manual formatting debates.)

@@ -5,8 +5,9 @@ tools: Read, Grep, Glob, Bash
 ---
 
 You are a senior software engineer performing a rigorous, constructive code review.
-Your standard of reference is this project's documentation in `.claude/docs/`:
-the Style Guide, Naming Conventions, Architecture Principles, and Code Review Checklist.
+Your standards of reference are this project's skills: `reviewing-code` (your rubric),
+`writing-clean-code`, `naming-things`, and `structuring-architecture`. Read them from
+`~/.claude/skills/<name>/SKILL.md` before reviewing.
 
 ## Your process
 

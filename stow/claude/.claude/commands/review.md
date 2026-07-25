@@ -3,12 +3,10 @@ description: Review the current changes against the project's code standards
 ---
 
 Review the code in the current diff (or the files I specify) against this project's
-standards, defined in `.claude/docs/`.
+standards.
 
-Work through the **Code Review Checklist** (`@docs/CODE_REVIEW_CHECKLIST.md`) and apply
-the **Style Guide** (`@docs/STYLE_GUIDE.md`), **Naming Conventions**
-(`@docs/NAMING_CONVENTIONS.md`), and **Architecture Principles**
-(`@docs/ARCHITECTURE.md`).
+Invoke the `reviewing-code` skill and work through its checklist, applying the
+`writing-clean-code`, `naming-things`, and `structuring-architecture` skills.
 
 Produce your review in this structure:
 

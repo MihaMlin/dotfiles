@@ -1,3 +1,8 @@
+---
+name: writing-commits-and-prs
+description: Use when writing a commit message, opening or describing a pull request, or running a git operation that rewrites, force-pushes, or discards work.
+---
+
 # Git & GitHub Standards
 
 Rules for commit messages, PR descriptions, and attribution when Claude makes

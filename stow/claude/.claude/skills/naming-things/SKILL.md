@@ -1,3 +1,8 @@
+---
+name: naming-things
+description: Use when naming a function, variable, constant, class, type, file, or directory, or when an existing name is vague, abbreviated, or a placeholder like data/tmp/obj.
+---
+
 # Naming Conventions
 
 Good names are the cheapest documentation you will ever write. A name should let

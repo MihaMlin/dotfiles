@@ -2,8 +2,8 @@
 description: Add clear, standards-compliant documentation to the specified code
 ---
 
-Document the code I specify following the commenting standards in `@docs/STYLE_GUIDE.md`
-§3.
+Document the code I specify following the commenting standards in the
+`writing-clean-code` skill (§3).
 
 Guidelines:
 

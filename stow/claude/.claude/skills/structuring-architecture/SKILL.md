@@ -1,3 +1,8 @@
+---
+name: structuring-architecture
+description: Use when adding or splitting a module, deciding which layer code belongs in, wiring dependencies, or when one change forces edits across many unrelated files.
+---
+
 # Architecture Principles
 
 How code is organized at the module, layer, and system level. Good architecture

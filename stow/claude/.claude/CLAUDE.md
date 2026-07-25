@@ -1,20 +1,7 @@
 # Project Standards
 
-> This file is loaded automatically at the start of every Claude Code session.
-> It is the single source of truth for how code in this project should be written,
-> structured, and reviewed. Keep it short — details live in the linked documents.
-
-## How to use these standards
-
-When writing or reviewing code in this repository, follow the standards in the
-linked documents below. If a request conflicts with these standards, flag the
-conflict and propose a compliant alternative rather than silently deviating.
-
-- **Code & formatting standards** — see @docs/STYLE_GUIDE.md
-- **Naming conventions** — see @docs/NAMING_CONVENTIONS.md
-- **Architecture principles** — see @docs/ARCHITECTURE.md
-- **Review checklist** — see @docs/CODE_REVIEW_CHECKLIST.md
-- **Git & GitHub standards** — see @docs/GIT_STANDARDS.md
+> Loaded automatically at the start of every session. It stays short on purpose: the
+> full standards live in skills that load only when they are actually needed.
 
 ## Non-negotiables (the short list)
 
@@ -26,22 +13,30 @@ conflict and propose a compliant alternative rather than silently deviating.
 6. **Every change is tested.** New behavior ships with tests that would fail without it.
 7. **Formatting is automated, not debated.** The formatter is the authority.
 8. **No secrets in code.** Credentials come from environment/config, never literals.
+9. **Commits and PRs read as authored solely by me.** No Claude/Anthropic attribution
+   trailers, no session URLs. Never amend or force-push published commits unless asked.
 
-## Working agreements for Claude
+## Where the detail lives
+
+Invoke the matching skill instead of guessing — each holds the full standard:
+
+| Skill | Use it when |
+| --- | --- |
+| `writing-clean-code` | writing or changing code: functions, errors, state, comments, tests |
+| `naming-things` | naming anything, or fixing a vague name |
+| `structuring-architecture` | module boundaries, layering, dependencies |
+| `reviewing-code` | reviewing a change before merge |
+| `writing-commits-and-prs` | commit messages, PR descriptions, risky git operations |
+
+## Working agreements
 
 - Prefer editing existing files over creating new ones unless a new module is warranted.
 - Before large refactors, propose a short plan and wait for confirmation.
-- When unsure about a convention, ask or check the linked docs — do not guess.
+- When unsure about a convention, load the relevant skill or ask — do not guess.
 - Match the surrounding code's existing style when it doesn't violate these standards.
 - Explain *why* in commit messages and PR descriptions, not just *what*.
+- If a request conflicts with these standards, flag the conflict and propose a
+  compliant alternative rather than silently deviating.
 
-## Project-specific context
-
-<!-- Fill these in for your project so Claude has the right context. -->
-
-- **Primary language(s):** _e.g. TypeScript, Python_
-- **Framework(s):** _e.g. React, FastAPI_
-- **Package manager:** _e.g. pnpm, uv_
-- **Test command:** _e.g. `pnpm test`, `pytest`_
-- **Lint/format command:** _e.g. `pnpm lint`, `ruff format`_
-- **Build command:** _e.g. `pnpm build`_
+Per-project specifics (languages, test/lint/build commands) belong in that project's
+own `CLAUDE.md`, not here — this file is global.

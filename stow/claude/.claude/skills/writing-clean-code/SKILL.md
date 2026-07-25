@@ -1,3 +1,8 @@
+---
+name: writing-clean-code
+description: Use when writing or changing code in any language, and when deciding how to size a function, pass arguments, handle an error, manage state, or comment something non-obvious.
+---
+
 # Style Guide
 
 A practical guide to writing clean, professional, maintainable code in this
