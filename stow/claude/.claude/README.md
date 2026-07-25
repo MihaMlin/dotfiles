@@ -12,50 +12,57 @@ regardless of which project you're working in.
 
 ```
 .claude/
-├── CLAUDE.md                     # Auto-loaded memory: the standards entry point
-├── settings.json                 # Permissions and project settings
-├── README.md                     # This file
-├── docs/
-│   ├── STYLE_GUIDE.md            # Clean-code standards: functions, formatting, errors
-│   ├── NAMING_CONVENTIONS.md     # How to name functions, variables, types, files
-│   ├── ARCHITECTURE.md           # Layering, SOLID, dependencies, designing for change
-│   └── CODE_REVIEW_CHECKLIST.md  # Rubric for reviewing changes before merge
-├── commands/                     # Slash commands (invoke with /name)
-│   ├── review.md                 # /review  — review changes against the standards
-│   ├── refactor.md               # /refactor — clean up code, behavior-preserving
-│   ├── test.md                   # /test    — write/improve tests to standard
-│   └── document.md               # /document — add why-focused documentation
-└── agents/                       # Specialized subagents
-    ├── code-reviewer.md          # Rigorous, standards-based review
-    └── refactoring-specialist.md # Behavior-preserving structural improvement
+├── CLAUDE.md                        # Auto-loaded memory: non-negotiables + skill index
+├── settings.json                    # Permissions, hooks, statusline, model
+├── README.md                        # This file
+├── skills/                          # Full standards, loaded on demand
+│   ├── writing-clean-code/          # Functions, comments, errors, state, tests
+│   ├── naming-things/               # Functions, variables, types, files
+│   ├── structuring-architecture/    # Layering, SOLID, dependencies, change
+│   ├── reviewing-code/              # Rubric for reviewing a change before merge
+│   └── writing-commits-and-prs/     # Commit messages, PRs, git safety
+├── hooks/
+│   └── format-file.sh               # Formats each file Claude writes (PostToolUse)
+├── commands/                        # Slash commands (invoke with /name)
+│   ├── review.md                    # /review   — review changes against the standards
+│   ├── refactor.md                  # /refactor — clean up code, behavior-preserving
+│   ├── test.md                      # /test     — write/improve tests to standard
+│   └── document.md                  # /document — add why-focused documentation
+└── agents/                          # Specialized subagents
+    ├── code-reviewer.md             # Rigorous, standards-based review
+    └── refactoring-specialist.md    # Behavior-preserving structural improvement
 ```
 
 ## How it fits together
 
-- **`CLAUDE.md`** is loaded automatically at the start of every session. It states the
-  non-negotiable rules and links to the detailed docs, so Claude always writes code to
-  your standard without being reminded.
-- **`docs/`** holds the full standards. `CLAUDE.md` imports them via `@docs/...`
-  references, and the commands and agents cite them, so there is one source of truth.
+- **`CLAUDE.md`** is loaded automatically at the start of every session. It is kept
+  deliberately short — the non-negotiables plus an index of which skill to load when.
+- **`skills/`** holds the full standards. Claude loads a skill only when the work calls
+  for it, so the detail costs nothing on sessions that don't need it.
+- **`hooks/`** are scripts the harness runs on events. `format-file.sh` runs after every
+  Write/Edit and formats the file with the formatter that project already uses —
+  project-local binaries first, silent no-op when none is installed.
 - **`commands/`** are shortcuts you trigger manually, e.g. type `/review` in Claude Code.
 - **`agents/`** are specialists Claude can delegate to for focused review or refactoring.
+- **`settings.json`** also blanks commit/PR attribution, so the standard in
+  `writing-commits-and-prs` is enforced by the harness instead of by reminder.
 
 ## Getting started
 
 1. From the dotfiles repo root, run `stow claude` (or your usual `install.sh`/`make`
    target) to symlink this folder to `~/.claude/`.
-2. `CLAUDE.md`'s **Project-specific context** section is left as generic placeholders
-   on purpose — it's global, so per-project specifics belong in that project's own
-   `CLAUDE.md` instead.
+2. Per-project specifics (languages, test/lint/build commands) belong in that project's
+   own `CLAUDE.md` — this config is global, so it stays language-agnostic.
 3. Adjust `settings.json` permissions to match how much autonomy you want to grant.
-4. Tweak the standards in `docs/` to fit how you work — they're a strong default, not dogma.
+4. Tweak the standards in `skills/` to fit how you work — they're a strong default, not
+   dogma. Run `/hooks` once to review the formatting hook.
 5. In Claude Code, try `/review` on a branch with changes, or ask Claude to use the
    `code-reviewer` agent.
 
 ## Customizing
 
 These standards are intentionally opinionated but general. Treat them as a starting
-point: sharpen the language-specific rules, add ADRs under `docs/adr/`, and add your
-own slash commands and agents as your workflow grows. Since this config is global,
-changes here apply to every project immediately after Stow re-links (or on next
-session if already linked).
+point: sharpen the language-specific rules, add new skills as your workflow grows, and
+add ADRs under a project's own `docs/adr/`. Since this config is global, changes here
+apply to every project immediately after Stow re-links (or on next session if already
+linked). New skills and hooks are picked up on the next session.
