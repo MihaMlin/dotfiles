@@ -77,5 +77,4 @@ Run `make lint` before submitting.
 
 ## License
 
-None published — all rights reserved by default. Ask
-[@MihaMlin](https://github.com/MihaMlin) about reuse.
+[MIT](LICENSE) © [Miha Mlin](https://github.com/MihaMlin)
