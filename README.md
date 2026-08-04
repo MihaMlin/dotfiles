@@ -77,4 +77,4 @@ Run `make lint` before submitting.
 
 ## License
 
-[MIT](LICENSE) © [Miha Mlin](https://github.com/MihaMlin)
+[MIT](LICENSE) © [Miha Mlinarič](https://github.com/MihaMlin)
