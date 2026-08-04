@@ -1,39 +1,63 @@
-# Dotfiles
+Dotfiles
+========
 
-XDG-compliant development environment for Linux/WSL. Managed with [GNU Stow](https://www.gnu.org/software/stow/).
+XDG-compliant Linux/WSL development environment: apt packages, dev tools
+(nvm, uv, zinit, fzf), shell config, and app configs — installed and
+symlinked with one script.
 
-## Table of contents
+## Table of Contents
 
-- [What this repo does](#what-this-repo-does)
-- [Quick start](#quick-start)
-  - [Prerequisites](#prerequisites)
-  - [Re-running](#re-running)
-- [Repo layout](#repo-layout)
-- [Architecture](#architecture)
+- [Background](#background)
   - [How XDG works here](#how-xdg-works-here)
-  - [How a tool flows through three layers](#how-a-tool-flows-through-three-layers)
-  - [Why some tools need `path.zsh` and others don't](#why-some-tools-need-pathzsh-and-others-dont)
-- [Adding a new tool](#adding-a-new-tool)
-  - [How to write `path.zsh`](#how-to-write-pathzsh)
-  - [File structure](#file-structure)
-  - [Lazy-load template](#lazy-load-template)
-  - [Installer script template](#installer-script-template)
-  - [End-to-end steps](#end-to-end-steps)
-- [Conventions](#conventions)
-- [Troubleshooting](#troubleshooting)
-- [Resources](#resources)
+- [Install](#install)
+  - [Prerequisites](#prerequisites)
+  - [Re-running / updating](#re-running--updating)
+- [Usage](#usage)
+  - [Repo layout](#repo-layout)
+  - [Stow packages](#stow-packages)
+  - [Adding a new tool](#adding-a-new-tool)
+  - [`stow/bin/` scripts](#stowbin-scripts)
+  - [Troubleshooting](#troubleshooting)
+- [Maintainers](#maintainers)
+- [Contributing](#contributing)
+- [License](#license)
 
-## What this repo does
+## Background
 
-Three things, each with one tool:
+This repo turns a bare Linux (or WSL) install into a working dev environment
+in one command, and keeps it reproducible. It does three things, each in one
+place, so none of them duplicate each other:
 
-1. **Installs tools** — `scripts/install/*.sh` clones or apt-installs each tool to a deterministic XDG path.
-2. **Symlinks configs** — GNU Stow mirrors `stow/<package>/` into `$HOME`.
-3. **Wires shell** — `.zshrc` sources each tool's `path.zsh` so the shell can find and initialize it.
+1. **Installs tools** — `scripts/install/*.sh` apt-installs or git-clones each
+   tool to a deterministic XDG path.
+2. **Symlinks configs** — [GNU Stow](https://www.gnu.org/software/stow/)
+   mirrors `stow/<package>/` into `$HOME`.
+3. **Wires the shell** — `.zshrc` sources each tool's `path.zsh` so the shell
+   finds and initializes it.
 
-The three concerns live in three separate places. None duplicate each other.
+A companion guide, [`docs/ZBOOK.md`](docs/ZBOOK.md), covers the layer below
+this repo: a clean Windows 11 install and WSL2/Ubuntu setup, ending with
+cloning this repo.
 
-## Quick start
+### How XDG works here
+
+The repo follows the
+[XDG Base Directory Specification](https://specifications.freedesktop.org/basedir-spec/latest/).
+`.zshenv` exports the four variables before anything else runs, so every
+tool started from the shell inherits them:
+
+| Variable          | Default           | What goes here                                              |
+| ------------------ | ----------------- | ------------------------------------------------------------ |
+| `XDG_CONFIG_HOME`   | `~/.config`        | Configuration (read by tools)                                |
+| `XDG_DATA_HOME`     | `~/.local/share`   | Persistent app data (plugins, version managers, databases)   |
+| `XDG_STATE_HOME`    | `~/.local/state`   | Logs, history, runtime state                                 |
+| `XDG_CACHE_HOME`    | `~/.cache`         | Disposable cached data                                       |
+
+`.zshenv` also exports `BIN_HOME` (`~/.local/bin`) and `ZDOTDIR`
+(`$XDG_CONFIG_HOME/zsh`) — the latter is what lets `.zshrc` and the numbered
+`stow/zsh/.config/zsh/*.zsh` modules live outside `$HOME` at all.
+
+## Install
 
 ### Prerequisites
 
@@ -50,316 +74,170 @@ cd ~/.dotfiles
 ./install.sh
 ```
 
-The installer:
-- Runs preflight checks (Linux, sudo available, git installed)
-- Installs apt packages from the `PACKAGES` array in `scripts/install/apt.sh` (including `stow`)
-- Runs each tool installer in `scripts/install/`
-- Stows all packages from `stow/` into `$HOME`
-- Sets zsh as the default shell
+`install.sh` takes no arguments and runs, in order:
 
-### Re-running
+1. `scripts/install/apt.sh` — apt packages (see the `PACKAGES` array),
+   including `stow`.
+2. `scripts/setup/symlinks.sh` — stows every package in `stow/` into `$HOME`.
+3. `scripts/install/nvm.sh`, `uv.sh`, `zinit.sh`, `fzf.sh` — one tool each.
+4. `scripts/setup/default-zsh.sh` — installs zsh if needed and sets it as
+   the default shell.
 
-The installer is idempotent. Safe to re-run.
+### Re-running / updating
 
-```bash
-./install.sh   # full install — takes no arguments
-```
-
-For a single step, run its script directly (`bash scripts/install/nvm.sh`) or
-use a `make` target: `make install`, `make update` (skip apt), `make stow`
-(re-stow only), `make unstow` (remove symlinks), `make apt` (apt packages only),
-`make install-nvm` / `install-uv` / `install-zinit` / `install-fzf`,
-`make shell` (set zsh as default shell), `make lint` (shellcheck). Run
-`make help` for the full list.
-
-## Repo layout
-
-```text
-~/.dotfiles/
-├── Makefile                      # `make help` for available commands
-├── install.sh                    # Main entry point
-├── lib/                          # Shared helpers (logging, git clone, preflight)
-├── scripts/
-│   ├── install/                  # One installer per tool
-│   └── setup/
-│       ├── symlinks.sh           # Wraps `stow` (supports --delete)
-│       └── default-zsh.sh
-└── stow/                         # Everything that gets symlinked into $HOME
-    ├── zsh/                      # → ~/.zshrc + ~/.config/zsh/*
-    ├── zinit/                    # → ~/.config/zinit/path.zsh
-    ├── nvm/                      # → ~/.config/nvm/path.zsh
-    ├── uv/                       # → ~/.config/uv/path.zsh
-    ├── fzf/                      # → ~/.config/fzf/path.zsh
-    ├── git/                      # → ~/.config/git/
-    ├── tmux/                     # → ~/.config/tmux/
-    ├── claude/                   # → ~/.claude/
-    └── bin/                      # → ~/.local/bin/
-```
-
-Each directory inside `stow/` is a **stow package**. Stow mirrors the package's internal structure into `$HOME`, creating symlinks that point back to the repo.
-
-## Architecture
-
-### How XDG works here
-
-This repo follows the [XDG Base Directory Specification](https://specifications.freedesktop.org/basedir-spec/latest/). Four environment variables decide where things live:
-
-| Variable             | Default                | What goes here                                             |
-| -------------------- | ---------------------- | -----------------------------------------------------------|
-| `XDG_CONFIG_HOME`    | `~/.config`            | Configuration (read by tools)                              |
-| `XDG_DATA_HOME`      | `~/.local/share`       | Persistent app data (plugins, version managers, databases) |
-| `XDG_STATE_HOME`     | `~/.local/state`       | Logs, history, runtime state                               |
-| `XDG_CACHE_HOME`     | `~/.cache`             | Disposable cached data                                     |
-
-These are exported at the top of `.zshrc` so every tool started from the shell inherits them.
-
-### How a tool flows through three layers
-
-Take `zinit` as a worked example. The same pattern applies to every shell-extension tool (`nvm`, `uv`, `fzf`).
-
-#### Layer 1: Install — where the tool's files live
-
-`scripts/install/zinit.sh` clones zinit to `$XDG_DATA_HOME/zinit/zinit.git/`. The path is **not** hardcoded in the installer — it is sourced from the same `path.zsh` that the shell uses, so install location and runtime location can never disagree.
-
-```bash
-# scripts/install/zinit.sh (excerpt)
-source "$DOTFILES_DIR/stow/zinit/.config/zinit/path.zsh"
-git_install https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
-```
-
-#### Layer 2: Path declaration — single source of truth
-
-`stow/zinit/.config/zinit/path.zsh` declares the location and conditionally sources the runtime:
-
-```zsh
-export ZINIT_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/zinit/zinit.git"
-[[ -s "$ZINIT_HOME/zinit.zsh" ]] && source "$ZINIT_HOME/zinit.zsh"
-```
-
-After `stow zinit`, this file is symlinked at `~/.config/zinit/path.zsh`.
-
-#### Layer 3: Shell init — pulling the tool into the session
-
-`.zshrc` sources every `path.zsh` with one glob:
-
-```zsh
-for f in "$XDG_CONFIG_HOME"/*/path.zsh; do
-    [[ -r "$f" ]] && source "$f"
-done
-```
-
-Adding a new shell-extension tool requires zero edits to `.zshrc`. Drop a new stow package, run `stow`, the glob picks it up.
-
-### Why some tools need `path.zsh` and others don't
-
-Two categories. The distinction is whether the tool runs as a separate process (category 1) or extends the shell from inside (category 2).
-
-#### Category 1 — no `path.zsh`, tool finds its own config
-
-These tools are normal binaries on `$PATH` and read `$XDG_CONFIG_HOME/<name>/` automatically. Stow places the config there; the tool finds it. Done.
-
-| Tool    | Why no `path.zsh`                                                                           |
-| ------- | --------------------------------------------------------------------------------------------|
-| `git`   | System binary. Reads `~/.config/git/config`.                                                |
-| `tmux`  | System binary. Reads `~/.config/tmux/tmux.conf`.                                            |
-| `bin`   | Just user scripts symlinked to `~/.local/bin/`. No tool, no config to load.                 |
-
-#### Category 2 — `path.zsh` required, tool extends the shell
-
-These modify `$PATH`, define shell functions, or register hooks — work that must happen inside the running shell session. Their `path.zsh` exports the tool's location variable (so the tool knows where its data lives) and sources its runtime (so the shell gains the functions/bindings).
-
-| Tool    | Var              | What `path.zsh`does                                                                        |
-| ------- | ---------------- |--------------------------------------------------------------------------------------------|
-| `zinit` | `ZINIT_HOME`     | Sources `zinit.zsh` to register the plugin manager.                                        |
-| `nvm`   | `NVM_DIR`        | Defines lazy wrappers for `nvm`/`node`/`npm`/`npx`.                                        |
-| `uv`    | `UV_PYTHON_INSTALL_DIR` | Declares install-location env vars only — no `$PATH` edits or lazy wrappers needed. |
-| `fzf`   | —                | Currently no `path.zsh` (fzf installer writes its own shell init via `--xdg`)              |
-
-`uv` is a partial exception: it still needs `path.zsh` (rule 6 below) to declare where uv keeps its data, but it has no expensive shell-init to defer, so it skips the lazy-wrapper machinery `nvm` needs — its binary and `python`/`python3` shims already land in `$BIN_HOME`.
-
-## Adding a new tool
-
-### How to write `path.zsh`
-
-`path.zsh` is the single source of truth for a tool's location. The shell sources it on startup; installers source it to learn where to put the tool. Seven rules:
-
-1. **Use the tool's official env var name** — whatever the tool itself reads. `ZINIT_HOME` for zinit, `NVM_DIR` for nvm, `UV_PYTHON_INSTALL_DIR`/`UV_TOOL_DIR` for uv. Don't invent names; if you set `NVM_ROOT`, the nvm runtime won't see it.
-2. **Always `export`** — installers and child processes need to inherit it.
-3. **Always include the XDG fallback** — `${XDG_DATA_HOME:-$HOME/.local/share}/<tool>`. Installers source `path.zsh` before `.zshrc` has a chance to export `XDG_*`, so the file must stand on its own.
-4. **Source runtimes conditionally** — `[[ -s "$X" ]] && source "$X"`. The file may be sourced before the tool is installed; never fail the shell.
-5. **No eager work at top level** — no `$(...)`, no `eval "$(... init -)"`. Anything that probes the filesystem or runs a binary belongs in a lazy-loader function. Eager work is the #1 cause of slow zsh startup.
-6. **Installers must source `path.zsh`** — never hardcode the path in `scripts/install/<tool>.sh`. If `path.zsh` and the installer disagree, install location and runtime location drift apart.
-7. **Bash-safe guard** — exports first, then `[[ -n "${ZSH_VERSION:-}" ]] || return 0`, then anything zsh-specific. Installers (bash) get the vars; the shell (zsh) gets the full runtime.
-
-### File structure
-
-Every `path.zsh` is split into two regions, divided by a bash-safety guard:
-
-```zsh
-# 1. VARS region — exports only. Bash-safe so installers can source the file.
-export TOOL_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/<tool>"
-[[ -d "$TOOL_HOME/bin" ]] && export PATH="$TOOL_HOME/bin:$PATH"
-
-# 2. Bash-safety guard — installers stop here, zsh continues.
-[[ -n "${ZSH_VERSION:-}" ]] || return 0
-
-# 3. ZSH region — runtime sourcing, lazy-load wrappers, hooks.
-[[ -s "$TOOL_HOME/init.zsh" ]] && source "$TOOL_HOME/init.zsh"
-```
-
-The guard exists because `path.zsh` is sourced from two contexts: zsh shells (which need the runtime) and bash installers (which need only the path). A zsh-only runtime like `zinit.zsh` would crash a bash installer without the guard.
-
-### Lazy-load template
-
-For tools that need `eval $(... init -)` or shell hooks:
-
-```zsh
-# <Tool> — lazy-loaded
-export TOOL_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/<tool>"
-
-[[ -n "${ZSH_VERSION:-}" ]] || return 0
-
-_load_tool() {
-    unset -f tool cmd1 cmd2
-    eval "$(tool init -)"
-}
-
-tool() { _load_tool; tool "$@"; }
-cmd1() { _load_tool; cmd1 "$@"; }
-cmd2() { _load_tool; cmd2 "$@"; }
-```
-
-Wrappers replace themselves with the real tool on first invocation. Zero startup cost; one-time cost when first used.
-
-### Installer script template
-
-Every script in `scripts/install/` and `scripts/setup/` follows the same section order:
-
-1. Shebang + one-line purpose comment.
-2. `set -euo pipefail`.
-3. `DOTFILES_DIR` + `source` block (`lib/*.sh` helpers, then the tool's `path.zsh` if needed) — each `source` preceded by a `# shellcheck source=` comment.
-4. Config array (only if the script has a configurable list), fenced by `# --- Config (edit here) ---` / `# --- end config ---`, placed immediately after the source block.
-5. Body — the install logic itself.
-6. `success "<tool> installed at $LOCATION"` as the final line.
-
-All output goes through `lib/log.sh` (`info`/`warning`/`success`/`error`) — never raw `echo`.
-
-**Making a freshly-installed tool usable within the same script.** `path.zsh`
-never does eager work (rule 5 above), so if the body needs to invoke the tool
-itself right after installing it (e.g. to install versions in a loop), the
-installer must activate it explicitly — right after the install step, with a
-one-line comment explaining why:
-- **Binary on disk** (e.g. `uv`): prepend its directory to `PATH`.
-  `export PATH="$UV_INSTALL_DIR:$PATH"`
-- **Shell-function-only tool** (e.g. `nvm`, which has no binary): `source`
-  its runtime script directly — `path.zsh`'s lazy-load wrapper is zsh-only
-  and can't be reused from a bash installer.
-  `[[ -s "$NVM_DIR/nvm.sh" ]] && source "$NVM_DIR/nvm.sh"`
-
-Example, with a configurable version list:
-
-```bash
-#!/usr/bin/env bash
-# Install <tool> and its versions.
-
-set -euo pipefail
-
-DOTFILES_DIR="${DOTFILES_DIR:-$HOME/.dotfiles}"
-# shellcheck source=lib/log.sh
-source "$DOTFILES_DIR/lib/log.sh"
-# shellcheck source=stow/<tool>/.config/<tool>/path.zsh
-source "$DOTFILES_DIR/stow/<tool>/.config/<tool>/path.zsh"
-
-# --- Config (edit here) ---
-VERSIONS=(
-    "1.2.3"
-)
-# --- end config ---
-
-info "Installing <tool>..."
-for version in "${VERSIONS[@]}"; do
-    info "Installing version $version..."
-done
-
-success "<tool> installed at $TOOL_HOME"
-```
-
-### End-to-end steps
-
-The pattern, end to end:
-
-**1. Pick the install location.** Use `$XDG_DATA_HOME/<tool>` for git-cloned tools.
-
-**2. Create `stow/<tool>/.config/<tool>/path.zsh`** — follow the rules and template above.
-
-**3. Create `scripts/install/<tool>.sh`** — source `path.zsh` to learn the install path:
-
-```bash
-#!/usr/bin/env bash
-# Install <tool>.
-
-set -euo pipefail
-
-DOTFILES_DIR="${DOTFILES_DIR:-$HOME/.dotfiles}"
-# shellcheck source=lib/log.sh
-source "$DOTFILES_DIR/lib/log.sh"
-# shellcheck source=lib/git-clone.sh
-source "$DOTFILES_DIR/lib/git-clone.sh"
-# shellcheck source=stow/<tool>/.config/<tool>/path.zsh
-source "$DOTFILES_DIR/stow/<tool>/.config/<tool>/path.zsh"
-
-git_install https://github.com/owner/<tool>.git "$TOOL_HOME"
-success "<tool> installed at $TOOL_HOME"
-```
-
-**4. Register the installer in `install.sh`'s `STEPS` array** so the full
-install picks it up. It's already runnable on its own via
-`bash scripts/install/<tool>.sh` or `make install-<tool>` (the `install-%`
-Makefile target covers any script under `scripts/install/`).
-
-**5. Run:**
+The whole pipeline is idempotent — safe to re-run in full:
 
 ```bash
 ./install.sh
 ```
 
-That's it. No edits to `.zshrc` — its `path.zsh` glob picks up the new file automatically.
+For a single step, run its script directly (`bash scripts/install/nvm.sh`)
+or use a Makefile target:
 
-## Conventions
+| Target                                                              | Does                                                   |
+| ---------------------------------------------------------------------| --------------------------------------------------------|
+| `make install`                                                        | Full install (same as `./install.sh`)                    |
+| `make update`                                                          | Re-run installers to pick up new versions (skips apt)      |
+| `make stow` / `make unstow`                                             | Symlink / remove symlinks only, no sudo                     |
+| `make apt`                                                               | apt packages only                                             |
+| `make install-nvm` / `install-uv` / `install-zinit` / `install-fzf`       | Install a single tool                                            |
+| `make shell`                                                                | Set zsh as the default shell                                       |
+| `make lint`                                                                   | Shellcheck every script                                              |
+| `make help`                                                                     | List all targets                                                       |
 
-- **Performance**: lazy-loading for `nvm`; `zinit` runs plugins in turbo mode; `uv` has no shell-init to defer. Target startup: <300ms.
-- **Local overrides**: machine-specific config goes in `~/.localrc`, auto-sourced by `.zshrc`. Not tracked in git.
-- **Backups**: stow refuses to overwrite real files. On first migration, move existing configs out of `$HOME` (or use `stow --adopt`, then verify `git diff` before committing).
+## Usage
 
-### `stow/bin/` script standard
+### Repo layout
 
-`stow/bin/.local/bin/` holds standalone CLI utilities symlinked onto `$PATH`.
-Unlike `scripts/install/`, they run standalone as day-to-day commands and
-must keep working even if this repo is moved or removed — so they stay
-self-contained: no `DOTFILES_DIR`, no sourcing `lib/log.sh`.
+```text
+~/.dotfiles/
+├── Makefile                # `make help` for available commands
+├── install.sh               # Main entry point
+├── docs/ZBOOK.md             # Windows 11 + WSL2 setup guide (pre-clone)
+├── vscode/                   # VS Code settings/keybindings, kept for reference (not stowed)
+├── lib/                       # Shared bash helpers
+│   ├── log.sh                    # info/warning/success/error/running/step
+│   ├── git-clone.sh               # git_install: clone or update-to-latest-tag
+│   └── preflight.sh                # sanity checks + creates XDG dirs
+├── scripts/
+│   ├── install/                  # One installer per tool (apt, nvm, uv, zinit, fzf)
+│   └── setup/
+│       ├── symlinks.sh              # Wraps `stow` for every stow/* package (supports --delete)
+│       └── default-zsh.sh            # Installs zsh, chsh -s zsh
+└── stow/                       # Everything that gets symlinked into $HOME — one stow package per directory
+```
 
-- Shebang + one-line purpose comment, `set -euo pipefail`, blank line, body.
-- `[[ ... ]]` for conditionals — never the POSIX `[ ... ]`.
-- `command -v <tool> &>/dev/null` for dependency checks (no space before
-  `/dev/null`) — matches `scripts/install/*.sh`.
-- Errors go to stderr (`echo "..." >&2`) and exit non-zero; never print a
-  failure to stdout and keep going.
-- Color codes, if any, are declared once near the top under a `# Colors`
-  comment, with `NC='\033[0m'` for reset.
+Each directory inside `stow/` is a **stow package**: Stow mirrors its
+internal structure (relative to the package root) into `$HOME`, creating
+symlinks that point back into the repo.
 
-## Troubleshooting
+### Stow packages
+
+| Package       | Symlinked to                     | Installed by                                                                  |
+| -------------- | ---------------------------------- | -------------------------------------------------------------------------------|
+| `zsh`           | `~/.zshenv`, `~/.config/zsh/*`       | apt (`zsh`)                                                                      |
+| `zinit`         | `~/.config/zinit/path.zsh`            | `scripts/install/zinit.sh`                                                        |
+| `nvm`           | `~/.config/nvm/path.zsh`               | `scripts/install/nvm.sh`                                                            |
+| `uv`            | `~/.config/uv/path.zsh`                 | `scripts/install/uv.sh`                                                               |
+| `fzf`           | `~/.config/fzf/path.zsh`                 | `scripts/install/fzf.sh`                                                                |
+| `git`           | `~/.config/git/config`                    | apt (`git`)                                                                              |
+| `tmux`          | `~/.config/tmux/tmux.conf`                 | apt (`tmux`)                                                                              |
+| `npm`           | `~/.config/npm/npmrc`                       | comes with `nvm`                                                                            |
+| `docker`        | `~/.config/docker/`                          | Docker, installed separately                                                                  |
+| `ipython`       | `~/.config/ipython/`                          | comes with Python                                                                                |
+| `jupyter`       | `~/.config/jupyter/`                           | comes with Python                                                                                  |
+| `cookiecutter`  | `~/.config/cookiecutter/config.yaml`            | installed separately                                                                                  |
+| `wget`          | `~/.config/wget/wgetrc`                          | apt (`wget`)                                                                                            |
+| `claude`        | `~/.claude/`                                      | [Claude Code](https://claude.com/product/claude-code), installed separately                              |
+| `bin`           | `~/.local/bin/*`                                   | n/a — plain scripts, see [`stow/bin/` scripts](#stowbin-scripts)                                            |
+
+Packages with a `path.zsh` are picked up automatically: `.zshrc` globs and
+sources every `$XDG_CONFIG_HOME/*/path.zsh` on shell start, before the
+numbered `stow/zsh/.config/zsh/[0-9][0-9]-*.zsh` modules run. `git`, `tmux`,
+and `bin` need no `path.zsh` at all — `git`/`tmux` are binaries that already
+read `$XDG_CONFIG_HOME/<name>/` on their own, and `bin` is just scripts on
+`$PATH` with nothing to initialize.
+
+`nvm`'s `path.zsh` is the one exception to "lazy by default": it loads
+eagerly despite defining lazy wrappers for `nvm`/`node`/`npm`/`npx`, because
+non-interactive callers (e.g. Claude Code invoking `node`/`npm` directly)
+never trigger a lazy wrapper.
+
+### Adding a new tool
+
+1. **Pick the install location** — `$XDG_DATA_HOME/<tool>` for git-cloned
+   tools, or nothing if the tool already respects XDG on its own.
+2. **Create `stow/<tool>/.config/<tool>/path.zsh`**, if the tool needs one:
+   - Use the tool's own env var name (e.g. `NVM_DIR`, not `NVM_ROOT`).
+   - Always `export`, and always include the
+     `${XDG_DATA_HOME:-$HOME/.local/share}` fallback — installers source
+     `path.zsh` before `.zshrc` sets `XDG_*`.
+   - Source runtimes conditionally: `[[ -s "$X" ]] && source "$X"` — the
+     file may be sourced before the tool is installed.
+   - No eager work at top level (`$(...)`, `eval "$(... init -)"`) — put
+     it behind a lazy-load function, or shell startup slows down.
+   - Guard zsh-only code so bash installers can still source the file:
+     `[[ -n "${ZSH_VERSION:-}" ]] || return 0`.
+3. **Create `scripts/install/<tool>.sh`**, if it needs installing — source
+   `path.zsh` to learn the install path (never hardcode it), then use
+   `lib/git-clone.sh`'s `git_install <url> <dest>` for git-based tools.
+   Log with `lib/log.sh` (`info`/`warning`/`success`/`error`), end with
+   `success "<tool> installed at $LOCATION"`.
+4. **Register the installer** in `install.sh`'s `STEPS` array. It's already
+   runnable standalone via `bash scripts/install/<tool>.sh` or
+   `make install-<tool>` (the `install-%` Makefile target covers any script
+   under `scripts/install/`).
+5. **Run `./install.sh`** (or just `make stow` if there's nothing to
+   install). No `.zshrc` edit needed — the `path.zsh` glob picks up the new
+   file automatically.
+
+### `stow/bin/` scripts
+
+`stow/bin/.local/bin/` holds standalone CLI utilities symlinked onto
+`$PATH`: `backup`, `lsports`, `mini-fetch`, `pycheck`. Unlike
+`scripts/install/`, they run as everyday commands and must keep working
+even if this repo is moved or removed, so they stay self-contained — no
+`DOTFILES_DIR`, no sourcing `lib/log.sh`. Convention: shebang + one-line
+purpose comment, `set -euo pipefail`, `[[ ... ]]` conditionals, errors to
+stderr with a non-zero exit.
+
+### Troubleshooting
 
 **`stow` reports conflicts on first run.**
-You have real files in `$HOME` where stow wants to place symlinks. Either move them aside (`mv ~/.zshrc ~/.zshrc.bak`) or use `stow --adopt` to pull them into the repo (then check `git diff` to confirm content is what you expect).
+Real files already exist in `$HOME` where stow wants to place symlinks.
+Move them aside (`mv ~/.zshrc ~/.zshrc.bak`) — or note that
+`scripts/setup/symlinks.sh` already passes `--adopt`, which pulls existing
+files into the repo instead of failing; check `git diff` afterward to
+confirm the adopted content is what you expect.
 
 **A tool isn't found after install.**
-Check the three layers in order: (1) does the install path exist? `ls $XDG_DATA_HOME/<tool>`; (2) is the symlink correct? `ls -la ~/.config/<tool>/path.zsh`; (3) did `.zshrc` source it? Open a new shell and run `echo $TOOL_HOME`.
+Check the three layers in order: (1) does the install path exist —
+`ls $XDG_DATA_HOME/<tool>`; (2) is the symlink correct —
+`ls -la ~/.config/<tool>/path.zsh`; (3) did `.zshrc` source it — open a new
+shell and `echo $TOOL_HOME` (or the tool's own var).
 
 **Shell startup is slow.**
-Run `zsh -xv 2>&1 | head -100` to see what's loading early. Common cause: a `path.zsh` doing eager work that should be lazy.
+Run `zsh -xv 2>&1 | head -100` to see what loads early. Usual cause: a
+`path.zsh` doing eager work (a `$(...)` or `eval "$(... init -)"` at top
+level) that should be behind a lazy-load function instead.
 
-## Resources
+**Machine-specific config leaking into git.**
+Put it in `~/.localrc` — `.zshrc` sources it last, and it's not tracked.
 
-- [GNU Stow manual](https://www.gnu.org/software/stow/manual/stow.html)
-- [XDG Base Directory Specification](https://specifications.freedesktop.org/basedir-spec/latest/)
-- [ArchWiki: XDG Base Directory](https://wiki.archlinux.org/title/XDG_Base_Directory) — list of which tools respect XDG and how to force the rest
+## Maintainers
+
+[@MihaMlin](https://github.com/MihaMlin)
+
+## Contributing
+
+This is a personal dotfiles repo, tuned to one workflow — expect opinionated
+defaults. Issues and PRs are still welcome, especially for bugs in the
+install scripts or `path.zsh` conventions; for anything larger, open an
+issue first to discuss the change. Run `make lint` (shellcheck) before
+submitting.
+
+## License
+
+No license file is currently published in this repository; all rights
+reserved by default. Ask the maintainer if you'd like to reuse anything
+here.
