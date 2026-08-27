@@ -48,6 +48,9 @@ alias uv-i='uv python install'
 alias uv-list='uv python list --all-versions'
 alias uv-g='uv python pin --global'
 
+# Claude Code
+alias c='claude'
+
 # Tmux
 alias t='tmux'
 alias ta='tmux attach'
