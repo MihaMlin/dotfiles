@@ -29,7 +29,6 @@
       "Bash(rm:*)"
     ]
   },
-  "model": "sonnet",
   "hooks": {
     "PostToolUse": [
       {
