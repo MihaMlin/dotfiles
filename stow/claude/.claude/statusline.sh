@@ -1,21 +1,20 @@
 #!/usr/bin/env bash
 # ~/.claude/statusline.sh — Claude Code session status line (aesthetic edition)
 #
-# 三行輸出：
-#   第一行：◆ 模型 │ 漸層進度條 百分比 │ 費用 │ 時間 │ 速率限制
-#   第二行：⎇分支* │ +增/-減 │ 目錄
-#   第三行：❯ 提示符（顏色跟上下文用量連動）
+# Two-line output:
+#   Line 1: ◆ Model │ Gradient progress bar % │ Cost │ Duration │ Rate limits
+#   Line 2: ⎇ branch* │ +add/-del │ Directory
 #
-# 環境變數：
-#   CLAUDE_STATUSLINE_ASCII=1     退回純 ASCII
-#   CLAUDE_STATUSLINE_NERDFONT=1  啟用 Nerd Font 圖示
-#   CLAUDE_STATUSLINE_POWERLINE=1 啟用 Powerline 分隔符（預設跟隨 NERDFONT）
-#   COLORTERM=truecolor|24bit     系統自動設定，啟用真彩色漸層
+# Environment variables:
+#   CLAUDE_STATUSLINE_ASCII=1     Fallback to plain ASCII
+#   CLAUDE_STATUSLINE_NERDFONT=1  Enable Nerd Font icons
+#   CLAUDE_STATUSLINE_POWERLINE=1 Enable Powerline separators (defaults to match NERDFONT)
+#   COLORTERM=truecolor|24bit     Auto-detected, enables truecolor gradients
 
 set -euo pipefail
 
 # ═══════════════════════════════════════════════════════════════
-# 環境偵測
+# Environment Detection
 # ═══════════════════════════════════════════════════════════════
 
 USE_ASCII="${CLAUDE_STATUSLINE_ASCII:-0}"
@@ -27,7 +26,7 @@ if [[ "${COLORTERM:-}" == "truecolor" || "${COLORTERM:-}" == "24bit" ]]; then
 fi
 
 # ═══════════════════════════════════════════════════════════════
-# 色彩與符號
+# Colors and Symbols
 # ═══════════════════════════════════════════════════════════════
 
 RST='\033[0m'
@@ -40,17 +39,17 @@ GREEN='\033[32m'
 RED='\033[31m'
 MAGENTA='\033[35m'
 
-# Anthropic 品牌紫 (#7266EA)
+# Anthropic Brand Purple (#7266EA)
 if (( USE_TRUECOLOR )); then
   PURPLE='\033[38;2;114;102;234m'
 else
   PURPLE='\033[35m'
 fi
 
-# 符號集
+# Symbol Sets
 if [[ "$USE_ASCII" == "1" ]]; then
   S_BRAND="<>"
-  S_BRANCH=">"
+  S_BRANCH="> "
   S_WARN="!"
   S_PROMPT=">"
   S_TIME=""
@@ -58,7 +57,7 @@ if [[ "$USE_ASCII" == "1" ]]; then
   SEP=" | "
 elif [[ "$USE_NERDFONT" == "1" ]]; then
   S_BRAND="◆"
-  S_BRANCH=" "
+  S_BRANCH="  "
   S_WARN=" 󰀦"
   S_PROMPT="❯"
   S_TIME="󰔟 "
@@ -70,7 +69,7 @@ elif [[ "$USE_NERDFONT" == "1" ]]; then
   fi
 else
   S_BRAND="◆"
-  S_BRANCH="⎇"
+  S_BRANCH="⎇ "
   S_WARN=" ⚠"
   S_PROMPT="❯"
   S_TIME=""
@@ -83,7 +82,7 @@ else
 fi
 
 # ═══════════════════════════════════════════════════════════════
-# 降級輸出
+# Fallback Output
 # ═══════════════════════════════════════════════════════════════
 
 fallback_prompt() {
@@ -94,7 +93,7 @@ fallback_prompt() {
 command -v jq &>/dev/null || fallback_prompt "─ │ jq not found"
 
 # ═══════════════════════════════════════════════════════════════
-# 讀取 JSON（單次 jq）
+# Parse JSON Input (Single jq call)
 # ═══════════════════════════════════════════════════════════════
 
 input=$(cat)
@@ -136,13 +135,13 @@ parsed=$(echo "$input" | jq -r '
 } <<< "$parsed"
 
 # ═══════════════════════════════════════════════════════════════
-# 模型
+# Model
 # ═══════════════════════════════════════════════════════════════
 
 model="${model_name:-─}"
 
 # ═══════════════════════════════════════════════════════════════
-# 上下文進度條
+# Context Progress Bar
 # ═══════════════════════════════════════════════════════════════
 
 pct_int=${ctx_pct%.*}
@@ -153,19 +152,19 @@ if (( pct_int > 100 )); then pct_int=100; fi
 bar_filled=$(( pct_int / 10 ))
 if (( bar_filled > 10 )); then bar_filled=10; fi
 
-# 漸層色（真彩色）：綠 → 黃 → 橘 → 紅
+# Truecolor Gradient: Green → Yellow → Orange → Red
 GRAD_R=(46 116 186 241 239 236 233 231 211 192)
 GRAD_G=(204 195 186 196 161 126 101 76 66 57)
 GRAD_B=(113 89 64 15 24 34 44 60 50 43)
 
 bar=""
 if [[ "$USE_ASCII" == "1" ]]; then
-  # ASCII 模式
+  # ASCII Mode
   for (( i=0; i<10; i++ )); do
     if (( i < bar_filled )); then bar+="#"; else bar+="-"; fi
   done
 elif (( USE_TRUECOLOR )); then
-  # 真彩色漸層：每格獨立上色
+  # Truecolor gradient: Color each block individually
   for (( i=0; i<10; i++ )); do
     if (( i < bar_filled )); then
       bar+="\\033[38;2;${GRAD_R[$i]};${GRAD_G[$i]};${GRAD_B[$i]}m█"
@@ -175,7 +174,7 @@ elif (( USE_TRUECOLOR )); then
   done
   bar+="${RST}"
 else
-  # ANSI 退回：依整體百分比選色
+  # ANSI Fallback: Color selection based on total percentage
   if (( pct_int >= 90 )); then bar_color="$RED"
   elif (( pct_int >= 70 )); then bar_color="$YELLOW"
   else bar_color="$GREEN"; fi
@@ -186,16 +185,16 @@ else
   bar="${bar_color}${bar}${RST}"
 fi
 
-# 百分比文字顏色（跟進度條整體色一致）
+# Percentage text color (matches progress bar status)
 if (( pct_int >= 90 )); then pct_color="$RED"
 elif (( pct_int >= 70 )); then pct_color="$YELLOW"
 else pct_color="$GREEN"; fi
 
-# 警告符號
+# Warning symbol
 ctx_warn=""
 if (( pct_int >= 90 )); then ctx_warn="${RED}${S_WARN}${RST}"; fi
 
-# 上下文視窗大小（僅在 model display_name 不包含 context 資訊時才顯示）
+# Context window size label (only shown if model display_name doesn't already contain context info)
 ctx_size_int=${ctx_size:-0}
 ctx_label=""
 if [[ "$model" != *context* && "$model" != *Context* ]]; then
@@ -205,7 +204,7 @@ if [[ "$model" != *context* && "$model" != *Context* ]]; then
 fi
 
 # ═══════════════════════════════════════════════════════════════
-# 費用
+# Cost
 # ═══════════════════════════════════════════════════════════════
 
 cost_val="${cost:-0}"
@@ -219,7 +218,7 @@ elif [[ "$cost_fmt" == "0.00" ]]; then cost_color="$GRAY"
 else cost_color="$YELLOW"; fi
 
 # ═══════════════════════════════════════════════════════════════
-# 經過時間（零值智慧隱藏）
+# Elapsed Duration (Smart hidden when zero)
 # ═══════════════════════════════════════════════════════════════
 
 dur_ms=${duration_ms:-0}
@@ -228,14 +227,14 @@ if (( dur_ms > 0 )); then
   dur_sec=$((dur_ms / 1000))
   dur_min=$((dur_sec / 60))
   dur_s=$((dur_sec % 60))
-  # 格式化後仍為 0m0s 就不顯示（session 啟動初期 dur_ms 可能是幾百毫秒）
+  # Hide if calculated time evaluates to 0m0s (early session start)
   if (( dur_min > 0 || dur_s > 0 )); then
     dur_section="${SEP}${GRAY}${S_TIME}${dur_min}m${dur_s}s${RST}"
   fi
 fi
 
 # ═══════════════════════════════════════════════════════════════
-# Git 分支與髒標記（帶快取）
+# Git Branch & Dirty Flag (With Caching)
 # ═══════════════════════════════════════════════════════════════
 
 GIT_CACHE="/tmp/claude-statusline-git-cache"
@@ -279,7 +278,7 @@ if [[ -n "${cwd_full:-}" && -d "${cwd_full:-}" ]]; then
 fi
 
 # ═══════════════════════════════════════════════════════════════
-# 行數增減（零值智慧隱藏）
+# Lines Added / Removed (Smart hidden when zero)
 # ═══════════════════════════════════════════════════════════════
 
 lines_add=${lines_add:-0}
@@ -290,7 +289,7 @@ if (( lines_add > 0 || lines_rm > 0 )); then
 fi
 
 # ═══════════════════════════════════════════════════════════════
-# 速率限制（條件顯示）
+# Rate Limits (Conditional Display)
 # ═══════════════════════════════════════════════════════════════
 
 rate_section=""
@@ -312,7 +311,7 @@ if [[ -n "$rate_parts" ]]; then
 fi
 
 # ═══════════════════════════════════════════════════════════════
-# 動態提示符（顏色跟上下文用量連動）
+# Dynamic Prompt Color (Tied to context usage)
 # ═══════════════════════════════════════════════════════════════
 
 if (( pct_int >= 90 )); then prompt_color="$RED"
@@ -320,7 +319,7 @@ elif (( pct_int >= 70 )); then prompt_color="$YELLOW"
 else prompt_color="$GREEN"; fi
 
 # ═══════════════════════════════════════════════════════════════
-# 組裝第一行
+# Assemble Line 1
 # ═══════════════════════════════════════════════════════════════
 
 line1="${PURPLE}${S_BRAND}${RST} ${CYAN}${model}${RST}"
@@ -330,7 +329,7 @@ line1+="${dur_section}"
 line1+="${rate_section}"
 
 # ═══════════════════════════════════════════════════════════════
-# 組裝第二行
+# Assemble Line 2
 # ═══════════════════════════════════════════════════════════════
 
 parts=()
@@ -342,7 +341,7 @@ if [[ -n "$lines_section" ]]; then
 fi
 parts+=("${BLUE}${dir}${RST}")
 
-# Agent / Worktree 指示器（僅在非主 session 時顯示）
+# Agent / Worktree Indicator (Shown only in non-main sessions)
 if [[ -n "${wt_name:-}" ]]; then
   parts+=("${YELLOW}⚙ worktree:${wt_name}${RST}")
 elif [[ -n "${agent_name:-}" ]]; then
@@ -358,8 +357,8 @@ for i in "${!parts[@]}"; do
 done
 
 # ═══════════════════════════════════════════════════════════════
-# 輸出
+# Output
 # ═══════════════════════════════════════════════════════════════
 
-# 只輸出兩行（Claude Code 有自己的輸入提示符，不需要我們的 ❯）
+# Output two lines (Claude Code provides its own input prompt, so ❯ is omitted)
 printf '%b\n%b' "$line1" "$line2"

@@ -28,3 +28,7 @@ tab_bar_right = [
     { type = "datetime", format = "%d.%m.%Y %H:%M" },
 ]
 agent_panel_sort = "spaces"
+
+[theme]
+name = "catppuccin"
+auto_switch = false
