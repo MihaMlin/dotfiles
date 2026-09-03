@@ -39,15 +39,21 @@
     "command": "~/.claude/statusline.sh"
   },
   "enabledPlugins": {},
-  "verbose": false,
-  "terminalProgressBarEnabled": true,
-  "agentPushNotifEnabled": true,
   "extraKnownMarketplaces": {
     "mattpocock": {
       "source": {
         "source": "github",
         "repo": "mattpocock/skills"
       }
+    },
+    "claude-plugins-official": {
+      "source": {
+        "source": "github",
+        "repo": "anthropics/claude-plugins-official"
+      }
     }
-  }
+  },
+  "verbose": false,
+  "terminalProgressBarEnabled": true,
+  "agentPushNotifEnabled": true
 }
