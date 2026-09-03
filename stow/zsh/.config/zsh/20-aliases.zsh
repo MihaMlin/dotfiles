@@ -8,7 +8,6 @@ alias cls='clear'
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
-alias ~='cd ~'
 alias -- -='cd -'
 
 # Listing
@@ -27,26 +26,19 @@ alias mv='mv -i'
 
 # System
 alias df='df -h'
-alias du='du -h'
+alias du='du -h --max-depth=1'
 alias free='free -h'
 alias psg='ps aux | grep'
 
 # Network
-alias myip='curl ifconfig.me'
-alias ports='netstat -tulanp'
+alias myip='curl -s ifconfig.me'
+alias ports='ss -tulnp'
 
 # APT
 alias apt-up='sudo apt update && sudo apt upgrade -y'
 alias apt-i='sudo apt install -y'
 alias apt-rm='sudo apt remove'
 alias apt-search='apt search'
-
-# uv
-alias py='python'
-alias uv-ls='uv python list --only-installed'
-alias uv-i='uv python install'
-alias uv-list='uv python list --all-versions'
-alias uv-g='uv python pin --global'
 
 # Claude Code
 alias c='claude'
@@ -62,8 +54,8 @@ alias zshrc='${EDITOR:-vim} "$ZDOTDIR/.zshrc"'
 alias dotfiles='cd "$DOTFILES"'
 
 # History
-alias h='history'
-alias hg='history | grep'
+alias his='history'
+alias hisg='history | grep'
 
 # Misc
 alias now='date +"%T"'
