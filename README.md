@@ -2,7 +2,7 @@ Dotfiles
 ========
 
 XDG-compliant Linux/WSL dev environment — one script installs tools (nvm,
-uv, zinit, fzf, …) and symlinks configs with [GNU Stow](https://www.gnu.org/software/stow/).
+uv, zinit, fzf, herdr, …) and symlinks configs with [GNU Stow](https://www.gnu.org/software/stow/).
 
 ## Table of Contents
 
@@ -35,8 +35,8 @@ cd ~/.dotfiles
 ```
 
 Idempotent — safe to re-run anytime. `./install.sh` apt-installs packages,
-stows every `stow/*` package into `$HOME`, installs nvm/uv/zinit/fzf, and
-sets zsh as the default shell. For a single step: `bash scripts/install/nvm.sh`
+stows every `stow/*` package into `$HOME`, installs nvm/uv/zinit/fzf/herdr,
+and sets zsh as the default shell. For a single step: `bash scripts/install/nvm.sh`
 or a Makefile target (`make help` lists them all — `stow`, `unstow`, `update`,
 `install-<tool>`, `lint`, …).
 
@@ -56,8 +56,8 @@ Each `stow/<package>/` mirrors its internal structure into `$HOME`. Tools
 that extend the shell (`nvm`, `uv`, `zinit`, `fzf`, …) carry a `path.zsh`
 exporting the tool's own env var with an XDG fallback; `.zshrc` globs and
 sources every `path.zsh` on startup, so a new package needs zero `.zshrc`
-edits. Tools that just read `$XDG_CONFIG_HOME/<name>/` on their own (`git`,
-`tmux`) don't need one.
+edits. Tools that just read `$XDG_CONFIG_HOME/<name>/` on their own (`git`)
+don't need one.
 
 **Adding a tool:** copy the pattern from an existing `stow/<tool>/.config/<tool>/path.zsh`,
 add `scripts/install/<tool>.sh` if it needs installing (source `lib/log.sh`

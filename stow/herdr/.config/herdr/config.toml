@@ -1,0 +1,29 @@
+# herdr — terminal multiplexer. Only the settings that differ from herdr's
+# defaults live here; print the full default set with `herdr --default-config`.
+# Reload a running server after editing: `herdr server reload-config`.
+
+onboarding = false
+
+[terminal]
+default_shell = "zsh"
+
+[keys]
+# ctrl+b is herdr's default, but it is also copy mode's page-up; moving the
+# prefix to ctrl+a keeps ctrl+b free and matches long-standing muscle memory.
+prefix = "ctrl+a"
+
+# Splits mirror the tmux mnemonic: | side by side, - stacked.
+split_vertical = ["prefix+v", "prefix+|"]
+split_horizontal = ["prefix+minus"]
+
+# Pane focus keeps herdr's vim-style defaults and adds unprefixed arrows.
+focus_pane_left = ["prefix+h", "shift+left"]
+focus_pane_down = ["prefix+j", "shift+down"]
+focus_pane_up = ["prefix+k", "shift+up"]
+focus_pane_right = ["prefix+l", "shift+right"]
+
+[ui]
+tab_bar_position = "bottom"
+tab_bar_right = [
+    { type = "datetime", format = "%d.%m.%Y %H:%M" },
+]

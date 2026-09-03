@@ -24,7 +24,7 @@ unstow: ## Remove symlinks from $HOME (reversible via `make stow`)
 apt: ## Install apt packages only
 	bash scripts/install/apt.sh
 
-install-%: ## Install a single tool: nvm, uv, zinit, fzf
+install-%: ## Install a single tool: nvm, uv, zinit, fzf, herdr
 	bash scripts/install/$*.sh
 
 .PHONY: shell
@@ -32,7 +32,7 @@ shell: ## Set zsh as the default shell
 	bash scripts/setup/default-zsh.sh
 
 .PHONY: update
-update: stow install-nvm install-uv install-zinit install-fzf shell ## Re-run installers to update tools/versions (skips apt)
+update: stow install-nvm install-uv install-zinit install-fzf install-herdr shell ## Re-run installers to update tools/versions (skips apt)
 
 .PHONY: lint
 lint: ## Shellcheck all scripts

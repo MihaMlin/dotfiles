@@ -51,11 +51,11 @@ alias uv-g='uv python pin --global'
 # Claude Code
 alias c='claude'
 
-# Tmux
-alias t='tmux'
-alias ta='tmux attach'
-alias tl='tmux ls'
-alias tk='tmux kill-server'
+# Herdr
+alias h='herdr'
+alias ha='herdr session attach'
+alias hl='herdr session list'
+alias hk='herdr server stop'
 
 # Quick edits
 alias zshrc='${EDITOR:-vim} "$ZDOTDIR/.zshrc"'

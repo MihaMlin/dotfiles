@@ -19,7 +19,6 @@ PACKAGES=(
     "python3-pip"
     "shellcheck"
     "stow"
-    "tmux"
     "unzip"
     "vim"
     "wget"

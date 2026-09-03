@@ -27,6 +27,7 @@ STEPS=(
     scripts/install/uv.sh
     scripts/install/zinit.sh
     scripts/install/fzf.sh
+    scripts/install/herdr.sh
     scripts/setup/default-zsh.sh
 )
 
