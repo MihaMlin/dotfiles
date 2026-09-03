@@ -5,6 +5,7 @@ alias reload!='exec zsh'
 alias cls='clear'
 
 # Navigation
+alias ~='cd ~'
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'

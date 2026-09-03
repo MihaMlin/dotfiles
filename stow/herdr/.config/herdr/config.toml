@@ -27,3 +27,4 @@ tab_bar_position = "bottom"
 tab_bar_right = [
     { type = "datetime", format = "%d.%m.%Y %H:%M" },
 ]
+agent_panel_sort = "spaces"
