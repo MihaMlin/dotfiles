@@ -53,7 +53,8 @@
       }
     }
   },
-  "verbose": false,
+  "agentPushNotifEnabled": true,
+  "remoteControlAtStartup": false,
   "terminalProgressBarEnabled": true,
-  "agentPushNotifEnabled": true
+  "verbose": false
 }
