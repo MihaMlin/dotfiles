@@ -29,6 +29,7 @@
       "Bash(rm:*)"
     ]
   },
+  "model": "opus",
   "hooks": {
     "PostToolUse": [
       {
