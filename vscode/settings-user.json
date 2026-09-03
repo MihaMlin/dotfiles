@@ -1,212 +1,232 @@
 {
-  // --------------------------------------------------------------------------
-  // CORE EDITOR SETTINGS
-  // --------------------------------------------------------------------------
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.formatOnPaste": false,
-
+  // ┌────────────────────────────────────────────────────────────────────────┐
+  // │  EDITOR · behavior                                                     │
+  // └────────────────────────────────────────────────────────────────────────┘
+  "editor.formatOnSave": true,
   "editor.detectIndentation": false,
   "editor.insertSpaces": true,
   "editor.tabSize": 2,
   "editor.tabCompletion": "on",
-
+  "editor.linkedEditing": true,
+  // ┌────────────────────────────────────────────────────────────────────────┐
+  // │  EDITOR · appearance                                                   │
+  // └────────────────────────────────────────────────────────────────────────┘
+  "editor.wordWrap": "off",
+  "editor.renderWhitespace": "none",
+  "editor.fontLigatures": true,
   "editor.mouseWheelZoom": true,
-
-  "github.copilot.enable": {
-    "*": true,
-  },
-
-  // --------------------------------------------------------------------------
-  // WORKSPACE BEHAVIOR
-  // --------------------------------------------------------------------------
-  "files.autoSave": "afterDelay",
+  "editor.stickyScroll.enabled": true,
+  "editor.minimap.enabled": true,
+  "editor.guides.indentation": true,
+  "editor.guides.highlightActiveIndentation": true,
+  "editor.bracketPairColorization.enabled": true,
+  "editor.bracketPairColorization.independentColorPoolPerBracketType": true,
+  // ┌────────────────────────────────────────────────────────────────────────┐
+  // │  FILES                                                                 │
+  // └────────────────────────────────────────────────────────────────────────┘
+  "files.autoSave": "onFocusChange",
   "files.trimTrailingWhitespace": true,
   "files.insertFinalNewline": true,
-  "explorer.confirmDelete": false,
-  "security.workspace.trust.untrustedFiles": "prompt",
-  "search.exclude": {
-    "**/node_modules": true,
+  "files.associations": {
+    ".env.*": "dotenv",
+    "*.jsonl": "plaintext"
+  },
+  "files.exclude": {
     "**/__pycache__": true,
+    "**/.ipynb_checkpoints": true,
+    "**/.mypy_cache": true,
+    "**/.pytest_cache": true,
+    "**/.ruff_cache": true
+  },
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/.venv/**": true,
+    "**/node_modules/**": true,
+    "**/logs/**": true
+  },
+  // ┌────────────────────────────────────────────────────────────────────────┐
+  // │  SEARCH                                                                │
+  // └────────────────────────────────────────────────────────────────────────┘
+  "search.exclude": {
     "**/.git": true,
-    "**/.svn": true,
     "**/.hg": true,
+    "**/.svn": true,
     "**/CVS": true,
     "**/.DS_Store": true,
     "**/Thumbs.db": true,
-    "**/venv": true,
+    "**/node_modules": true,
+    "**/__pycache__": true,
+    "**/.ipynb_checkpoints": true,
     "**/.mypy_cache": true,
+    "**/.pytest_cache": true,
+    "**/.ruff_cache": true,
+    "**/.venv": true,
+    "**/venv": true,
+    "**/uv.lock": true
   },
-
-  // --------------------------------------------------------------------------
-  // LANGUAGE SPECIFIC SETTINGS
-  // --------------------------------------------------------------------------
-  "[python]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.formatOnSave": true,
-    "editor.tabSize": 4,
-  },
-  "[javascript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.formatOnSave": true,
-    "editor.codeActionsOnSave": {
-      "source.organizeImports": "explicit",
-    },
-    "javascript.preferences.importModuleSpecifier": "relative",
-  },
-  "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.formatOnSave": true,
-    "editor.codeActionsOnSave": {
-      "source.organizeImports": "explicit",
-    },
-    "typescript.preferences.importModuleSpecifier": "relative",
-  },
-  "[javascriptreact]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.formatOnSave": true,
-    "editor.codeActionsOnSave": {
-      "source.organizeImports": "explicit",
-    },
-    "javascript.preferences.importModuleSpecifier": "relative",
-  },
-  "[typescriptreact]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.formatOnSave": true,
-    "editor.codeActionsOnSave": {
-      "source.organizeImports": "explicit",
-    },
-    "typescript.preferences.importModuleSpecifier": "relative",
-  },
-  "[json]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.wordWrap": "on",
-    "editor.inlineSuggest.enabled": false,
-  },
-  "[html]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-  },
-  "[css]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-  },
-  "[scss]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-  },
-  "[markdown]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.wordWrap": "on",
-    "files.trimTrailingWhitespace": false,
-    "editor.formatOnSave": false,
-  },
-
-  // --------------------------------------------------------------------------
-  // UI CUSTOMIZATION
-  // --------------------------------------------------------------------------
-  "editor.wordWrap": "off",
-  "editor.renderWhitespace": "none",
-  "editor.guides.indentation": true,
-  "editor.guides.highlightActiveIndentation": true,
-  "editor.minimap.enabled": true,
-  "editor.minimap.renderCharacters": true,
-  "editor.cursorSmoothCaretAnimation": "off",
-  "editor.smoothScrolling": false,
-  "editor.fontLigatures": true,
-  "editor.bracketPairColorization.enabled": true,
-  "editor.bracketPairColorization.independentColorPoolPerBracketType": true,
-
+  // ┌────────────────────────────────────────────────────────────────────────┐
+  // │  EXPLORER                                                              │
+  // └────────────────────────────────────────────────────────────────────────┘
   "explorer.compactFolders": false,
-
-  "workbench.colorTheme": "Dark+", // [Default Dark+, One Dark Pro]
-  "workbench.iconTheme": "material-icon-theme",
-  "workbench.startupEditor": "none",
-
-  // --------------------------------------------------------------------------
-  // TERMINAL CONFIGURATION
-  // --------------------------------------------------------------------------
-  "terminal.integrated.defaultProfile.windows": "Git Bash",
-  "terminal.integrated.defaultProfile.linux": "zsh",
-
-  // --------------------------------------------------------------------------
-  // FILE ASSOCIATIONS
-  // --------------------------------------------------------------------------
-  "workbench.editorAssociations": {
-    "*.index": "default",
-    "*.db": "workbench.editor.chatSession",
-  },
-
-  // --------------------------------------------------------------------------
-  // EXPLORER FILE NESTING
-  // --------------------------------------------------------------------------
+  "explorer.confirmDelete": false,
+  "explorer.confirmDragAndDrop": false,
   "explorer.fileNesting.enabled": true,
   "explorer.fileNesting.patterns": {
-    // 1. Project Management (Vse bistvene konfiguracije pod package.json)
+    "pyproject.toml": "uv.lock, .python-version, ruff.toml, .ruff.toml, pytest.ini, setup.cfg, setup.py, tox.ini, mypy.ini, requirements*.txt, MANIFEST.in",
     "package.json": "pnpm-lock.yaml, pnpm-workspace.yaml, turbo.json, .nvmrc, .npmrc, .node-version, .editorconfig, commitlint.config.*, eslint.config.*, .prettierrc*, .prettierignore, .lintstagedrc*, .gitattributes, bun.lockb, yarn.lock, package-lock.json",
-
-    // 2. TypeScript (Vse variacije pod glavni tsconfig)
     "tsconfig.json": "tsconfig.*.json",
-
-    // 3. Documentation (Vizitka projekta pod README)
     "README.md": "CONTRIBUTING.md, LICENSE, CHANGELOG.md, SECURITY.md, START.md",
-
-    // 4. Environment & Secrets (Vse različice okolja pod glavno .env)
     ".env": ".env.*, .env.local, .env.example, .env.test",
-
-    // 5. Infrastructure & Docker
     "docker-compose.yml": "docker-compose.*.yml, Dockerfile*, .dockerignore",
     "Dockerfile": "Dockerfile*, .dockerignore",
-
-    // 6. Build Tools & Frameworks
     "vite.config.*": "vitest.config.*, playwright.config.*, tailwind.config.*, postcss.config.*",
-
-    // 7. Database (SQLite in Drizzle/Prisma)
     "drizzle.config.ts": "drizzle.config.*, drizzle/*",
     "*.sqlite": "${capture}.${extname}-*, ${capture}.db*",
     "*.db": "${capture}.${extname}-*",
-
-    // 8. Compiled / Transpiled Files (Če imaš JS/TS v isti mapi)
     "*.ts": "${capture}.js, ${capture}.d.ts, ${capture}.js.map",
     "*.tsx": "${capture}.ts, ${capture}.js",
     "*.js": "${capture}.js.map, ${capture}.min.js, ${capture}.d.ts",
-    "*.jsx": "${capture}.js",
+    "*.jsx": "${capture}.js"
   },
-
-  // --------------------------------------------------------------------------
-  // JSON
-  // --------------------------------------------------------------------------
-  "json.schemaDownload.enable": true,
-
-  // --------------------------------------------------------------------------
-  // EXTENSIONS SETTINGS
-  // --------------------------------------------------------------------------
-  "editor.codeLens": true,
+  // ┌────────────────────────────────────────────────────────────────────────┐
+  // │  WORKBENCH                                                             │
+  // └────────────────────────────────────────────────────────────────────────┘
+  "workbench.colorTheme": "Dark+", // Dark+, One Dark Pro
+  "workbench.iconTheme": "material-icon-theme", // material-icon-theme, vs-seti, vs-minimal
+  "workbench.startupEditor": "none",
+  "workbench.editor.limit.enabled": true,
+  "workbench.editor.limit.value": 12,
+  "workbench.editor.limit.perEditorGroup": true,
+  // ┌────────────────────────────────────────────────────────────────────────┐
+  // │  TERMINAL                                                              │
+  // └────────────────────────────────────────────────────────────────────────┘
+  "terminal.integrated.defaultProfile.linux": "zsh",
+  "terminal.integrated.defaultProfile.windows": "Git Bash",
+  "terminal.integrated.scrollback": 10000,
+  // ┌────────────────────────────────────────────────────────────────────────┐
+  // │  GIT                                                                   │
+  // └────────────────────────────────────────────────────────────────────────┘
   "git.enableSmartCommit": false,
-
-  // --------------------------------------------------------------------------
-  // PRETTIER SETTINGS
-  // --------------------------------------------------------------------------
-  "prettier.semi": true,
-  "prettier.singleQuote": false,
-  "prettier.tabWidth": 2,
-  "prettier.useTabs": false,
-  "prettier.trailingComma": "es5",
-
-  // --------------------------------------------------------------------------
-  // ESLINT & LINTER SETTINGS
-  // --------------------------------------------------------------------------
-  "eslint.enable": true,
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit",
+  "git.autofetch": true,
+  "git.confirmSync": false,
+  // ┌────────────────────────────────────────────────────────────────────────┐
+  // │  SECURITY                                                              │
+  // └────────────────────────────────────────────────────────────────────────┘
+  "security.workspace.trust.untrustedFiles": "prompt",
+  // ┌────────────────────────────────────────────────────────────────────────┐
+  // │  LANG · Python                                                         │
+  // └────────────────────────────────────────────────────────────────────────┘
+  "[python]": {
+    "editor.tabSize": 4,
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.rulers": [
+      100
+    ],
+    "editor.codeActionsOnSave": {
+      "source.fixAll.ruff": "explicit",
+      "source.organizeImports.ruff": "explicit"
+    }
   },
-
-  // --------------------------------------------------------------------------
-  // PROJECT MANAGEMENT
-  // --------------------------------------------------------------------------
-  "projectManager.git.baseFolders": ["~/projects"],
-  "github.copilot.nextEditSuggestions.enabled": false,
-  "editor.formatOnSave": true,
-  "extensions.experimental.affinity": {
-    "asvetliakov.vscode-neovim": 1,
+  "python.analysis.typeCheckingMode": "standard",
+  "python.analysis.diagnosticMode": "workspace",
+  "python.analysis.autoImportCompletions": true,
+  "python.analysis.inlayHints.functionReturnTypes": true,
+  "python.analysis.inlayHints.variableTypes": false,
+  "python.terminal.activateEnvironment": true,
+  "python.testing.pytestEnabled": true,
+  "python.testing.unittestEnabled": false,
+  "python.testing.pytestArgs": [
+    "tests"
+  ],
+  // ┌────────────────────────────────────────────────────────────────────────┐
+  // │  LANG · Notebooks                                                      │
+  // └────────────────────────────────────────────────────────────────────────┘
+  "notebook.formatOnSave.enabled": true,
+  "notebook.codeActionsOnSave": {
+    "notebook.source.fixAll": "explicit",
+    "notebook.source.organizeImports": "explicit"
   },
-  "chat.viewSessions.orientation": "stacked",
+  "notebook.lineNumbers": "on",
+  "notebook.output.textLineLimit": 60,
+  "notebook.diff.ignoreMetadata": true,
+  "notebook.diff.ignoreOutputs": true,
+  "jupyter.askForKernelRestart": false,
+  "jupyter.interactiveWindow.textEditor.executeSelection": true,
+  // ┌────────────────────────────────────────────────────────────────────────┐
+  // │  LANG · Data & config formats                                          │
+  // └────────────────────────────────────────────────────────────────────────┘
+  "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features",
+    "editor.wordWrap": "on",
+    "editor.inlineSuggest.enabled": false
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "vscode.json-language-features",
+    "editor.wordWrap": "on"
+  },
+  "[yaml]": {
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true,
+    "editor.autoIndent": "keep",
+    "editor.quickSuggestions": {
+      "other": true,
+      "comments": false,
+      "strings": true
+    }
+  },
+  "[toml]": {
+    "editor.tabSize": 2
+  },
+  "[markdown]": {
+    "editor.wordWrap": "on",
+    "editor.formatOnSave": false,
+    "files.trimTrailingWhitespace": false
+  },
+  "[shellscript]": {
+    "editor.tabSize": 2
+  },
+  "json.schemaDownload.enable": true,
+  // ┌────────────────────────────────────────────────────────────────────────┐
+  // │  LANG · Web                                                            │
+  // │  Built-in formatters.                                                  │
+  // └────────────────────────────────────────────────────────────────────────┘
+  "[javascript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features",
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    }
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features",
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    }
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features",
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    }
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features",
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    }
+  },
+  "[html]": {
+    "editor.defaultFormatter": "vscode.html-language-features"
+  },
+  "[css]": {
+    "editor.defaultFormatter": "vscode.css-language-features"
+  },
+  "[scss]": {
+    "editor.defaultFormatter": "vscode.css-language-features"
+  },
+  // ┌────────────────────────────────────────────────────────────────────────┐
+  // │  EXTENSIONS                                                            │
+  // └────────────────────────────────────────────────────────────────────────┘
   "claudeCode.preferredLocation": "panel",
+  "chat.viewSessions.orientation": "stacked",
   "remote.autoForwardPortsSource": "hybrid",
 }
