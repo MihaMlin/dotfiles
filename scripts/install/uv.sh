@@ -11,9 +11,7 @@ source "$DOTFILES_DIR/stow/uv/.config/uv/path.zsh"
 
 # --- Config (edit here) ---
 VERSIONS=(
-    "3.10.13"   # default
-    "3.11.7"    # deep_learning
-    "3.12.1"    # web_api
+    "3.14.0"
 )
 # --- end config ---
 
