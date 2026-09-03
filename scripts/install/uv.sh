@@ -11,7 +11,7 @@ source "$DOTFILES_DIR/stow/uv/.config/uv/path.zsh"
 
 # --- Config (edit here) ---
 VERSIONS=(
-    "3.14.0"
+    "3.13.14"
 )
 # --- end config ---
 
