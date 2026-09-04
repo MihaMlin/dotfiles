@@ -38,7 +38,9 @@
     "type": "command",
     "command": "~/.claude/statusline.sh"
   },
-  "enabledPlugins": {},
+  "enabledPlugins": {
+    "mattpocock-skills@mattpocock": true
+  },
   "extraKnownMarketplaces": {
     "mattpocock": {
       "source": {
