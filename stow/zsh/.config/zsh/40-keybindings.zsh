@@ -15,3 +15,8 @@ bindkey '^[[3~' delete-char            # Delete                   delete the cha
 # Line navigation
 bindkey '^[[H' beginning-of-line        # Home                     move to the beginning of the line
 bindkey '^[[F' end-of-line              # End                      move to the end of the line
+
+# Word editing
+# fzf's path.zsh binds Alt+C to fzf-cd-widget; .zshrc sources it before this
+# file, so rebinding here takes zsh's default back.
+bindkey '^[c' capitalize-word           # Alt+C                    capitalize the word at the cursor

@@ -42,9 +42,13 @@ sequences zsh does not bind out of the box.
 | `Delete` | `delete-char` | Delete the character under the cursor |
 | `Home` | `beginning-of-line` | Move to the beginning of the line |
 | `End` | `end-of-line` | Move to the end of the line |
+| `Alt+C` | `capitalize-word` | Capitalize the word at the cursor * |
 
 `Ctrl+Backspace` is bound via `^H`, which is what most terminals send for it —
 the same sequence as `Ctrl+H`.
+
+\* `Alt+C` is a reclaim, not a new binding: fzf takes it for `fzf-cd-widget`,
+and this file is sourced afterwards to hand it back to zsh's default.
 
 ---
 
@@ -56,7 +60,7 @@ Installed by `source <(fzf --zsh)` in `stow/fzf/.config/fzf/path.zsh`.
 | --- | --- | --- |
 | `Ctrl+T` | `fzf-file-widget` | Fuzzy-pick files/dirs, paste onto the line |
 | `Ctrl+R` | `fzf-history-widget` | Fuzzy-search command history |
-| `Alt+C` | `fzf-cd-widget` | Fuzzy-pick a directory and `cd` into it |
+| `Alt+C` | `fzf-cd-widget` | Fuzzy-pick a directory and `cd` into it — unbound, see above |
 | `Tab` | `fzf-completion` | Fuzzy completion — but see fzf-tab below |
 
 Inside an fzf window: `Ctrl+J`/`Ctrl+K` or the arrows move, `Enter` selects,
@@ -132,13 +136,10 @@ repo changes it.
 | `Alt+D` | `kill-word` — cut forward one word |
 | `Ctrl+Y` / `Alt+Y` | `yank` / `yank-pop` — paste from the kill ring |
 | `Alt+T` | `transpose-words` |
-| `Alt+U` / `Alt+L` / `Alt+C` * | `up-case-word` / `down-case-word` / `capitalize-word` |
+| `Alt+U` / `Alt+L` / `Alt+C` | `up-case-word` / `down-case-word` / `capitalize-word` |
 | `Ctrl+V` | `quoted-insert` — insert the next key literally |
 | `Ctrl+_` / `Ctrl+X` `Ctrl+U` | `undo` |
 | `Ctrl+@` / `Ctrl+X` `Ctrl+X` | `set-mark-command` / `exchange-point-and-mark` |
-
-\* `Alt+C` is taken by fzf's `fzf-cd-widget`; `capitalize-word` is reachable
-only as `Esc` `Shift+C`.
 
 ### History
 
@@ -214,6 +215,7 @@ modules run in order — `30-plugins.zsh` declares the plugins and
 after the prompt is already up, which is why fzf-tab ends up owning `Tab`.
 
 To override anything here, add a `bindkey` line to `40-keybindings.zsh` for
-eagerly-bound keys. For a key a deferred plugin claims, rebind it from that
-plugin's `atload'...'` ice in `30-plugins.zsh` instead — a binding set in
-`40-keybindings.zsh` would be overwritten a moment later.
+eagerly-bound keys — that is how `Alt+C` is taken back from fzf. For a key a
+deferred plugin claims, rebind it from that plugin's `atload'...'` ice in
+`30-plugins.zsh` instead — a binding set in `40-keybindings.zsh` would be
+overwritten a moment later.
