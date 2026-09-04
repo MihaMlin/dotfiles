@@ -22,6 +22,9 @@ Three jobs, three places, no overlap:
 3. **Wire the shell** — `.zshrc` sources each tool's `path.zsh` so it's found
    and initialized automatically.
 
+`docs/KEYBINDINGS.md` lists every key binding the shell ends up with — the
+custom ones, the zsh emacs defaults, and what fzf and the plugins add.
+
 `docs/ZBOOK.md` covers the layer below this repo: a clean Windows 11 +
 WSL2/Ubuntu setup, ending with cloning this repo.
 

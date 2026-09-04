@@ -44,17 +44,19 @@
       "source": {
         "source": "github",
         "repo": "mattpocock/skills"
-      }
+      },
+      "autoUpdate": true
     },
     "claude-plugins-official": {
       "source": {
         "source": "github",
         "repo": "anthropics/claude-plugins-official"
-      }
+      },
+      "autoUpdate": true
     }
   },
-  "agentPushNotifEnabled": true,
-  "remoteControlAtStartup": false,
+  "verbose": false,
   "terminalProgressBarEnabled": true,
-  "verbose": false
+  "remoteControlAtStartup": false,
+  "agentPushNotifEnabled": true
 }
