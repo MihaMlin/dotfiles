@@ -29,6 +29,7 @@ tab_bar_right = [
 ]
 agent_panel_sort = "spaces"
 
+show_agent_labels_on_pane_borders = false
 [theme]
 name = "catppuccin"
 auto_switch = false

@@ -32,7 +32,7 @@ WSL2/Ubuntu setup, ending with cloning this repo.
 
 ```bash
 ssh-keygen -t ed25519 -C "you@example.com"   # add the pubkey to GitHub
-git clone git@github.com:MihaMlin/dotfiles.git ~/.dotfiles
+git clone git@github.com:mlinmiha/dotfiles.git ~/.dotfiles
 cd ~/.dotfiles
 ./install.sh
 ```
@@ -80,4 +80,4 @@ Run `make lint` before submitting.
 
 ## License
 
-[MIT](LICENSE) © [Miha Mlinarič](https://github.com/MihaMlin)
+[MIT](LICENSE) © [Miha Mlinarič](https://github.com/mlinmiha)

@@ -290,7 +290,7 @@ code .
 Once the foundation is set, pull your personalized configurations.
 
 ```bash
-git clone https://github.com/MihaMlin/dotfiles.git ~/.dotfiles
+git clone https://github.com/mlinmiha/dotfiles.git ~/.dotfiles
 cd ~/.dotfiles
 chmod +x install.sh
 ./install.sh
